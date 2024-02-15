@@ -4,7 +4,7 @@ import { Button } from "./components/ui/button";
 function App() {
   return (
     <>
-      <Button>KaroKids Button</Button>
+      <Button>KaroKids Button Demo</Button>
     </>
   );
 }
