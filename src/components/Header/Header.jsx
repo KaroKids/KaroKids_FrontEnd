@@ -4,7 +4,7 @@ import NavbarMobile from "../Navbar/NavbarMobile";
 
 const Header = () => {
   return (
-    <header>
+    <header className="mb-2">
       <Banner />
       <NavbarMobile />
       <NavbarDesktop />
