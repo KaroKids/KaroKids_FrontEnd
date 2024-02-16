@@ -1,11 +1,14 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
+ 
 import { Footer } from "./components/Footer/Footer";
+import  Landing  from "./components/Home/Landing";
+
 
 function App() {
 	return (
 		<main className="font-montserrat">
-			<Button>KaroKids Button</Button>
+			<Landing />
+			
 			<Footer />
 		</main>
 	);
