@@ -4,11 +4,13 @@ import { Footer } from "./components/Footer/Footer";
 import Landing from "./components/Home/Landing";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import SocialBar from "./components/SocialBar";
+import Hero from "./components/Home/Hero";
 
 function App() {
   return (
     <main className="font-montserrat">
       <Header />
+	  < Hero />
       <Landing />
       <ProductDetail />
       <SocialBar />
