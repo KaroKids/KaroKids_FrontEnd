@@ -1,10 +1,10 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <>
-      <Button>Hola shad</Button>
+      <Header />
     </>
   );
 }
