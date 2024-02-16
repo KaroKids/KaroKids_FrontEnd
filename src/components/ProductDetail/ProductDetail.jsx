@@ -50,10 +50,10 @@ const ProductDetail = () => {
         <img
           src={producto.imagen}
           alt={producto.nombre}
-          className=" w-72 mx-auto overflow-hidden shadow-lg md:w-96 xl:w-[550px] xl:h-[580px] xl:mr-20"
+          className="h-96 w-full object-center mx-auto overflow-hidden shadow-lg md:w-96 xl:w-[550px] xl:h-[580px] xl:mr-20"
         />
         <div className="xl:flex flex-col xl:mr-16">
-          <h2 className="text-slate-500 font-medium mt-2 text-xl text-center md:text-center xl:text-left xl:text-2xl">
+          <h2 className="text-slate-500 font-medium mt-2 text-lg text-center md:text-center xl:text-left xl:text-2xl">
             {producto.nombre}
           </h2>
           <span className="text-xs text-slate-500 px-4 xl:text-left mt-2">
