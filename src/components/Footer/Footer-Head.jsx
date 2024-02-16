@@ -30,8 +30,7 @@ const FooterHead = () => {
 						className="px-1 w-7"
 					/>
 				</a>
-				<a href="#">
-					{/* Acá falta ingresar el link del mensaje de Whatsapp */}
+				<a href="https://wa.link/fdh8yl" target="_blanck">
 					<img
 						src="/assets/social_media/whatsapp.svg"
 						alt="Whatsapp"
