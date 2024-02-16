@@ -7,6 +7,7 @@ const ProductDetail = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const colors = [
     { name: "Gris", value: "gray" },
@@ -17,6 +18,14 @@ const ProductDetail = () => {
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
+  };
+
+  const handleMouseEnter = () => {
+    setIsZoomed(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsZoomed(false);
   };
   useEffect(() => {
     // Aquí harías una solicitud HTTP para obtener los detalles del producto
@@ -46,14 +55,21 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen py-4 px-4 text-center xl:flex xl:items-center ">
-      <div className="px-2 py-8 text-center xl:grid xl:grid-cols-2 xl:h-[750px] xl:place-items-center xl:pr-40">
-        <img
-          src={producto.imagen}
-          alt={producto.nombre}
-          className="h-96 w-full object-center mx-auto overflow-hidden shadow-lg md:w-96 xl:w-[550px] xl:h-[580px] xl:mr-20"
-        />
+      <div className="px-2 py-8 text-center xl:grid xl:grid-cols-2 xl:h-[750px] xl:place-items-center xl:gap-14">
+        <div className="object-center overflow-hidden shadow-lg sm:w-fit ">
+          <img
+            src={producto.imagen}
+            alt={producto.nombre}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={`xl:w-[500px] xl:h-[580px] xl:mx-20 xl:my-1 ${
+              isZoomed ? "transform scale-125" : ""
+            } 
+             transition-transform duration-300`}
+          />
+        </div>
         <div className="xl:flex flex-col xl:mr-16">
-          <h2 className="text-slate-500 font-medium mt-2 text-lg text-center md:text-center xl:text-left xl:text-2xl">
+          <h2 className="text-slate-500 font-medium mt-4 text-lg text-center md:text-center xl:text-left xl:text-2xl">
             {producto.nombre}
           </h2>
           <span className="text-xs text-slate-500 px-4 xl:text-left mt-2">
