@@ -7,6 +7,7 @@ import SideBarSocial from "./components/SidebarSocial/SideBarSocial";
 import Hero from "./components/Home/Hero";
 
 function App() {
+
 	return (
 		<main className="font-montserrat">
 			<Header />
