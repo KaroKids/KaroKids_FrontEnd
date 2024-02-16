@@ -5,14 +5,14 @@ import SideBarSocial from "./components/SidebarSocial/SideBarSocial";
 import { Footer } from "./components/Footer/Footer";
 
 function App() {
-	return (
-		<main className="font-montserrat">
-			<Header />
-			<Landing />
-			<SideBarSocial />
-			<Footer />
-		</main>
-	);
+  return (
+    <main className="min-h-screen font-montserrat">
+      <Header />
+      <Landing />
+      <SideBarSocial />
+      <Footer />
+    </main>
+  );
 }
 
 export default App;

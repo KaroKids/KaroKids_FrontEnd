@@ -1,15 +1,17 @@
+import { useState } from "react";
+
 const NavbarMobile = () => {
-  const hamMenu = document.querySelector("#hamMenu");
+  const [openHamMenu, setOpenHamMenu] = useState(false);
   const showMenu = () => {
-    hamMenu.classList.toggle("hidden");
+    setOpenHamMenu(!openHamMenu);
   };
 
   return (
-    <nav className="mt-4 md:hidden">
+    <nav className="py-2 fixed z-10 top-0 bg-white shadow-md shadow-gray-300 md:hidden">
       <ul className="w-screen max-h-[50px] px-2 flex items-center gap-4">
         <li className="mr-auto">
           <img
-            src="../../../public/assets/images/logo-karokids.png"
+            src="/public/assets/images/logo-karokids.png"
             alt="Logo de KaroKids"
             className="w-[187px]"
           />
@@ -28,9 +30,9 @@ const NavbarMobile = () => {
             className="w-6 h-6"
           />
         </li>
-        <li onClick={() => showMenu()}>
+        <li onClick={showMenu}>
           <img
-            src="../../../public/assets/navbar-icons/ham-menu.svg"
+            src="/public/assets/navbar-icons/ham-menu.svg"
             alt="Logo del Menú desplegable"
             className="w-6 h-6"
           />
@@ -38,7 +40,7 @@ const NavbarMobile = () => {
       </ul>
       <ul
         id="hamMenu"
-        className="hidden w-screen h-screen fixed flex flex-col items-center py-8 font-medium text-slate-400 text-2xl gap-4"
+        className={`${openHamMenu ? "fixed" : "hidden"} w-screen h-screen bg-white flex flex-col items-center py-8 font-medium text-slate-400 text-2xl gap-4`}
       >
         <li className="text-slate-600">Home</li>
         <li>Recién Nacido</li>
