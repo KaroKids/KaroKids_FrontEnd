@@ -10,7 +10,7 @@ function App() {
   return (
     <main className="font-montserrat">
       <Header />
-	  < Hero />
+      <Hero />
       <Landing />
       <ProductDetail />
       <SocialBar />
