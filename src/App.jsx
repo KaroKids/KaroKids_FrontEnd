@@ -8,9 +8,7 @@ function App() {
   return (
     <main className="min-h-screen font-montserrat">
       <Header />
-      <Hero />
       <Landing />
-      <ProductDetail />
       <SideBarSocial />
       <Footer />
     </main>
