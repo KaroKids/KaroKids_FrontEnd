@@ -1,13 +1,19 @@
 import "./App.css";
-import { Button } from "./components/ui/button";
+ 
 import { Footer } from "./components/Footer/Footer";
+
+import  Landing  from "./components/Home/Landing";
 import SocialBar from "./components/SocialBar";
+
 
 function App() {
 	return (
 		<main className="font-montserrat">
+
 			<Button>KaroKids Button</Button>
+			<Landing />
 			<SocialBar />
+
 			<Footer />
 		</main>
 	);
