@@ -7,17 +7,15 @@ import SideBarSocial from "./components/SidebarSocial/SideBarSocial";
 import Hero from "./components/Home/Hero";
 
 function App() {
-
-	return (
-		<main className="font-montserrat">
-			<Header />
-			<Hero />
-			<Landing />
-			<ProductDetail />
-			<SideBarSocial />
-			<Footer />
-		</main>
-	);
+  return (
+    <main className="font-montserrat">
+      <Header />
+      <Hero />
+      <ProductDetail />
+      <SideBarSocial />
+      <Footer />
+    </main>
+  );
 }
 
 export default App;
