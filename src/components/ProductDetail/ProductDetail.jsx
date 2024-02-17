@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { Combobox } from "../ui/combobox";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { useMediaQuery } from "@react-hook/media-query";
 
 const ProductDetail = () => {
-  const [producto, setProducto] = useState(null);
+  const [producto, setProducto] = useState("");
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [isZoomed, setIsZoomed] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const colors = [
     { name: "Gris", value: "gray" },
@@ -28,10 +38,6 @@ const ProductDetail = () => {
     setIsZoomed(false);
   };
   useEffect(() => {
-    // Aquí harías una solicitud HTTP para obtener los detalles del producto
-    // Puedes usar librerías como axios o fetch para hacer la solicitud
-    // y actualizar el estado del componente con los datos recibidos
-    // Por simplicidad, asumiremos que ya tienes los datos del producto
     const productoData = {
       nombre: "REMERA COLLARCITO NEGRO NENE",
       precio: 6.626,
@@ -45,31 +51,48 @@ const ProductDetail = () => {
     setCargando(false);
   }, []);
 
-  if (cargando) {
-    return <p>Cargando...</p>;
-  }
-
-  if (error) {
-    return <p>Error al cargar el producto.</p>;
-  }
-
   return (
-    <div className="min-h-screen py-4 px-4 text-center">
-      <div className="px-2 py-8 text-center xl:grid xl:grid-cols-1 xl:h-[750px] xl:place-items-center  ">
-        <div className="xl:grid xl:grid-cols-2 xl:place-items-end xl:gap-14 ">
-          <div className="object-center overflow-hidden sm:w-full sm:flex sm:justify-center xl:w-fit  ">
-            <img
-              src={producto.imagen}
-              alt={producto.nombre}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={`xl:w-[540px] xl:h-[580px] sm:w-[500px]  ${
-                isZoomed ? "transform scale-125" : ""
-              } 
+    <div className="min-h-screen py-0 px-4 text-center">
+      <div className="px-2  text-center xl:grid xl:grid-cols-1 xl:h-[750px]">
+        <div
+          className={
+            !isMobile
+              ? "flex xl:flex-row xl:gap-6  xl:items-center lg:mx-20 "
+              : " flex-center"
+          }
+        >
+          <div className="px-10 ">
+            <Carousel
+              orientation="horizontal"
+              className="xl:w-[600px] xl:shadow-lg"
+            >
+              <CarouselContent>
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <CarouselItem key={index}>
+                    <div>
+                      <Card>
+                        <CardContent className="p-6">
+                          <img
+                            src={producto.imagen}
+                            alt={producto.nombre}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            className={`h-70 ${
+                              isZoomed ? "transform scale-125" : ""
+                            } 
              transition-transform duration-300`}
-            />
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
-          <div className="xl:flex flex-col xl:mr-16 ">
+          <div className="xl:flex flex-col  ">
             <h2 className="text-slate-500 font-medium mt-4 text-lg text-center sm:text-3xl md:text-center xl:text-left xl:text-2xl">
               {producto.nombre}
             </h2>
@@ -80,7 +103,7 @@ const ProductDetail = () => {
               ${producto.precio}
             </p>
 
-            <div className="border-t-2 border-gray-100 px-4 py-2 xl:w-full xl:border-gray-200 xl:py-0 xl:pt-4">
+            <div className="border-t-2 border-gray-100 px-4 py-2 xl:w-full xl:border-gray-200 xl:py-0 xl:pt-0">
               <p className="text-sm md:text-base xl:text-lg">
                 {producto.descripcion}
               </p>
@@ -96,7 +119,7 @@ const ProductDetail = () => {
                 className="border-gray-200 border-2 focus:outline-none w-14 h-10 text-center xl:w-20 xl:mb-6"
               />
               <label>Elige un color:</label>
-              <div className="flex flex-row flex-nowrap my-2">
+              <div className="flex flex-row flex-nowrap my-0">
                 {colors.map((color) => (
                   <div
                     key={color.value}
@@ -109,7 +132,7 @@ const ProductDetail = () => {
                 ))}
               </div>
             </div>
-            <Button variant="detail" className="mt-2 w-full xl:mt-0 ">
+            <Button variant="detail" className="my-2 w-full xl:mt-0 ">
               AGREGAR AL CARRITO
             </Button>
           </div>
