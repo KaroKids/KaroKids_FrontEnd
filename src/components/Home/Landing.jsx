@@ -4,7 +4,7 @@ import ServicesHome from "../Services/ServicesHome";
 
 const Landing = () => {
   return (
-    <div>
+    <div className="mt-10 xl:mt-20">
       <Hero />
       <Carrousel />
       {/* BoyGirl */}
