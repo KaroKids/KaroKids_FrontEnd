@@ -11,7 +11,7 @@ const NavbarMobile = () => {
 			<ul className="w-screen max-h-[50px] px-2 flex items-center gap-4">
 				<li className="mr-auto">
 					<img
-						src="/public/assets/images/logo-karokids.png"
+						src="/assets/images/logo-karokids.png"
 						alt="Logo de KaroKids"
 						className="w-[187px]"
 					/>
@@ -32,7 +32,7 @@ const NavbarMobile = () => {
 				</li>
 				<li onClick={showMenu}>
 					<img
-						src="/public/assets/navbar-icons/ham-menu.svg"
+						src="/assets/navbar-icons/ham-menu.svg"
 						alt="Logo del Menú desplegable"
 						className="w-6 h-6"
 					/>

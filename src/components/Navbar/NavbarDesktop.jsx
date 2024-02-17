@@ -58,7 +58,7 @@ const NavbarDesktop = () => {
 			</ul>
 			<figure className="mx-auto">
 				<img
-					src="/public/assets/images/logo-karokids.png"
+					src="/assets/images/logo-karokids.png"
 					alt="Logo de KaroKids"
 					className="w-[184px] h-[45px]"
 				/>
@@ -69,21 +69,21 @@ const NavbarDesktop = () => {
 				</li>
 				<li>
 					<img
-						src="/public/assets/navbar-icons/search-blue.svg"
+						src="/assets/navbar-icons/search-blue.svg"
 						alt="Logo de Busqueda"
 						className="w-6 h-6"
 					/>
 				</li>
 				<li>
 					<img
-						src="/public/assets/navbar-icons/cart-blue.svg"
+						src="/assets/navbar-icons/cart-blue.svg"
 						alt="Logo del carrito de compras"
 						className="w-6 h-6"
 					/>
 				</li>
 				<li>
 					<img
-						src="/public/assets/navbar-icons/fav-blue.svg"
+						src="/assets/navbar-icons/fav-blue.svg"
 						alt="Logo de Favoritos"
 						className="w-6 h-6"
 					/>
