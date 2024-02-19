@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import validation from "../../utils/validation";
+import { Link } from "react-router-dom";
 
 const CreateProduct = () => {
   const [data, setData] = useState({
@@ -282,7 +283,7 @@ const CreateProduct = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-row flex-nowrap justify-center items-center ">
+          <div className="flex flex-row flex-nowrap justify-around  w-full items-center ">
             <input
               className="bg-sky-200 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400"
               onClick={handleSubmit}
@@ -291,6 +292,11 @@ const CreateProduct = () => {
               value="CREAR"
               id="submitCreate"
             />
+            <Link to="/">
+              <span className=" flex items-center justify-center bg-sky-200 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400">
+                VOLVER
+              </span>
+            </Link>
           </div>
         </div>
       </form>
