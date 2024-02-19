@@ -6,20 +6,23 @@ import { Footer } from "./components/Footer/Footer";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
 import ProductList from "./components/ProductList/ProductList";
 import { Routes, Route, useLocation } from "react-router-dom";
+import CreateProduct from "./components/CreateProduct/CreateProduct";
 
 function App() {
   const { pathname } = useLocation();
 
   return (
     <main className="min-h-screen font-montserrat">
-      {pathname !== "/admin" && <Header />}
+      {pathname !== "/create" && <Header />}
+
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/producto/:id" element={<ProductDetail />} />
         <Route path="/productos" element={<ProductList />} />
+        <Route path="/create" element={<CreateProduct />} />
       </Routes>
-      {pathname !== "/admin" && <SideBarSocial />}
-      {pathname !== "/admin" && <Footer />}
+      {pathname !== "/create" && <SideBarSocial />}
+      {pathname !== "/create" && <Footer />}
     </main>
   );
 }

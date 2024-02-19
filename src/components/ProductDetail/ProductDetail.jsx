@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useMediaQuery } from "@react-hook/media-query";
 import ServicesDetail from "../Services/ServicesDetail";
 import Carrousel from "../Home/Carrousel";
+import { Link } from "react-router-dom";
 
 const ProductDetail = () => {
   const [producto, setProducto] = useState("");
@@ -67,7 +68,7 @@ const ProductDetail = () => {
                   <CarouselItem key={index}>
                     <div>
                       <Card>
-                        <CardContent className="py-0 px-0">
+                        <productCard className="py-0 px-0">
                           <img
                             src={producto.imagen}
                             alt={producto.nombre}
@@ -75,7 +76,7 @@ const ProductDetail = () => {
                             onMouseLeave={handleMouseLeave}
                             className="flex gap-10"
                           />
-                        </CardContent>
+                        </productCard>
                       </Card>
                     </div>
                   </CarouselItem>
@@ -89,9 +90,19 @@ const ProductDetail = () => {
             <h2 className="text-slate-500 font-medium mt-4 text-lg text-center sm:text-3xl md:text-center xl:pl-6 xl:text-left xl:text-2xl">
               {producto.nombre}
             </h2>
-            <span className="text-xs text-slate-500 px-4 xl:pl-6 xl:text-left mt-2">
-              Inicio
-            </span>
+            <div className="flex">
+              <Link to="/">
+                <span className="text-xs text-slate-500 pr-2 xl:pl-6 xl:text-left mt-2">
+                  Inicio /
+                </span>
+              </Link>
+
+              <Link to="/productos">
+                <span className="text-xs text-slate-500 xl:text-left mt-2">
+                  Productos
+                </span>
+              </Link>
+            </div>
             <p className="text-slate-500 font-medium my-4 text-4xl text-left  md:text-center xl:pl-6 xl:text-left xl:font-semibold">
               ${producto.precio}
             </p>
