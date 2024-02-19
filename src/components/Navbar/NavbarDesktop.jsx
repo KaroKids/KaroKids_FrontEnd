@@ -1,6 +1,8 @@
+import SearchBar from "../SearchBar/SearchBar";
+
 const NavbarDesktop = () => {
   return (
-    <nav className="hidden h-16 max-w-screen bg-white px-10 xl:px-60 md:flex items-center shadow-md shadow-gray-300 md:fixed md:z-10 md:top-0 md:w-full">
+    <nav className="hidden h-16 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 md:fixed md:z-10 md:top-0 md:w-full">
       <ul className="flex gap-x-5 items-center flex-wrap font-medium md:max-w-[35%]">
         <li>Home</li>
         <li className="flex gap-1 items-center">
@@ -43,16 +45,9 @@ const NavbarDesktop = () => {
           className="w-[184px] h-[45px]"
         />
       </figure>
-      <ul className="flex gap-4 justify-center">
-        <li className="text-sky-500 font-medium">
-          <a href="/">Login</a> / <a href="/">Register</a>
-        </li>
+      <ul className="flex gap-2 items-center">
         <li>
-          <img
-            src="/assets/navbar-icons/search-blue.svg"
-            alt="Logo de Busqueda"
-            className="w-6 h-6"
-          />
+          <SearchBar />
         </li>
         <li>
           <img
@@ -67,6 +62,9 @@ const NavbarDesktop = () => {
             alt="Logo de Favoritos"
             className="w-6 h-6"
           />
+        </li>
+        <li className="text-sky-500 font-medium">
+          <a href="/">Login</a> / <a href="/">Register</a>
         </li>
       </ul>
     </nav>
