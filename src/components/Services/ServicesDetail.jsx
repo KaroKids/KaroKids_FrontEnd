@@ -1,10 +1,8 @@
-import React from "react";
-
 const ServicesDetail = () => {
 	return (
 		<section className="flex flex-col justify-center py-2 border-b-2">
-			<section className="grid grid-cols-1 sm:grid-cols-3 my-6 lg:mx-48">
-				<div className="flex flex-row justify-start">
+			<section className="grid grid-cols-1 sm:grid-cols-3 my-6 gap-y-4 lg:mx-48">
+				<div className="flex flex-row justify-start  sm:justify-center">
 					<img
 						src="/assets/services/delivery.svg"
 						alt="delivery"
@@ -15,7 +13,7 @@ const ServicesDetail = () => {
 						<p>Para compras mayores a $50.000</p>
 					</div>
 				</div>
-				<div className="flex flex-row justify-start">
+				<div className="flex flex-row justify-start sm:justify-center">
 					<img
 						src="/assets/services/creditCard.svg"
 						alt="creditCard"
@@ -26,7 +24,7 @@ const ServicesDetail = () => {
 						<p>SIN INTERÉS</p>
 					</div>
 				</div>
-				<div className="flex flex-row justify-start">
+				<div className="flex flex-row justify-start  sm:justify-center">
 					<img
 						src="/assets/services/secureSite.svg"
 						alt="secureSite"
