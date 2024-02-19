@@ -6,6 +6,7 @@ import filterIcon from "/assets/images/filterIcon.svg";
 import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
+import { Link } from "react-router-dom";
 
 const products = [
 	{
@@ -182,15 +183,16 @@ export default function ProductList() {
 
 				<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 					{products.map((product) => (
-						<ProductCard
-							key={product.id}
-							id={product.id}
-							imageSrc={product.imageSrc}
-							imageAlt={product.imageAlt}
-							name={product.name}
-							price={product.price}
-							href={product.href}
-						/>
+						<Link to={`/producto/${product.id}`}>
+							<ProductCard
+								key={product.id}
+								id={product.id}
+								imageSrc={product.imageSrc}
+								imageAlt={product.imageAlt}
+								name={product.name}
+								price={product.price}
+							/>
+						</Link>
 					))}
 				</div>
 
