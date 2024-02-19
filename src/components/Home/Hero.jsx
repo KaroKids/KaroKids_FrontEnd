@@ -45,7 +45,7 @@ export default function Hero() {
                         <img
                           src="https://assets.theplace.com/image/upload/t_pdp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3044654/3044654_BQ.jpg"
                           alt=""
-                          className="h-full w-full object-cover object-center"
+                          className="h-full w-full object-bottom"
                         />
                       </div>
                       <div className="h-64 w-44 overflow-hidden rounded-lg">

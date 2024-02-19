@@ -4,14 +4,14 @@ import ServicesHome from "../Services/ServicesHome";
 import BoyGirl from "./BoyGirl";
 
 const Landing = () => {
-	return (
-		<div>
-			<Hero />
-			<Carrousel />
-			<BoyGirl />
-			<ServicesHome />
-		</div>
-	);
+  return (
+    <div className="mt-20">
+      <Hero />
+      <Carrousel />
+      <BoyGirl />
+      <ServicesHome />
+    </div>
+  );
 };
 
 export default Landing;
