@@ -19,7 +19,6 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [isZoomed, setIsZoomed] = useState(false);
-  const isMobile = useMediaQuery("(max-width: 1024px)");
 
   const colors = [
     { name: "Gris", value: "gray" },
@@ -58,31 +57,23 @@ const ProductDetail = () => {
       <div className="px-2 py-14 text-center xl:grid xl:grid-cols-1 xl:h-[750px]">
         <div
           className={
-            !isMobile
-              ? "flex xl:flex-row xl:gap-6  xl:items-center lg:mx-20 "
-              : " flex-center"
+            "flex flex-col xl:flex-row xl:gap-6  xl:items-center lg:mx-20 "
           }
         >
           <div className="px-10 ">
-            <Carousel
-              orientation="horizontal"
-              className="xl:w-[600px] xl:shadow-lg"
-            >
+            <Carousel orientation="horizontal" className="xl:w-[600px] ">
               <CarouselContent>
                 {Array.from({ length: 3 }).map((_, index) => (
                   <CarouselItem key={index}>
                     <div>
                       <Card>
-                        <CardContent className="p-6">
+                        <CardContent className="py-0 px-0">
                           <img
                             src={producto.imagen}
                             alt={producto.nombre}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
-                            className={`h-70 ${
-                              isZoomed ? "transform scale-125" : ""
-                            } 
-             transition-transform duration-300`}
+                            className="flex gap-10"
                           />
                         </CardContent>
                       </Card>
