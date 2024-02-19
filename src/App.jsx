@@ -4,6 +4,7 @@ import Landing from "./components/Home/Landing";
 import SideBarSocial from "./components/SidebarSocial/SideBarSocial";
 import { Footer } from "./components/Footer/Footer";
 import ProductDetail from "./components/ProductDetail/ProductDetail";
+import ProductList from "./components/ProductList/ProductList";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Landing />
       <ProductDetail />
       <SideBarSocial />
+      <ProductList />
       <Footer />
     </main>
   );
