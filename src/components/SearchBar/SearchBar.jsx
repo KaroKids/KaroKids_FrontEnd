@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { getProductsByName } from "@/redux/productosActions";
+import { getProductsByFilters } from "@/redux/productosActions";
 
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
@@ -25,13 +25,11 @@ const SearchBar = () => {
       search: "",
     };
 
-    console.log(queryParam);
-
     queryParam.nombre === ""
       ? navigate(nuevaUbicacion)
       : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
 
-    dispatch(getProductsByName(query));
+    dispatch(getProductsByFilters({ nombre: query }));
     setQuery("");
   };
 
