@@ -1,5 +1,35 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 
+// esto es para tener una copia de los filtros
+
+// const [filtrosAplicados, setFiltrosAplicados] = useState([]);
+//esto es para que se copien los filtros del filteroption
+// const handleApplyFilters = (filtrosSeleccionados) => {
+//   setFiltrosAplicados(filtrosSeleccionados);
+// };
+// const [nuevaPagina, setNuevaPagina] = useState(1);
+// al hacer click en un boton de pagina se actualiza el contenedor de los filtros
+// const handlePagina = (event) =>{
+//   setNuevaPagina(event.target.value);
+//   setFiltrosAplicados((prevFiltrosAplicados) => ({
+//     ...prevFiltrosAplicados,
+//     pagicaActual: nuevaPagina
+//   }));
+// }
+//al modificarse el estado de la pagina se llama al filtrar con todos los filtros mas el de la pagina actual
+// useEffect(() => {
+//   dispatch(getProductsByFilters(filtrosAplicados));
+// }, [nuevaPagina]);
+
+
+//al hacer click en una pagina se llama al filtrar con el valor de la pagina, va al handler, actualiza y al actualizar se dispachea el filtrar con todos los filtros es practicamente como el ordenar.
+//en el paginationcontrol de producttlis habria que pasar esto por parametro onApplyFilters={handleApplyFilters}
+
+
+///////////////////////////
+
+
+
 const items = [
   { id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },
   { id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote' },

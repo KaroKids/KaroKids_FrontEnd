@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, modifyVolverFunc } from "@/redux/productosActions";
+import { getAllProducts, getProductsByFilters, modifyVolverFunc } from "@/redux/productosActions";
 
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
@@ -9,143 +9,54 @@ import filterIcon from "/assets/images/filterIcon.svg";
 import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-// const products = [
-//   {
-//     id: 1,
-//     name: "Earthen Bottle",
-//     href: "#",
-//     price: "$48",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg",
-//     imageAlt:
-//       "Tall slender porcelain bottle with natural clay textured body and cork stopper.",
-//   },
-//   {
-//     id: 2,
-//     name: "Nomad Tumbler",
-//     href: "#",
-//     price: "$35",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg",
-//     imageAlt:
-//       "Olive drab green insulated bottle with flared screw lid and flat top.",
-//   },
-//   {
-//     id: 3,
-//     name: "Focus Paper Refill",
-//     href: "#",
-//     price: "$89",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg",
-//     imageAlt:
-//       "Person using a pen to cross a task off a productivity paper card.",
-//   },
-//   {
-//     id: 4,
-//     name: "Machined Mechanical Pencil",
-//     href: "#",
-//     price: "$35",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg",
-//     imageAlt:
-//       "Hand holding black machined steel mechanical pencil with brass tip and top.",
-//   },
-//   {
-//     id: 5,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-
-//   {
-//     id: 6,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-
-//   {
-//     id: 7,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-
-//   {
-//     id: 8,
-//     name: "Basic Tee",
-//     href: "#",
-//     imageSrc:
-//       "https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg",
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: "$35",
-//     color: "Black",
-//   },
-// ];
 
 const relevancias = [
   {
+    id: 0,
+    name: "Ninguno",
+  },
+  {
     id: 1,
-    name: "Relevancia 1",
+    name: "Precio ↑",
   },
   {
     id: 2,
-    name: "Relevancia 2",
+    name: "Precio ↓",
   },
   {
     id: 3,
-    name: "Relevancia 3",
+    name: "Nombre ↑",
   },
   {
     id: 4,
-    name: "Relevancia 4",
+    name: "Nombre ↓",
   },
-  {
-    id: 5,
-    name: "Relevancia 5",
-  },
-  {
-    id: 6,
-    name: "Relevancia 6",
-  },
-  {
-    id: 7,
-    name: "Relevancia 7",
-  },
-  {
-    id: 8,
-    name: "Relevancia 8",
-  },
-  {
-    id: 9,
-    name: "Relevancia 9",
-  },
-  {
-    id: 10,
-    name: "Relevancia 10",
-  },
+  
 ];
 
 export default function ProductList() {
-  const [ordernarPor, setOrdernarPor] = useState(relevancias);
+  const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [filtrosAplicados, setFiltrosAplicados] = useState([]);
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
+
+  const handleApplyFilters = (filtrosSeleccionados) => {
+    setFiltrosAplicados(filtrosSeleccionados);
+  };
+
+  const handleOrdenar = (event) =>{
+    const nuevoOrden = parseInt(event.target.value);
+    setOrdernarPor(nuevoOrden);
+    setFiltrosAplicados((prevFiltrosAplicados) => ({
+      ...prevFiltrosAplicados,
+      orden: nuevoOrden
+    }));
+  }
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -160,6 +71,10 @@ export default function ProductList() {
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
   }, []);
+
+  useEffect(() => {
+    dispatch(getProductsByFilters(filtrosAplicados));
+  }, [ordernarPor]);
 
   return (
     <div className="bg-white">
@@ -176,7 +91,7 @@ export default function ProductList() {
           <select
             name="ordenarpor"
             className="border border-black hover:cursor-pointer   rounded px-5  focus:ring-black focus:border-black-500  bg-white py-3 pl-3 pr-10 text-left"
-            onChange={setOrdernarPor}
+            onChange={handleOrdenar}
             value={ordernarPor}
           >
             {relevancias.map((item, i) => (
@@ -214,7 +129,7 @@ export default function ProductList() {
         <PaginationControls />
       </div>
 
-      <FilterOptions isOpen={isModalOpen} onClose={handleCloseModal} />
+      <FilterOptions isOpen={isModalOpen} onClose={handleCloseModal } onApplyFilters={handleApplyFilters}/>
     </div>
   );
 }
