@@ -15,7 +15,7 @@ function FilterOptions({ isOpen, onClose }) {
 
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
-  const nombre = queryParam.get("nombre");
+  let nombre = queryParam.get("nombre");
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -31,6 +31,8 @@ function FilterOptions({ isOpen, onClose }) {
   };
   const handleReset = () => {
     setFilters({ genero: "", edad: "", talla: "", color: "" });
+
+    if (nombre === null) nombre = "";
 
     nombre !== ""
       ? dispatch(getProductsByName(nombre))

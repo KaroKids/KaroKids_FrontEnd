@@ -50,6 +50,8 @@ export const getProductsByFilters = (filters) => {
     try {
       let urlFilters = "";
 
+      if (filters.nombre === null) filters.nombre = "";
+
       for (const [key, value] of Object.entries(filters)) {
         urlFilters += `${key}=${value}&`;
       }
