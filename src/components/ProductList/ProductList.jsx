@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, getProductsByFilters, modifyVolverFunc } from "@/redux/productosActions";
+import {
+  getAllProducts,
+  getProductsByFilters,
+  modifyVolverFunc,
+} from "@/redux/productosActions";
 
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
@@ -10,7 +14,6 @@ import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { Link, useLocation } from "react-router-dom";
-
 
 const relevancias = [
   {
@@ -33,7 +36,6 @@ const relevancias = [
     id: 4,
     name: "Nombre ↓",
   },
-  
 ];
 
 export default function ProductList() {
@@ -49,14 +51,14 @@ export default function ProductList() {
     setFiltrosAplicados(filtrosSeleccionados);
   };
 
-  const handleOrdenar = (event) =>{
+  const handleOrdenar = (event) => {
     const nuevoOrden = parseInt(event.target.value);
     setOrdernarPor(nuevoOrden);
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
-      orden: nuevoOrden
+      orden: nuevoOrden,
     }));
-  }
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -67,13 +69,16 @@ export default function ProductList() {
   };
 
   useEffect(() => {
+    console.log(productos);
     productos.volver === 0
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
   }, []);
 
   useEffect(() => {
-    dispatch(getProductsByFilters(filtrosAplicados));
+    if (ordernarPor !== 0) {
+      dispatch(getProductsByFilters(filtrosAplicados));
+    }
   }, [ordernarPor]);
 
   return (
@@ -129,7 +134,11 @@ export default function ProductList() {
         <PaginationControls />
       </div>
 
-      <FilterOptions isOpen={isModalOpen} onClose={handleCloseModal } onApplyFilters={handleApplyFilters}/>
+      <FilterOptions
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onApplyFilters={handleApplyFilters}
+      />
     </div>
   );
 }
