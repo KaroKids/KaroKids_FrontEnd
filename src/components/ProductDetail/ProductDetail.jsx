@@ -8,8 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import { useMediaQuery } from "@react-hook/media-query";
+import { Card } from "@/components/ui/card";
 import ServicesDetail from "../Services/ServicesDetail";
 import Carrousel from "../Home/Carrousel";
 import { Link, useParams } from "react-router-dom";
