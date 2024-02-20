@@ -1,5 +1,5 @@
 import axios from "axios";
-import { allProducts, productsByName } from "./productosSlice";
+import { allProducts, productsByName, getProdById } from "./productosSlice";
 
 // const URL_PRODUCT = "http://localhost:3001/productos";
 const URL_PRODUCT = "https://karokids.onrender.com/productos";
@@ -32,8 +32,7 @@ export const getProductsById = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}/${id}`);
-
-      return dispatch(productsByName(data));
+      return dispatch(getProdById(data));
     } catch (error) {
       console.error(error);
     }
