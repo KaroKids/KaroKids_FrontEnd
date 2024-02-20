@@ -58,12 +58,24 @@ export default function PaginationControls({ filtros }) {
   };
   const handleAtras = () => {
     dispatch(
-      getProductsByFilters({ ...filtros, paginaActual: paginaActual - 1 })
+      getProductsByFilters({
+        ...filtros,
+        paginaActual:
+          Number(paginaActual) === 1
+            ? Number(paginaActual)
+            : Number(paginaActual) - 1,
+      })
     );
   };
   const handleAdelante = () => {
     dispatch(
-      getProductsByFilters({ ...filtros, paginaActual: paginaActual + 1 })
+      getProductsByFilters({
+        ...filtros,
+        paginaActual:
+          Number(paginaActual) < totalPaginas
+            ? Number(paginaActual) + 1
+            : Number(paginaActual),
+      })
     );
   };
 
