@@ -64,6 +64,7 @@ export const getProductsByFilters = (filters) => {
     }
   };
 };
+
 export const modifyVolverFunc = (valor) => (dispatch) => {
   dispatch(modifyVolver(valor));
 };

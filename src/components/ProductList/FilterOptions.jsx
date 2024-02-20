@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
@@ -9,9 +9,14 @@ import {
 
 import { useLocation } from "react-router-dom";
 
-function FilterOptions({ isOpen, onClose }) {
+function FilterOptions({ isOpen, onClose, onApplyFilters }) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
+
+  const handleApplyFilters = () => {
+    const filtrosSeleccionados = filters;
+    onApplyFilters(filtrosSeleccionados);
+  };
 
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
@@ -24,7 +29,6 @@ function FilterOptions({ isOpen, onClose }) {
       nombre,
       [name]: value,
     }));
-    console.log(filters);
   };
   const handleFilterSubmit = () => {
     dispatch(getProductsByFilters(filters));
@@ -33,11 +37,14 @@ function FilterOptions({ isOpen, onClose }) {
     setFilters({ genero: "", edad: "", talla: "", color: "" });
 
     if (nombre === null) nombre = "";
-
     nombre !== ""
       ? dispatch(getProductsByName(nombre))
       : dispatch(getAllProducts());
   };
+
+  useEffect(() => {
+    handleApplyFilters(filters);
+  }, [filters]);
 
   return (
     <div

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, modifyVolverFunc } from "@/redux/productosActions";
+import {
+  getAllProducts,
+  getProductsByFilters,
+  modifyVolverFunc,
+} from "@/redux/productosActions";
 
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
@@ -9,57 +13,52 @@ import filterIcon from "/assets/images/filterIcon.svg";
 import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const relevancias = [
   {
+    id: 0,
+    name: "Ninguno",
+  },
+  {
     id: 1,
-    name: "Relevancia 1",
+    name: "Precio ↑",
   },
   {
     id: 2,
-    name: "Relevancia 2",
+    name: "Precio ↓",
   },
   {
     id: 3,
-    name: "Relevancia 3",
+    name: "Nombre ↑",
   },
   {
     id: 4,
-    name: "Relevancia 4",
-  },
-  {
-    id: 5,
-    name: "Relevancia 5",
-  },
-  {
-    id: 6,
-    name: "Relevancia 6",
-  },
-  {
-    id: 7,
-    name: "Relevancia 7",
-  },
-  {
-    id: 8,
-    name: "Relevancia 8",
-  },
-  {
-    id: 9,
-    name: "Relevancia 9",
-  },
-  {
-    id: 10,
-    name: "Relevancia 10",
+    name: "Nombre ↓",
   },
 ];
 
 export default function ProductList() {
-  const [ordernarPor, setOrdernarPor] = useState(false);
+  const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [filtrosAplicados, setFiltrosAplicados] = useState([]);
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
+
+  const handleApplyFilters = (filtrosSeleccionados) => {
+    setFiltrosAplicados(filtrosSeleccionados);
+  };
+
+  const handleOrdenar = (event) => {
+    const nuevoOrden = parseInt(event.target.value);
+    setOrdernarPor(nuevoOrden);
+    setFiltrosAplicados((prevFiltrosAplicados) => ({
+      ...prevFiltrosAplicados,
+      orden: nuevoOrden,
+    }));
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -74,6 +73,10 @@ export default function ProductList() {
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
   }, []);
+
+  useEffect(() => {
+    dispatch(getProductsByFilters(filtrosAplicados));
+  }, [ordernarPor]);
 
   return (
     <div className="bg-white">
@@ -90,7 +93,7 @@ export default function ProductList() {
           <select
             name="ordenarpor"
             className="border border-black hover:cursor-pointer   rounded px-5  focus:ring-black focus:border-black-500  bg-white py-3 pl-3 pr-10 text-left"
-            onChange={setOrdernarPor}
+            onChange={handleOrdenar}
             value={ordernarPor}
           >
             {relevancias.map((item, i) => (
@@ -127,7 +130,11 @@ export default function ProductList() {
         <PaginationControls />
       </div>
 
-      <FilterOptions isOpen={isModalOpen} onClose={handleCloseModal} />
+      <FilterOptions
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onApplyFilters={handleApplyFilters}
+      />
     </div>
   );
 }
