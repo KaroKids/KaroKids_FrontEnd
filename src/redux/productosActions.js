@@ -8,8 +8,8 @@ import {
 	getProdById,
 } from "./productosSlice";
 
-const URL_PRODUCT = "http://localhost:3001/productos";
-// const URL_PRODUCT = "https://karokids.onrender.com/productos";
+// const URL_PRODUCT = "http://localhost:3001/productos";
+const URL_PRODUCT = "https://karokids.onrender.com/productos";
 
 export const getAllProducts = () => {
 	return async (dispatch) => {
