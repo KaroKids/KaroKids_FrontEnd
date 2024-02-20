@@ -1,12 +1,14 @@
 import { useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavbarMobile = () => {
   const [openHamMenu, setOpenHamMenu] = useState(false);
   const showMenu = () => {
     setOpenHamMenu(!openHamMenu);
   };
+
+  const { pathname } = useLocation();
 
   return (
     <nav className="py-2 fixed z-10 top-0 bg-white shadow-md shadow-gray-300 md:hidden">
@@ -23,9 +25,11 @@ const NavbarMobile = () => {
         <li className="text-sky-500 font-medium pl-4">
           <a href="/create">AddProduct</a>
         </li>
-        <li>
-          <SearchBar />
-        </li>
+        {pathname === "/productos" && (
+          <li>
+            <SearchBar />
+          </li>
+        )}
         <li>
           <img
             src="/assets/navbar-icons/cart.svg"

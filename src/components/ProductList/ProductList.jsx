@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "@/redux/productosActions";
+import { getAllProducts, modifyVolverFunc } from "@/redux/productosActions";
 
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
@@ -156,7 +156,9 @@ export default function ProductList() {
   };
 
   useEffect(() => {
-    if (productos) dispatch(getAllProducts());
+    productos.volver === 0
+      ? dispatch(getAllProducts())
+      : dispatch(modifyVolverFunc(0));
   }, []);
 
   return (
