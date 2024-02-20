@@ -1,5 +1,10 @@
 import axios from "axios";
-import { allProducts, productsByName } from "./productosSlice";
+import {
+  allProducts,
+  productsByName,
+  productsByFilters,
+  modifyVolver,
+} from "./productosSlice";
 
 // const URL_PRODUCT = "http://localhost:3001/productos";
 const URL_PRODUCT = "https://karokids.onrender.com/productos";
@@ -38,4 +43,24 @@ export const getProductsById = (id) => {
       console.error(error);
     }
   };
+};
+export const getProductsByFilters = (filters) => {
+  return async (dispatch) => {
+    try {
+      let urlFilters = "";
+
+      for (const [key, value] of Object.entries(filters)) {
+        urlFilters += `${key}=${value}&`;
+      }
+
+      const { data } = await axios.get(`${URL_PRODUCT}?${urlFilters}`);
+      const { elementosPaginados } = data;
+      return dispatch(productsByFilters(elementosPaginados));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+export const modifyVolverFunc = (valor) => (dispatch) => {
+  dispatch(modifyVolver(valor));
 };

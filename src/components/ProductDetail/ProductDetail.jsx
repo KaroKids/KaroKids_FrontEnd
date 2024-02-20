@@ -13,6 +13,8 @@ import { useMediaQuery } from "@react-hook/media-query";
 import ServicesDetail from "../Services/ServicesDetail";
 import Carrousel from "../Home/Carrousel";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { modifyVolverFunc } from "@/redux/productosActions";
 
 const ProductDetail = () => {
   const [producto, setProducto] = useState("");
@@ -20,6 +22,9 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [isZoomed, setIsZoomed] = useState(false);
+  const dispatch = useDispatch();
+
+  dispatch(modifyVolverFunc(1));
 
   const colors = [
     { name: "Gris", value: "gray" },

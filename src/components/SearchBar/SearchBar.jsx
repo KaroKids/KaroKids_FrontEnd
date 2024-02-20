@@ -3,20 +3,36 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getProductsByName } from "@/redux/productosActions";
 
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const SearchBar = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
   const handleSearch = () => {
+    const queryParam = { nombre: query };
+
+    const nuevaUbicacion = {
+      ...location,
+      search: "",
+    };
+
+    console.log(queryParam);
+
+    queryParam.nombre === ""
+      ? navigate(nuevaUbicacion)
+      : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
+
     dispatch(getProductsByName(query));
+    setQuery("");
   };
 
   useEffect(() => {
@@ -37,6 +53,7 @@ const SearchBar = () => {
         type="text"
         placeholder="Buzo..."
         className="md:w-14 lg:w-20 xl:w-32"
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       {pathname !== "/productos" ? (
