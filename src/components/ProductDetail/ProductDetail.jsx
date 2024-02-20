@@ -68,15 +68,13 @@ const ProductDetail = () => {
                   <CarouselItem key={index}>
                     <div>
                       <Card>
-                        <productCard className="py-0 px-0">
-                          <img
-                            src={producto.imagen}
-                            alt={producto.nombre}
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
-                            className="flex gap-10"
-                          />
-                        </productCard>
+                        <img
+                          src={producto.imagen}
+                          alt={producto.nombre}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                          className="flex gap-10"
+                        />
                       </Card>
                     </div>
                   </CarouselItem>

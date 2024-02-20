@@ -1,7 +1,9 @@
 import SearchBar from "../SearchBar/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const NavbarDesktop = () => {
+  const { pathname } = useLocation();
+
   return (
     <nav className="hidden h-16 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 md:fixed md:z-10 md:top-0 md:w-full">
       <ul className="flex gap-x-5 items-center flex-wrap font-medium md:max-w-[35%]">
@@ -49,9 +51,11 @@ const NavbarDesktop = () => {
         />
       </figure>
       <ul className="flex gap-2 items-center">
-        <li>
-          <SearchBar />
-        </li>
+        {pathname === "/productos" && (
+          <li>
+            <SearchBar />
+          </li>
+        )}
         <li>
           <img
             src="/assets/navbar-icons/cart-blue.svg"
