@@ -24,7 +24,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
-  
+
   dispatch(modifyVolverFunc(1));
 
   const colors = [
@@ -71,7 +71,7 @@ const ProductDetail = () => {
                 </Card>
               </div>
             </CarouselItem>
-            <CarouselItem>
+            {/* <CarouselItem>
               <div className="xl:max-w-[598px] xl:max-h-[598px] ">
                 <Card>
                   <img
@@ -96,7 +96,7 @@ const ProductDetail = () => {
                   />
                 </Card>
               </div>
-            </CarouselItem>
+            </CarouselItem> */}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
