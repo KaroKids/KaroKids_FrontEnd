@@ -15,6 +15,7 @@ import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { Link } from "react-router-dom";
 
+
 const relevancias = [
   {
     id: 0,
@@ -70,13 +71,16 @@ export default function ProductList() {
   };
 
   useEffect(() => {
+    console.log(productos);
     productos.volver === 0
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
   }, []);
 
   useEffect(() => {
-    dispatch(getProductsByFilters(filtrosAplicados));
+    if (ordernarPor !== 0) {
+      dispatch(getProductsByFilters(filtrosAplicados));
+    }
   }, [ordernarPor]);
 
   return (
