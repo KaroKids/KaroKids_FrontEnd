@@ -14,7 +14,7 @@ import ServicesDetail from "../Services/ServicesDetail";
 import Carrousel from "../Home/Carrousel";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsById } from "@/redux/productosActions";
+import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
 
 const ProductDetail = () => {
   const [cargando, setCargando] = useState(true);
@@ -24,6 +24,8 @@ const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
+  
+  dispatch(modifyVolverFunc(1));
 
   const colors = [
     { name: "Gris", value: "gray" },
