@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -17,6 +18,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductsById } from "@/redux/productosActions";
+import { useParams } from "react-router-dom";
 
 const frameworks = [
   {
@@ -42,8 +46,18 @@ const frameworks = [
 ];
 
 export function Combobox() {
+  const product = useSelector((state) => state.productos.detail);
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+  useEffect(() => {
+    dispatch(getProductsById(id));
+  }, []);
+
+  let stock = product.stock;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -54,9 +68,7 @@ export function Combobox() {
           aria-expanded={open}
           className="w-[200px] justify-between border-gray-200 border-2"
         >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Talle"}
+          {value ? value : "Talle"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -65,22 +77,16 @@ export function Combobox() {
           <CommandInput placeholder="Buscar talle..." />
           <CommandEmpty>Talle no encontrado.</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {Object.entries(stock).map(([key, values]) => (
               <CommandItem
-                key={framework.value}
-                value={framework.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                key={key}
+                value={key}
+                onSelect={() => {
+                  setValue(key);
                   setOpen(false);
                 }}
               >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {framework.label}
+                {key}
               </CommandItem>
             ))}
           </CommandGroup>
