@@ -1,9 +1,11 @@
 import axios from "axios";
+
 import {
   allProducts,
   productsByName,
   productsByFilters,
   modifyVolver,
+  getProdById,
 } from "./productosSlice";
 
 // const URL_PRODUCT = "http://localhost:3001/productos";
@@ -37,8 +39,7 @@ export const getProductsById = (id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}/${id}`);
-
-      return dispatch(productsByName(data));
+      return dispatch(getProdById(data));
     } catch (error) {
       console.error(error);
     }

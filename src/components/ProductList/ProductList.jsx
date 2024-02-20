@@ -198,10 +198,10 @@ export default function ProductList() {
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {productos &&
             productos.productos.map((product, i) => (
-              <Link to={`/producto/${product.product_id}`}>
+              <Link to={`/producto/${product.producto_id}`}>
                 <ProductCard
-                  key={i}
-                  id={product.product_id}
+                  key={product.producto_id}
+                  id={product.producto_id}
                   imageSrc={product.imagen_principal}
                   imageAlt={product.nombre}
                   name={product.nombre}

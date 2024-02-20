@@ -14,11 +14,13 @@ const NavbarMobile = () => {
     <nav className="py-2 fixed z-10 top-0 bg-white shadow-md shadow-gray-300 md:hidden">
       <ul className="w-screen max-h-[50px] px-2 flex items-center gap-4">
         <li className="mr-auto">
-          <img
-            src="/assets/images/logo-karokids.png"
-            alt="Logo de KaroKids"
-            className="w-[187px]"
-          />
+          <Link to="/">
+            <img
+              src="/assets/images/logo-karokids.png"
+              alt="Logo de KaroKids"
+              className="w-[187px]"
+            />
+          </Link>
         </li>
         <li className="text-sky-500 font-medium pl-4">
           <a href="/create">AddProduct</a>

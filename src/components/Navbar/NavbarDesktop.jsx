@@ -44,11 +44,13 @@ const NavbarDesktop = () => {
         </li>
       </ul>
       <figure className="mx-auto">
-        <img
-          src="/assets/images/logo-karokids.png"
-          alt="Logo de KaroKids"
-          className="w-[184px] h-[45px]"
-        />
+        <Link to="/">
+          <img
+            src="/assets/images/logo-karokids.png"
+            alt="Logo de KaroKids"
+            className="w-[184px] h-[45px]"
+          />
+        </Link>
       </figure>
       <ul className="flex gap-2 items-center">
         {pathname === "/productos" && (
