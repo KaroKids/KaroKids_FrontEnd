@@ -15,9 +15,15 @@ export const getAllProducts = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}`);
-      const { elementosPaginados } = data;
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
 
-      return dispatch(allProducts(elementosPaginados));
+      return dispatch(
+        allProducts({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -27,9 +33,15 @@ export const getProductsByName = (nombre) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}?nombre=${nombre}`);
-      const { elementosPaginados } = data;
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
 
-      return dispatch(productsByName(elementosPaginados));
+      return dispatch(
+        productsByName({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -57,8 +69,15 @@ export const getProductsByFilters = (filters) => {
       }
 
       const { data } = await axios.get(`${URL_PRODUCT}?${urlFilters}`);
-      const { elementosPaginados } = data;
-      return dispatch(productsByFilters(elementosPaginados));
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+
+      return dispatch(
+        productsByFilters({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }

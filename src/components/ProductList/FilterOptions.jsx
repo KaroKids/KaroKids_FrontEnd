@@ -80,7 +80,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.genero}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               GENEROS
             </option>
             <option value="chico">CHICO</option>
@@ -93,7 +93,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.talla}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               TALLAS
             </option>
             <option value="XS">XS</option>
@@ -109,7 +109,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.color}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               COLOR
             </option>
             <option value="red">ROJO</option>
@@ -123,7 +123,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.edad}
           >
-            <option value="0">EDAD</option>
+            <option value="">EDAD</option>
             <option value="recien-nacido">RECIEN NACIDO</option>
             <option value="bebe">BEBÉ</option>
             <option value="infantil">INFANTIL</option>
