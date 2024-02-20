@@ -23,6 +23,8 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
 
+  dispatch(modifyVolverFunc(1));
+
   const colors = [
     { name: "Gris", value: "gray" },
     { name: "Negro", value: "black" },
