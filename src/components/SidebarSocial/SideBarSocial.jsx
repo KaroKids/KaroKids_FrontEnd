@@ -26,17 +26,6 @@ const SideBarSocial = () => {
 				</li>
 				<li>
 					<a
-						href="https://www.youtube.com/@karokidsmodainfantil4675"
-						target="_blanck"
-						className="justify-center flex h-10 sm:h-16 w-10 sm:w-12 text-white bg-red-600">
-						<img
-							src="/assets/social_media/youtube-color.svg"
-							className="w-12 p-2"></img>
-						<span className="hidden font-bold uppercase">Youtube</span>
-					</a>
-				</li>
-				<li>
-					<a
 						href="https://wa.link/fdh8yl"
 						target="_blanck"
 						className="justify-center flex h-10 sm:h-16 w-10 sm:w-12 text-white bg-green-600 rounded-bl-lg">

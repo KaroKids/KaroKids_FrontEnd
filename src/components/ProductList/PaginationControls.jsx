@@ -54,6 +54,7 @@ export default function PaginationControls({ filtros }) {
 	};
 	const handlePagination = ({ target }) => {
 		dispatch(getProductsByFilters({ ...filtros, paginaActual: target.value }));
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 	const handleAtras = () => {
 		dispatch(
@@ -82,25 +83,27 @@ export default function PaginationControls({ filtros }) {
 
 	return (
 		<div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-			<div className="flex flex-1 justify-between sm:hidden">
+			<div className="flex flex-1 justify-between sm:hidden items-center">
 				<button
 					onClick={handleAtras}
 					className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-					Previous
+					Anterior
 				</button>
+				<p>
+					Pagina {paginaActual} de {totalPaginas}
+				</p>
 				<button
 					onClick={handleAdelante}
 					href="#"
 					className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-					Next
+					Siguiente
 				</button>
 			</div>
 
 			<div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
 				<div>
-					<p className="text-sm text-gray-700">
-						Mostrando <span className="font-medium">8</span> de{" "}
-						<span className="font-medium">??</span> resultados
+					<p>
+						Pagina {paginaActual} de {totalPaginas}
 					</p>
 				</div>
 				<div>
@@ -110,14 +113,14 @@ export default function PaginationControls({ filtros }) {
 						<button
 							onClick={handleAtras}
 							className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-							<span className="sr-only">Previous</span>
+							<span className="sr-only">Anterior</span>
 							<ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
 						</button>
 						{renderPaginationsButtons()}
 						<button
 							onClick={handleAdelante}
 							className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
-							<span className="sr-only">Next</span>
+							<span className="sr-only">Siguiente</span>
 							<ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
 						</button>
 					</nav>
