@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
@@ -9,13 +9,18 @@ import {
 
 import { useLocation } from "react-router-dom";
 
-function FilterOptions({ isOpen, onClose }) {
+function FilterOptions({ isOpen, onClose, onApplyFilters }) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
+  const handleApplyFilters = () => {
+    const filtrosSeleccionados = filters;
+    onApplyFilters(filtrosSeleccionados);
+  };
+
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
-  const nombre = queryParam.get("nombre");
+  let nombre = queryParam.get("nombre");
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -24,7 +29,6 @@ function FilterOptions({ isOpen, onClose }) {
       nombre,
       [name]: value,
     }));
-    console.log(filters);
   };
   const handleFilterSubmit = () => {
     dispatch(getProductsByFilters(filters));
@@ -32,10 +36,15 @@ function FilterOptions({ isOpen, onClose }) {
   const handleReset = () => {
     setFilters({ genero: "", edad: "", talla: "", color: "" });
 
+    if (nombre === null) nombre = "";
     nombre !== ""
       ? dispatch(getProductsByName(nombre))
       : dispatch(getAllProducts());
   };
+
+  useEffect(() => {
+    handleApplyFilters(filters);
+  }, [filters]);
 
   return (
     <div
@@ -71,7 +80,7 @@ function FilterOptions({ isOpen, onClose }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.genero}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               GENEROS
             </option>
             <option value="chico">CHICO</option>
@@ -84,7 +93,7 @@ function FilterOptions({ isOpen, onClose }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.talla}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               TALLAS
             </option>
             <option value="XS">XS</option>
@@ -100,7 +109,7 @@ function FilterOptions({ isOpen, onClose }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.color}
           >
-            <option value="0" defaultValue>
+            <option value="" defaultValue>
               COLOR
             </option>
             <option value="red">ROJO</option>
@@ -114,7 +123,7 @@ function FilterOptions({ isOpen, onClose }) {
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.edad}
           >
-            <option value="0">EDAD</option>
+            <option value="">EDAD</option>
             <option value="recien-nacido">RECIEN NACIDO</option>
             <option value="bebe">BEBÉ</option>
             <option value="infantil">INFANTIL</option>

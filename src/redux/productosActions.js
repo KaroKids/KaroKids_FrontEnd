@@ -15,9 +15,15 @@ export const getAllProducts = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}`);
-      const { elementosPaginados } = data;
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
 
-      return dispatch(allProducts(elementosPaginados));
+      return dispatch(
+        allProducts({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -27,9 +33,15 @@ export const getProductsByName = (nombre) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}?nombre=${nombre}`);
-      const { elementosPaginados } = data;
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
 
-      return dispatch(productsByName(elementosPaginados));
+      return dispatch(
+        productsByName({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -50,13 +62,22 @@ export const getProductsByFilters = (filters) => {
     try {
       let urlFilters = "";
 
+      if (filters.nombre === null) filters.nombre = "";
+
       for (const [key, value] of Object.entries(filters)) {
         urlFilters += `${key}=${value}&`;
       }
 
       const { data } = await axios.get(`${URL_PRODUCT}?${urlFilters}`);
-      const { elementosPaginados } = data;
-      return dispatch(productsByFilters(elementosPaginados));
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+
+      return dispatch(
+        productsByFilters({
+          productos: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -74,6 +95,7 @@ export const postProduct = (data) => {
     }
   };
 };
+
 export const modifyVolverFunc = (valor) => (dispatch) => {
   dispatch(modifyVolver(valor));
 };

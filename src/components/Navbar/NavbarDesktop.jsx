@@ -12,35 +12,35 @@ const NavbarDesktop = () => {
         </Link>
         <li className="flex gap-1 items-center">
           Recien nacido{" "}
-          <img
+          {/* <img
             src="/assets/navbar-icons/arrow-down.svg"
             alt="Logo de busqueda"
             className="pt-1"
-          />
+          /> */}
         </li>
         <li className="flex gap-1">
           Bebé{" "}
-          <img
+          {/* <img
             src="/assets/navbar-icons/arrow-down.svg"
             alt="Logo de busqueda"
             className="pt-1"
-          />
+          /> */}
         </li>
         <li className="flex gap-1">
           Infantil{" "}
-          <img
+          {/* <img
             src="/assets/navbar-icons/arrow-down.svg"
             alt="Logo de busqueda"
             className="pt-1"
-          />
+          /> */}
         </li>
         <li className="flex gap-1">
           Junior{" "}
-          <img
+          {/* <img
             src="/assets/navbar-icons/arrow-down.svg"
             alt="Logo de busqueda"
             className="pt-1"
-          />
+          /> */}
         </li>
       </ul>
       <figure className="mx-auto">
