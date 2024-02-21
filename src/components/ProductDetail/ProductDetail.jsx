@@ -47,16 +47,17 @@ const ProductDetail = () => {
 		dispatch(getProductsById(id));
 	}, []);
 
-	const priceArray = product.precio.toString().split("");
-
-	if (priceArray.length > 3) {
+	const priceArray = product.precio
+		? product.precio.toString().split("")
+		: product.precio;
+	if (priceArray?.length > 3) {
 		let aux = priceArray.pop();
 		let aux2 = priceArray.pop();
 		let aux3 = priceArray.pop();
 		priceArray.push(".", aux3, aux2, aux);
 	}
 
-	let fixedPrice = priceArray.join("");
+	let fixedPrice = product.precio ? priceArray.join("") : product.precio;
 
 	return (
 		<div className=" py-24 px-10 text-center">
