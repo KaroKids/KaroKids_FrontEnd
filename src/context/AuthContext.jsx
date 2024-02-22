@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
 				password
 			);
 		} catch (error) {
-			console.log(error);
+			alert("Ya existe un usuario asociado a este correo");
 		}
 	};
 
@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
 		try {
 			const response = await signInWithEmailAndPassword(auth, email, password);
 		} catch (error) {
-			console.log(error);
+			alert("No existe ningun usuario asociado a este correo");
 		}
 	};
 
