@@ -43,6 +43,7 @@ const validation = (inputs) => {
   }
   if (!inputs.stock) {
     errors.stock = "Stock, talla y cantidad es requerido";
+    return errors;
   }
 
   // if (!inputs.color) {

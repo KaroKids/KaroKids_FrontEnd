@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import {  useState } from "react";
 import validation from "../../utils/validation";
 import { Link } from "react-router-dom";
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { postProduct } from "@/redux/productosActions";
 import { useDispatch } from "react-redux";
+import UploadImage from "../UploadImage/UploadImage";
+ 
 
 const CreateProduct = () => {
+  
   const dispatch = useDispatch();
   const [data, setData] = useState({
     nombre: "",
@@ -120,7 +122,7 @@ const CreateProduct = () => {
   };
 
 return (
-  <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8 ">
+  <div className="  px-6 py-24  sm:py-32 lg:px-8   ">
   <div
     className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
     aria-hidden="true"
@@ -188,7 +190,7 @@ return (
             </div>
           </div>     
       </div>
-
+            <UploadImage />
           <div className="w-full   mt-5"> 
              <label htmlFor="imagen_principal" className="block text-sm mb-2 font-medium leading-6 text-gray-900">
               Imagen Principal
@@ -410,7 +412,7 @@ return (
           <button
             type="button"
             onClick={handleInputStock}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition hover:scale-110 text-blue-500 bg-white-600 ring-1  focus:outline-none focus:ring-2 focus:ring-offset-2 hover:text-white hover:bg-blue-500 focus:ring-blue-500"
           >
             Agregar
           </button>
@@ -420,30 +422,13 @@ return (
   <label htmlFor="stock" className="block text-sm mb-2 font-medium leading-6 text-gray-900">Items agregados:</label>
   {data.stock.map((item, index) => (
     <div key={index}>
-      <span>Tamaño: {item.tamaño}, Color: {item.color}, Cantidad: {item.cantidad}</span>
+      <span>Tamaño: {item.size}, Color: {item.color}, Cantidad: {item.cantidad}</span>
     </div>
   ))}
 </div>
 
 
-          {/* <div className="w-full mt-5 ">
-            <label htmlFor="stock" className="block text-sm mb-2 font-medium leading-6 text-gray-900">Stock:</label>
-            <textarea
-            id="stock"
-            name="stock"
-            value={data.stock}
-            onChange={handleChange}
-            placeholder="Ingresa el stock para cada tamaño y color..."
-            className="w-full h-32 px-3 py-2 text-gray-900 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-          ></textarea>
-            <div className="flex flex-row justify-start items-center border-none mx-1">
-              {errors.stock && (
-                <p className="mt-1  text-left text-small text-red-500">
-                  {errors.stock}
-                </p>
-              )}
-            </div>
-          </div> */}
+        
      
           <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
             <button
@@ -474,3 +459,6 @@ return (
 }
 
 export default CreateProduct;
+
+
+ 
