@@ -1,21 +1,21 @@
 import { auth } from "../firebase/firebase.config.js";
 import { createContext, useContext } from "react";
 import {
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
-	GoogleAuthProvider,
-	signInWithPopup,
-	signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
 } from "firebase/auth";
 
 export const authContext = createContext();
 
 export const useAuth = () => {
-	const context = useContext(authContext);
-	if (!context) {
-		console.log("error creating auth context");
-	}
-	return context;
+  const context = useContext(authContext);
+  if (!context) {
+    console.log("error creating auth context");
+  }
+  return context;
 };
 
 export function AuthProvider({ children }) {
@@ -39,25 +39,25 @@ export function AuthProvider({ children }) {
 		}
 	};
 
-	const loginWithGoogle = async () => {
-		try {
-			const responseGoogle = new GoogleAuthProvider();
-			return await signInWithPopup(auth, responseGoogle);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const loginWithGoogle = async () => {
+    try {
+      const responseGoogle = new GoogleAuthProvider();
+      return await signInWithPopup(auth, responseGoogle);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-	const logout = async () => {
-		try {
-			const responseOut = signOut();
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	return (
-		<authContext.Provider value={{ register, login, loginWithGoogle, logout }}>
-			{children}
-		</authContext.Provider>
-	);
+  const logout = async () => {
+    try {
+      const responseOut = signOut();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return (
+    <authContext.Provider value={{ register, login, loginWithGoogle, logout }}>
+      {children}
+    </authContext.Provider>
+  );
 }
