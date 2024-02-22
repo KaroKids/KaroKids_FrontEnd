@@ -84,6 +84,18 @@ export const getProductsByFilters = (filters) => {
   };
 };
 
+export const postProduct = (data) => {
+  return async (dispatch) => {
+    try {
+      const  response  = await axios.post(`${URL_PRODUCT}`,data);
+       console.log(response);
+      //return dispatch(getProdById(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const modifyVolverFunc = (valor) => (dispatch) => {
   dispatch(modifyVolver(valor));
 };
