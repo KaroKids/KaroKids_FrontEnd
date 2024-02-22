@@ -58,7 +58,7 @@ const FooterBody = () => {
 				</section>
 				<FooterMap />
 			</section>
-			<section className="grid sm:hidden grid-cols-1 sm:grid-cols-2  md:grid-cols-4 lg:auto-cols-auto gap-8 pt-5">
+			<section className="grid sm:hidden grid-cols-1 sm:grid-cols-2  md:grid-cols-4 lg:auto-cols-auto gap-2">
 				<FooterMap />
 				<section className="mb-8 md:mb-0">
 					<h5 className="mb-4 text-lg font-bold">Enlaces</h5>
