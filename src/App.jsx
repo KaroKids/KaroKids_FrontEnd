@@ -9,30 +9,31 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import CreateProduct from "./components/CreateProduct/CreateProduct";
 import Dashboard from "./components/Admin/Dashboard";
 import Login from "./components/Auth/Login";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  const { pathname } = useLocation();
+	const { pathname } = useLocation();
 
-  return (
+	return (
+		<AuthProvider>
+			<main className="min-h-screen font-montserrat">
+				{pathname !== "/create" &&
+					pathname !== "/admin" &&
+					pathname !== "/login" && <Header />}
 
-    
-    <main className="min-h-screen font-montserrat">
-    
-      {pathname !== "/create" &&  pathname !=="/admin" &&  pathname!=="/login" && <Header />}
-
-     
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/producto/:id" element={<ProductDetail />} />
-        <Route path="/productos" element={<ProductList />} />
-        <Route path="/create" element={<CreateProduct />} />
-        <Route path="/admin" element={<Dashboard/>}/>
-        <Route path="/login" element={<Login />}/>
-      </Routes>
-      {pathname !== "/create" && <SideBarSocial />}
-      {pathname !== "/create" && pathname!=="/login" && <Footer />}
-    </main>
-  );
+				<Routes>
+					<Route path="/" element={<Landing />} />
+					<Route path="/producto/:id" element={<ProductDetail />} />
+					<Route path="/productos" element={<ProductList />} />
+					<Route path="/create" element={<CreateProduct />} />
+					<Route path="/admin" element={<Dashboard />} />
+					<Route path="/login" element={<Login />} />
+				</Routes>
+				{pathname !== "/create" && <SideBarSocial />}
+				{pathname !== "/create" && pathname !== "/login" && <Footer />}
+			</main>
+		</AuthProvider>
+	);
 }
 
 export default App;
