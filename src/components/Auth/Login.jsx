@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import Register from "./Register";
 
 /*
   This example requires some changes to your config:
@@ -21,6 +22,14 @@ export default function Login({ isOpen, onClose }) {
   const auth = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -37,8 +46,8 @@ export default function Login({ isOpen, onClose }) {
       <div
         className={`fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 z-[20] bg-opacity-50 ${isOpen ? "" : "hidden"}`}
       >
-        <div className="flex justify-end  min-w-full min-h-10">
-          <div className=" justify-center items-center bg-white p-8 rounded-lg w-full  h-[580px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
+        <div className="flex justify-end  min-w-full min-h-10 ">
+          <div className="  justify-center items-center bg-white p-8 rounded-lg w-full  h-[580px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-gray-800 focus:outline-none   "
@@ -134,14 +143,15 @@ export default function Login({ isOpen, onClose }) {
             </form>
             <div className="flex justify-center">
               <span
-                onClick={onClose}
-                className="text-center mt-10 text-sm text-gray-500"
+                onClick={handleOpenModal}
+                className="text-center mt-10 text-sm text-gray-500 cursor-pointer"
               >
                 No se ha registrado aún?
               </span>
             </div>
           </div>
         </div>
+        <Register isOpen={isModalOpen} onClose={handleCloseModal} />
       </div>
     </>
   );

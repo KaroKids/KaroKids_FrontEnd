@@ -44,7 +44,7 @@ const NavbarDesktop = () => {
             <SearchBar />
           </li>
         )}
-        <li onClick={handleOpenModal}>
+        <li onClick={handleOpenModal} className="cursor-pointer">
           <img
             src="/assets/navbar-icons/user.svg"
             alt="Logo usuarios"
