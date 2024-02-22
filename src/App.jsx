@@ -10,6 +10,7 @@ import CreateProduct from "./components/CreateProduct/CreateProduct";
 import Dashboard from "./components/Admin/Dashboard";
 import Login from "./components/Auth/Login";
 import { AuthProvider } from "./context/AuthContext";
+import Register from "./components/Auth/Register";
 
 function App() {
 	const { pathname } = useLocation();
@@ -28,6 +29,7 @@ function App() {
 					<Route path="/create" element={<CreateProduct />} />
 					<Route path="/admin" element={<Dashboard />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
 				</Routes>
 				{pathname !== "/create" && <SideBarSocial />}
 				{pathname !== "/create" && pathname !== "/login" && <Footer />}

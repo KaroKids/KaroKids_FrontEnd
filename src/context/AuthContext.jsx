@@ -19,26 +19,25 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-  const register = async (email, password) => {
-    try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const register = async (email, password) => {
+		try {
+			const response = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+		} catch (error) {
+			alert("Ya existe un usuario asociado a este correo");
+		}
+	};
 
-  const login = async (email, password) => {
-    try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+	const login = async (email, password) => {
+		try {
+			const response = await signInWithEmailAndPassword(auth, email, password);
+		} catch (error) {
+			alert("No existe ningun usuario asociado a este correo");
+		}
+	};
 
   const loginWithGoogle = async () => {
     try {
