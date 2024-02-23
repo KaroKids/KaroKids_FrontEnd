@@ -133,6 +133,7 @@ export default function ProductList() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}
+        className={`transition-transform sm:transition-opacity duration-300 ease-in-out ${isModalOpen ? "translate-x-0 md:opacity-100" : "-translate-x-full md:opacity-0 md:pointer-events-none"}`}
       />
     </div>
   );

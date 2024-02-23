@@ -9,7 +9,7 @@ import {
 
 import { useLocation } from "react-router-dom";
 
-function FilterOptions({ isOpen, onClose, onApplyFilters }) {
+function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
@@ -48,7 +48,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters }) {
 
   return (
     <div
-      className={`fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 bg-opacity-50 z-50 ${isOpen ? "" : "hidden"}`}
+      className={`fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 bg-opacity-50 z-50 transform ${className}`}
     >
       <div className="bg-white p-8 rounded-lg w-full max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
         <div className="flex justify-between items-center mb-4">

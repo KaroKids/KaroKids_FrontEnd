@@ -30,12 +30,12 @@ const NavbarDesktop = () => {
   };
 
   return (
-    <nav className="hidden h-20 max-w-screen bg-white px-10 xl:px-54 lg:flex items-center gap-2 shadow-md shadow-gray-300 fixed z-10 top-0 w-full ">
-      <ul className="flex items-center gap-4 mr-auto flex-wrap font-medium md:w-[33%]">
+    <nav className="hidden h-20 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 fixed z-10 top-0 w-full">
+      <ul className="flex gap-x-5 items-center flex-wrap font-medium md:max-w-[35%]">
         <Link to="/">
           <li>Inicio</li>
         </Link>
-        <li className="flex  gap-2 items-center">
+        <li className="flex gap-1 items-center">
           Productos{" "}
           <img
             src="/assets/navbar-icons/arrow-down.svg"
@@ -44,7 +44,7 @@ const NavbarDesktop = () => {
           />
         </li>
       </ul>
-      <figure className="mr-auto ">
+      <figure className="mx-auto">
         <Link to="/">
           <img
             src="/assets/images/logo-karokids.png"
@@ -53,7 +53,7 @@ const NavbarDesktop = () => {
           />
         </Link>
       </figure>
-      <ul className="flex gap-5 items-center ml-auto">
+      <ul className="flex gap-5 items-center">
         {pathname === "/productos" && (
           <li>
             <SearchBar />
@@ -62,14 +62,14 @@ const NavbarDesktop = () => {
         {userName ? (
           <li
             onClick={handleOpenUser}
-            className="flex flex-row gap-x-2  items-center cursor-pointer"
+            className="flex flex-row gap-x-2 items-end cursor-pointer"
           >
             <img
               src="/assets/navbar-icons/user.svg"
               alt="Logo usuarios"
               className="w-6 h-6"
             />
-            <p className="text-sm">Hola, {userName}!</p>
+            <p className="text-sm">Hola, {userName}</p>
           </li>
         ) : (
           <li
@@ -101,7 +101,11 @@ const NavbarDesktop = () => {
         </li>
       </ul>
 
-      <Login isOpen={isModalOpen} onClose={handleCloseModal} />
+      <Login
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        className={`transition-opacity duration-300 ease-in-out ${isModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      />
       <UserModal isOpen={userModalOpen} onClose={handleCloseUser} />
     </nav>
   );

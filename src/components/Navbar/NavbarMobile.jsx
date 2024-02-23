@@ -97,7 +97,10 @@ const NavbarMobile = () => {
         </ul>
         <ul
           id="hamMenu"
-          className={`${openHamMenu ? "fixed" : "hidden"} w-screen h-screen bg-white flex flex-col items-center py-8 font-medium text-slate-400 text-2xl gap-4`}
+          className="fixed w-screen h-screen bg-white flex flex-col items-center py-8 font-medium text-slate-400 text-2xl gap-4 transition-transform duration-300 ease-out"
+          style={{
+            transform: openHamMenu ? "translateX(0)" : "translateX(-100%)",
+          }}
         >
           <Link to="/">
             <li className="text-slate-600">Inicio</li>
@@ -108,9 +111,9 @@ const NavbarMobile = () => {
           <li>Junior</li>
         </ul>
         <Login
-          className="hidden"
           isOpen={isModalOpen}
           onClose={handleCloseModal}
+          className={`transition-opacity duration-300 ease-in-out ${isModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         />
         <UserModal
           className="hidden"
