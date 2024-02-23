@@ -33,8 +33,7 @@ export default function Login({ isOpen, onClose }) {
 
 	const handleLogin = (e) => {
 		e.preventDefault();
-		auth.login(email, password);
-		onClose();
+		auth.login(email, password, onClose);
 	};
 
 	const handleGoogle = (e) => {
