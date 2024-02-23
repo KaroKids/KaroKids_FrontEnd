@@ -46,60 +46,74 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center mx-4 gap-2">
       <Input
         type="text"
         placeholder="Buzo..."
-        className="md:w-14 lg:w-20 xl:w-32"
+        className=" lg:w-20 xl:w-32"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       {pathname !== "/productos" ? (
         <Link to="/productos">
-          <Button
-            variant="searchBar"
-            type="submit"
-            className="px-2"
-            onClick={handleSearch}
-          >
-            {" "}
-            {anchoPantalla >= 768 ? (
+          {anchoPantalla >= 1024 ? (
+            <Button
+              variant="searchBar"
+              type="submit"
+              className="px-2"
+              onClick={handleSearch}
+            >
               <img
                 src="/assets/navbar-icons/search-blue.svg"
                 alt="Logo de Busqueda"
                 className="w-6 h-6"
               />
-            ) : (
+            </Button>
+          ) : (
+            <Button
+              variant="searchBar"
+              type="submit"
+              className="px-2"
+              onClick={handleSearch}
+            >
               <img
                 src="/assets/navbar-icons/search.svg"
                 alt="Logo de Busqueda"
                 className="w-6 h-6"
               />
-            )}
-          </Button>
+            </Button>
+          )}
         </Link>
       ) : (
-        <Button
-          variant="searchBar"
-          type="submit"
-          className="px-2"
-          onClick={handleSearch}
-        >
-          {" "}
-          {anchoPantalla >= 768 ? (
-            <img
-              src="/assets/navbar-icons/search-blue.svg"
-              alt="Logo de Busqueda"
-              className="w-6 h-6"
-            />
+        <>
+          {anchoPantalla >= 1024 ? (
+            <Button
+              variant="searchBar"
+              type="submit"
+              className="px-2"
+              onClick={handleSearch}
+            >
+              <img
+                src="/assets/navbar-icons/search-blue.svg"
+                alt="Logo de Busqueda"
+                className="w-6 h-6"
+              />
+            </Button>
           ) : (
-            <img
-              src="/assets/navbar-icons/search.svg"
-              alt="Logo de Busqueda"
-              className="w-6 h-6"
-            />
+            <Button
+              variant="searchBar"
+              type="submit"
+              className="px-2"
+              onClick={handleSearch}
+            >
+              <img
+                src="/assets/navbar-icons/search.svg"
+                alt="Logo de Busqueda"
+                className="w-6 h-6"
+              />
+            </Button>
           )}
-        </Button>
+        </>
       )}
     </div>
   );

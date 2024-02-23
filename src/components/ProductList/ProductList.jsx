@@ -82,10 +82,10 @@ export default function ProductList() {
   }, [ordernarPor]);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white mt-20 sm:mt-0">
       {productos && (
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="flex flex-col mb-10 font-medium ">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
+          <h2 className="flex flex-col mb-8  text-center xl:text-left  font-medium ">
             PRODUCTOS DISPONIBLES EN KAROKIDS
           </h2>
           <div className="flex flex-row gap-x-2 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
