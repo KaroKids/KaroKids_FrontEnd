@@ -67,7 +67,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
 
        
         <div className="col-span-full">
-        <label htmlFor="cover-photo" className="block text-sm font-medium mt-5 leading-6 text-gray-900">
+        <label htmlFor="imagenPrincipal" className="block text-sm font-semibold mt-5 leading-6 text-gray-900">
          Imagen Principal
         </label>
         <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -75,25 +75,25 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
           {imagenPrincipal && (
      
           
-<div className="mt-2 flex flex-wrap justify-center lg:flex-col">
-   {imagenPrincipal?.map((imageUrl, index) => (
-     <img key={index} 
-     className="h-96 w-full rounded-lg object-cover object-center"
-     src={imageUrl} 
-     alt={`Imagen ${index + 1}`}  />
-   ))}
- </div>
-    
-   
- )}
+        <div className="mt-2 flex flex-wrap justify-center lg:flex-col">
+          {imagenPrincipal?.map((imageUrl, index) => (
+            <img key={index} 
+            className="h-96 w-full rounded-lg object-cover object-center"
+            src={imageUrl} 
+            alt={`Imagen ${index + 1}`}  />
+          ))}
+        </div>
+            
+          
+        )}
           { !imagenPrincipal.length && <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />}  
             <div className="mt-4 flex justify-center text-sm leading-6 text-gray-600">
               <label
-                htmlFor="file-upload"
+                htmlFor="imagenPrincipal"
                 className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
               >
                 <span className='flex justify-center text-center'>Subir la foto</span>
-                <input id="file-upload" onChange={previewImagenPrincipal} name="file-upload" type="file" className="sr-only" />
+                <input id="imagenPrincipal" onChange={previewImagenPrincipal} name="imagenPrincipal" type="file" className="sr-only" />
               </label>
               <p className="pl-1">arrastrar o soltar</p>
             </div>
@@ -107,7 +107,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
         </div>
 
         <div className="col-span-full">
-        <label htmlFor="cover-photo" className="block text-sm font-medium mt-5 leading-6 text-gray-900">
+        <label htmlFor="imagSecundarias" className="block text-sm font-semibold mt-5 leading-6 text-gray-900">
          Imagenes Secundarias
         </label>
         <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -129,11 +129,11 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
           { !imagSecundarias.length && <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />}  
             <div className="mt-4 flex justify-center text-sm leading-6 text-gray-600">
               <label
-                htmlFor="file-upload-second"
+                htmlFor="imagSecundarias"
                 className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
               >
                 <span className='flex justify-center text-center'>Subir la foto</span>
-                <input id="file-upload-second" onChange={previewImagSecundarias} name="file-upload-second" type="file" className="sr-only" />
+                <input id="imagSecundarias" onChange={previewImagSecundarias} name="file-upload-second" type="file" className="sr-only" />
               </label>
               <p className="pl-1">arrastrar o soltar</p>
             </div>

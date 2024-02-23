@@ -38,10 +38,11 @@ const UserModal = ({ isOpen, onClose }) => {
 							</div>
 							<div className="flex flex-col gap-y-5">
 								<div>
-									<Link to="/">
+									<Link to="/usuario/panel-control">
 										<Button
 											variant="detail"
 											type="submit"
+											onClick={onClose}
 											className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm   ">
 											Mi Cuenta
 										</Button>
