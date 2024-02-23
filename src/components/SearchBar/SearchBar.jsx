@@ -17,6 +17,23 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
+  const handleInput = (e) => {
+    const updatedQuery = e;
+    setQuery(updatedQuery);
+    console.log(updatedQuery);
+    const queryParam = { nombre: updatedQuery };
+    const nuevaUbicacion = {
+      ...location,
+      search: "",
+    };
+
+    queryParam.nombre === ""
+      ? navigate(nuevaUbicacion)
+      : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
+
+    dispatch(getProductsByFilters({ nombre: updatedQuery }));
+  };
+
   const handleSearch = () => {
     const queryParam = { nombre: query };
 
@@ -30,7 +47,6 @@ const SearchBar = () => {
       : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
 
     dispatch(getProductsByFilters({ nombre: query }));
-    setQuery("");
   };
 
   useEffect(() => {
@@ -52,7 +68,7 @@ const SearchBar = () => {
         placeholder="Buzo..."
         className=" lg:w-20 xl:w-32"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => handleInput(e.target.value)}
       />
       {pathname !== "/productos" ? (
         <Link to="/productos">
