@@ -26,16 +26,18 @@ const CreateProduct = () => {
     nombre: "",
     descripcion: "",
     imagen_principal: "",
-    imagenes_secundarias: "",
+    imagenes_secundarias: [],
     video: "",
     precio: "",
     edad: "",
     genero: "",
     destacado: false,
     inactivo: false,
-    stock:[],
+    stock:{},
     
   });
+
+  
 
   const [newStock, setNewStock] = useState({
     size: '',
@@ -45,23 +47,31 @@ const CreateProduct = () => {
   const handleChange = (e) => {
     const property = e.target.name;
     const value = e.target.value;
-
+  
+   // e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    
     // Verificar si el campo es 'imagenes_secundarias'
-  if (property === 'imagenes_secundarias') {
-    // Obtener el valor actual de 'imagenes_secundarias'
-    let updatedImages = [...data.imagenes_secundarias];
-    // Agregar la nueva URL al array
-    updatedImages.push(value);
-    // Actualizar el estado
-    setData({ ...data, [property]: updatedImages });
-  } else {
-    // Si no es 'imagenes_secundarias', actualizar el estado normalmente
-    setData({ ...data, [property]: value });
-  }
-
-   // setData({ ...data, [property]: value });
+    if (property === 'imagenes_secundarias') {
+      // Obtener el valor actual de 'imagenes_secundarias'
+     // let updatedImages = [...data.imagenes_secundarias];
+      // Agregar la nueva URL al array
+     // updatedImages.push(value);
+      // Actualizar el estado
+     // setData({ ...data, [property]: updatedImages });
+    } else if (property === 'stock') {
+      // Si es un campo relacionado con el stock
+      const stockProperty = e.target.dataset.stockProperty; // Obtiene el tipo de propiedad de stock (size, color, cantidad)
+      const updatedStock = { ...data.stock };
+      updatedStock[value] = { ...updatedStock[value], [stockProperty]: e.target.value }; // Actualiza el objeto de stock con la nueva propiedad
+      setData({ ...data, stock: updatedStock });
+    } else {
+      // Si no es 'imagenes_secundarias' ni un campo relacionado con el stock, actualizar el estado normalmente
+      setData({ ...data, [property]: value });
+    }
+  
     setErrors(validation({ ...data, [property]: value }));
   };
+
 
   const handleSubmit = (e) => {
     console.log('handleSubmit')
@@ -75,25 +85,14 @@ const CreateProduct = () => {
     }
   };
 
+  
+
   const createProduct = ()=>{
      console.log('Will save the data...:',data);
-     const formData = new FormData();
-     formData.append('nombre', data.nombre);
-     formData.append('descripcion', data.descripcion);
-     formData.append('imagen_principal', data.imagen_principal);
-     data.imagenes_secundarias.forEach((imagen) => {
-       formData.append('imagenes_secundarias', imagen);
-     });
-     formData.append('video', data.video);
-     formData.append('precio', data.precio);
-     formData.append('edad', data.edad);
-     formData.append('genero', data.genero);
-     formData.append('destacado', data.destacado);
-     formData.append('inactivo', data.inactivo);
-     formData.append('stock', JSON.stringify(data.stock));
+     
 
      try {
-         dispatch(postProduct(formData));
+         dispatch(postProduct(data));
          
      } catch (error) {
        console.log('Error creating product:', error)
@@ -110,19 +109,50 @@ const CreateProduct = () => {
   };
 
   const handleInputStock = () => {
-    setData({
-      ...data,
-      stock: [...data.stock, newStock]
-    });
+    const { size, color, cantidad } = newStock;
+  
+    // Crear un nuevo objeto de stock con la estructura deseada
+    const newStockItem = { color, cantidad };
+    const updatedStock = { ...data.stock };
+  
+    if (size in updatedStock) {
+      // Si ya existe el tamaño en el stock, agregue el nuevo artículo al arreglo existente
+      updatedStock[size].push(newStockItem);
+    } else {
+      // Si no existe el tamaño en el stock, cree un nuevo objeto con el nuevo artículo
+      updatedStock[size] = [newStockItem];
+    }
+  
+    // Actualizar el estado con el nuevo stock
+    setData({ ...data, stock: updatedStock });
+  
+    // Restablecer el estado de newStock
     setNewStock({
       size: '',
       color: '',
       cantidad: ''
     });
   };
+  
+   const getImagenPrincipal = (imagenPrincipal)=>{
+      
+    setData({...data, imagen_principal:imagenPrincipal})
+    console.log('imagen Princiapl en CreateProduct:', imagenPrincipal);
 
+   }
+
+   const getImagSecundarias = (imagSecundarias)=>{
+      
+     let copia = data.imagenes_secundarias;
+   //  console.log('copia', copia)
+     copia.push(imagSecundarias);
+     //console.log('copia 2', copia);
+    setData({...data, imagenes_secundarias: copia})
+    console.log('imagen Secundaria en CreateProduct:', imagSecundarias);
+
+   }
 return (
-  <div className="  px-6 py-24  sm:py-32 lg:px-8   ">
+  <div className="mx-auto max-w-4xl  px-10 py-24  sm:py-32 lg:px-8  ">
   <div
     className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
     aria-hidden="true"
@@ -139,7 +169,7 @@ return (
     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Registrar Producto</h2>
      
   </div>
-      <form encType="multipart/form-data" className="mx-auto mt-16 max-w-xl sm:mt-20  "> 
+      <form encType="multipart/form-data" className="mx-auto mt-16 max-w-xxl sm:mt-20  "> 
       <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
               <label htmlFor="nombre" className="block text-sm font-semibold leading-6 text-gray-900">
@@ -190,48 +220,10 @@ return (
             </div>
           </div>     
       </div>
-            <UploadImage />
-          <div className="w-full   mt-5"> 
-             <label htmlFor="imagen_principal" className="block text-sm mb-2 font-medium leading-6 text-gray-900">
-              Imagen Principal
-            </label>
-            <input
-              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              type="text"
-              name="imagen_principal"
-              value={data.imagen_principal}
-              onChange={handleChange}
-              
-              />
-            <div className="flex flex-row justify-start items-center border-none mx-1 ">
-               {errors.imagen_principal && (
-                 <p className="mt-1  text-left text-small text-red-500 ">
-                   {errors.imagen_principal}
-                 </p>
-              )}
-              </div>
-      </div>
-
-      <div className="w-full mt-5"> 
-             <label htmlFor="imagenes_secundarias" className="block text-sm mb-2 font-medium leading-6 text-gray-900">
-              Url imagen secundaria
-            </label>
-            <input
-              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              type="text"
-              name="imagenes_secundarias"
-              value={data.imagenes_secundarias}
-              onChange={handleChange}
-             
-              />
-            <div className="flex flex-row justify-start items-center border-none mx-1 ">
-               {errors.imagenes_secundarias && (
-                 <p className="mt-1  text-left text-small text-red-500 ">
-                   {errors.imagenes_secundarias}
-                 </p>
-              )}
-              </div>
-      </div>
+            <UploadImage onGetImagenPrincipal={getImagenPrincipal} 
+                         onGetImagSecundarias={getImagSecundarias} />
+            
+          
 
           <div className="w-full  mt-5">
             <label htmlFor="video" className="block text-sm mb-2 font-medium leading-6 text-gray-900">Video:</label>
@@ -277,7 +269,7 @@ return (
           </div>
 
           <div className="w-full mt-5 ">
-            <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">Edad:</label>
+            <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">Rango de Edad:</label>
             <input
               className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               type="text"
@@ -311,68 +303,76 @@ return (
               )}
             </div>
           </div >
+
+          
+          <fieldset className="mt-5">
+              <legend className="text-sm  font-semibold leading-6 text-gray-900">Estados del Producto:</legend>
+              <div className="mt-3 space-y-6">
+                <div className="relative flex gap-x-3">
+                  <div className="flex h-6 items-center">
+                    <input
+                      name="destacado"
+                      type="checkbox"
+                      value={data.destacado}
+                      onChange={handleChange}
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="comments" className="font-medium text-gray-900">
+                      Destacado
+                    </label>
+                    <p className="text-gray-500">El producto se encuentra en la lista de destacados.</p>
+                  </div>
+                  <div className="flex flex-row justify-start items-center border-none mx-1 ">
+                    {errors.destacado && (
+                      <p className="mt-1  text-left text-small text-red-500">
+                        {errors.destacado}
+                      </p>
+                    )}
+                  </div>
+
+                </div>
+                <div className="relative flex gap-x-3">
+                  <div className="flex h-6 items-center">
+                    <input
+                      name="inactivo"
+                      type="checkbox"
+                      value={data.inactivo}
+                      onChange={handleChange}
+                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    />
+                  </div>
+                  <div className="text-sm leading-6">
+                    <label htmlFor="candidates" className="font-medium text-gray-900">
+                      Inactivo
+                    </label>
+                    <p className="text-gray-500">Si es inactivo, el producto no se encuentra disponible para la venta .</p>
+                  </div>
+                  <div className="flex flex-row justify-start items-center border-none mx-1 ">
+                    {errors.inactivo && (
+                      <p className="mt-1  text-left text-small text-red-500">
+                        {errors.inactivo}
+                      </p>
+                    )}
+                  </div>
+                </div>
+               
+              </div>
+            </fieldset>
+           
         
-          <div className="flex w-full mt-5  ">
-            <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">Destacado:</label>
-            <input
-              type="checkbox"
-              name="destacado"
-              value={data.destacado}
-              onChange={handleChange}
-              className="mr-3"
-              />
-            <div className="flex flex-row justify-start items-center border-none mx-1 ">
-              {errors.destacado && (
-                <p className="mt-1  text-left text-small text-red-500">
-                  {errors.destacado}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="w-full mt-5  ">
-            <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">Inactivo:</label>
-            <input
-             className="pr-2"
-              type="checkbox"
-              name="inactivo"
-              value={data.inactivo}
-              onChange={handleChange}
-              />
-            <div className="flex flex-row justify-start items-center border-none mx-1 ">
-              {errors.inactivo && (
-                <p className="mt-1  text-left text-small text-red-500">
-                  {errors.inactivo}
-                </p>
-              )}
-            </div>
-          </div>
-       
-
-          {/* <div className="flex-row  mt-5 ">
-            <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">Talle:</label>
-            <input
-              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
-              type="text"
-              name="talle"
-              value={data.talle}
-              onChange={handleChange}
-              placeholder="XS, S, M..."
-              />
-            <div className="flex flex-row justify-start items-center border-none mx-1 ">
-              {errors.talle && (
-                <p className="mt-1  text-left text-small text-red-500">{errors.talle}</p>
-                )}
-            </div>
-          </div> */}
-        <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-3">
-          <div>
+        <fieldset className="grid grid-cols-1 mt-7  gap-y-6 sm:grid-cols-3">
+      
+        <legend className="text-sm  font-semibold leading-6 text-gray-900">Existencia del Producto (Stock):</legend>
+      
+          <div >
             <label htmlFor="size" className="block text-sm font-semibold leading-6 text-gray-900">Tamaño</label>
             <select
               name="size"
               value={newStock.size}
               onChange={handleNewStockChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="block w-full  rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             >
               <option value="">Selecciona un tamaño</option>
               <option value="S">Pequeño</option>
@@ -407,7 +407,7 @@ return (
               placeholder="Cantidad"
             />
           </div>
-        </div>
+        </fieldset>
         <div className="flex justify-center mt-6">
           <button
             type="button"
@@ -418,18 +418,23 @@ return (
           </button>
         </div>
 
-        <div className="w-full mt-5">
-  <label htmlFor="stock" className="block text-sm mb-2 font-medium leading-6 text-gray-900">Items agregados:</label>
-  {data.stock.map((item, index) => (
-    <div key={index}>
-      <span>Tamaño: {item.size}, Color: {item.color}, Cantidad: {item.cantidad}</span>
-    </div>
-  ))}
-</div>
+        <div   className="w-full mt-5  divide-y-2 divide-gray-100">
+        <label htmlFor="stock" className="text-sm mt-7 -mb-4 font-semibold leading-6 text-gray-900">Items agregados:</label>
+        {Object.keys(data.stock).map((size) => (
+  <div key={size}>
+    <h3>Tamaño: {size}</h3>
+    <ul>
+        {data.stock[size].map((item, index) => (
+            <div key={index}>
+             <span> Color: <span className={`text-${item.color}-500 font-bold`}>{item.color.charAt(0).toUpperCase() + item.color.slice(1)}</span> - Cantidad: <span className="font-bold">{item.cantidad}</span></span>
+            </div>
+          ))}
+          </ul>
+      </div>
+      
+        ))}
+        </div>
 
-
-        
-     
           <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
             <button
             className="bg-white hover:bg-blue ring-1 text-blue-500 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400 hover:text-white"

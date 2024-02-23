@@ -1,55 +1,78 @@
-import  {useState} from 'react';
+import  { useState, useEffect } from 'react';
 import { PhotoIcon } from '@heroicons/react/24/solid'
+import clsx from 'clsx';
  
-const UploadImage = () => {
+const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
   const [imagenPrincipal, setImagenPrincipal] = useState([]);
   const [imagSecundarias, setImagSecundarias] = useState([]);
 
   const [loadingImage, setloadingImage] = useState(false);
 
-  const uploadImage = async (e) =>{
-    const files = e.target.files;
-    const data = new FormData();
-    data.append("file",files[0]);
-    data.append("upload_preset", "images");
-    setloadingImage(true);
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/edsonnaza/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-
-    )
-    const file = await res.json();
-    console.log(res)
-    setImage(file.secure_url);
-    setloadingImage(false);
+  useEffect(() => {
+    // Esta función se ejecutará cuando imagSecundarias y imagenPrincipal cambie
+   // console.log('image Secundarias previewFiles en useEffect:', imagSecundarias[0]);
+  //  console.log('image Principal previewFiles en useEffect:', imagenPrincipal[0]);
+  if(imagSecundarias[0]!==undefined){
+    onGetImagSecundarias(imagSecundarias[0])
   }
+  
+  if(imagenPrincipal[0]!==undefined){
+    
+    onGetImagenPrincipal(imagenPrincipal[0])
+  }
+
+  }, [imagSecundarias, imagenPrincipal]);
+
+   
 
   const previewImagenPrincipal = (e)=>{
+    const type='imgPrincipal';
+
     const selectedImage = e.target.files[0];
-    if (selectedImage) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagenPrincipal([reader.result]); 
-      };
-      reader.readAsDataURL(selectedImage);
-    }
+    previewFiles(selectedImage,type);
+    // if (selectedImage) {
+    //   const reader = new FileReader();
+    //   reader.onload = () => {
+    //     setImagenPrincipal([reader.result]); 
+    //   };
+    //   reader.readAsDataURL(selectedImage);
+    // }
   }
 
-  const previewImagSecundarias = (e)=>{
-    
-    console.log('Img secundarias');
+  const previewImagSecundarias =   (e)=>{
+    const type='imgSecundarias';
     const selectedImage = e.target.files[0];
-    if (selectedImage) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagSecundarias([...imagSecundarias,reader.result]);
-      };
-      reader.readAsDataURL(selectedImage);
-    }
+
+    previewFiles(selectedImage,type);
+   
+    
   }
+
+  function previewFiles(file,type){
+
+    /// Lee los archivos y actualiza los estados 
+    /// setImagSecundarias y/o setImagenPrincipal
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onloadend =  ()=>{
+      if(type==='imgSecundarias'){
+        setImagSecundarias([...imagSecundarias,reader.result]);
+         console.log('imgSecundarias onloadeend', reader.result)
+      }
+     if (type==='imgPrincipal'){
+
+        setImagenPrincipal([reader.result])
+        console.log('imgPrincipal onloadeend', reader.result)
+       
+     // console.log('image previewFiles', reader.result);
+    }  
+
+  }
+}
+
+  
 
     return ( 
 
@@ -66,7 +89,7 @@ const UploadImage = () => {
      
           
 <div className="mt-2 flex flex-wrap justify-center lg:flex-col">
-   {imagenPrincipal.map((imageUrl, index) => (
+   {imagenPrincipal?.map((imageUrl, index) => (
      <img key={index} 
      className="h-96 w-full rounded-lg object-cover object-center"
      src={imageUrl} 
@@ -106,7 +129,7 @@ const UploadImage = () => {
      
           
      <div className="mt-2 flex flex-wrap justify-center lg:flex-col gap-2">
-   {imagSecundarias.map((imageUrl, index) => (
+      {imagSecundarias?.map((imageUrl, index) => (
      <img key={index} 
      className="lg:h-25 lg:w-40  rounded-lg object-cover object-center"
      src={imageUrl} 

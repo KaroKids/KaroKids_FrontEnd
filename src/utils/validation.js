@@ -12,18 +12,18 @@ const validation = (inputs) => {
     errors.descripcion = "Descripcion es requerido";
     return errors;
   }
-  if (!inputs.imagen_principal) {
-    errors.imagen_principal = "Imagen URL es requerida";
-  } else if (!urlRegExp.test(inputs.imagen_principal)) {
-    errors.imagen_principal = "Imagen URL invalida";
-    return errors;
-  }
-  if (!inputs.imagenes_secundarias) {
-    errors.imagenes_secundarias = "Imagen URL es requerida";
-  } else if (!urlRegExp.test(inputs.imagenes_secundarias)) {
-    errors.imagenes_secundarias = "Imagen URL invalida";
-    return errors;
-  }
+  // if (!inputs.imagen_principal) {
+  //   errors.imagen_principal = "Imagen URL es requerida";
+  // } else if (!urlRegExp.test(inputs.imagen_principal)) {
+  //   errors.imagen_principal = "Imagen URL invalida";
+  //   return errors;
+  // }
+  // if (!inputs.imagenes_secundarias) {
+  //   errors.imagenes_secundarias = "Imagen URL es requerida";
+  // } else if (!urlRegExp.test(inputs.imagenes_secundarias)) {
+  //   errors.imagenes_secundarias = "Imagen URL invalida";
+  //   return errors;
+  // }
 
   if (!inputs.video) {
     errors.video = "Video URL es requerida";
