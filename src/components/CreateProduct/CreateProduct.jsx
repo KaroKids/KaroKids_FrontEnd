@@ -41,37 +41,32 @@ const CreateProduct = () => {
   });
   const handleChange = (e) => {
     const property = e.target.name;
-    const value = e.target.value;
-
-    // e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
-    // Verificar si el campo es 'imagenes_secundarias'
-    if (property === "imagenes_secundarias") {
-      // Obtener el valor actual de 'imagenes_secundarias'
-      // let updatedImages = [...data.imagenes_secundarias];
-      // Agregar la nueva URL al array
-      // updatedImages.push(value);
-      // Actualizar el estado
-      // setData({ ...data, [property]: updatedImages });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+  
+    if (property === "edad") {
+      // Si el cambio es en el campo de edad, actualiza directamente el valor de data.edad
+      setData({ ...data, [property]: value });
     } else if (property === "stock") {
       // Si es un campo relacionado con el stock
-      const stockProperty = e.target.dataset.stockProperty; // Obtiene el tipo de propiedad de stock (size, color, cantidad)
+      const stockProperty = e.target.dataset.stockProperty;
       const updatedStock = { ...data.stock };
       updatedStock[value] = {
         ...updatedStock[value],
         [stockProperty]: e.target.value,
-      }; // Actualiza el objeto de stock con la nueva propiedad
+      };
       setData({ ...data, stock: updatedStock });
     } else {
-      // Si no es 'imagenes_secundarias' ni un campo relacionado con el stock, actualizar el estado normalmente
+      // Si no es un campo relacionado con el stock ni con la edad, actualiza el estado normalmente
       setData({ ...data, [property]: value });
     }
-
+  
     setErrors(validation({ ...data, [property]: value }));
   };
+  
 
   const handleSubmit = (e) => {
     console.log("handleSubmit");
+    console.log('Datos:',data);
     e.preventDefault();
     if (Object.keys(errors).length === 0) {
       dispatch(postProduct(data));
@@ -128,7 +123,7 @@ const CreateProduct = () => {
 
   const getImagenPrincipal = (imagenPrincipal) => {
     setData({ ...data, imagen_principal: imagenPrincipal });
-    console.log("imagen Princiapl en CreateProduct:", imagenPrincipal);
+    //console.log("imagen Princiapl en CreateProduct:", imagenPrincipal);
   };
 
   const getImagSecundarias = (imagSecundarias) => {
@@ -137,7 +132,7 @@ const CreateProduct = () => {
     copia.push(imagSecundarias);
     //console.log('copia 2', copia);
     setData({ ...data, imagenes_secundarias: copia });
-    console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
+   // console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
   };
   return (
     <div className="mx-auto max-w-4xl  px-10 py-24  sm:py-32 lg:px-8  ">
@@ -172,6 +167,7 @@ const CreateProduct = () => {
             </label>
             <div className="mt-2.5">
               <input
+                id="nombre"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 type="text"
                 name="nombre"
@@ -198,6 +194,7 @@ const CreateProduct = () => {
             </label>
             <div className="mt-2.5">
               <input
+                id="descripcion"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 type="text"
                 name="descripcion"
@@ -223,11 +220,12 @@ const CreateProduct = () => {
         <div className="w-full  mt-5">
           <label
             htmlFor="video"
-            className="block text-sm mb-2 font-medium leading-6 text-gray-900"
+            className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
           >
             Video:
           </label>
           <input
+            id="video"
             className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
             type="text"
             name="video"
@@ -244,16 +242,20 @@ const CreateProduct = () => {
           </div>
         </div>
 
-        <div className="w-full mt-5">
+      
+      
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 sm:flow-col mt-5">
+        <div >
           <label
             htmlFor="precio"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Precio
+            className="block text-sm font-semibold leading-6 text-gray-900">
+         
+            Precio:
           </label>
-          <div className="relative mt-2 rounded-md shadow-sm">
+          <div className="mt-2.5">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>
             <input
+              id="precio"
               className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               type="number"
               name="precio"
@@ -270,47 +272,61 @@ const CreateProduct = () => {
             </div>
           </div>
         </div>
-
-        <div className="w-full mt-5 ">
-          <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">
-            Rango de Edad:
-          </label>
-          <input
-            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-            type="text"
-            name="edad"
-            value={data.edad}
-            onChange={handleChange}
-            placeholder="bebe - infatil...."
-          />
-          <div className="flex flex-row justify-start items-center border-none mx-2 ">
-            {" "}
-            {errors.edad && (
+          <div>
+              <label htmlFor="edad" 
+               className="block text-sm font-semibold leading-6 text-gray-900">
+                Rango de Edad:
+              </label>
+              <div className="mt-2.5">
+                <select
+                  id="edad"
+                  name="edad"
+                  onChange={handleChange}
+                  value={data.edad}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  >
+                  <option value="">Seleccionar Edad</option>
+                  <option value="recien_nacido">Recién Nacido</option>
+                  <option value="bebe">Bebe</option>
+                  <option value="infantil">Infantíl</option>
+                  <option value="junior">Junior</option>
+                  <option value="otros">Otros</option>
+                </select>
+              </div>
+              {errors.edad && (
               <p className="mt-1  text-left text-small text-red-500">
                 {errors.edad}
               </p>
             )}
-          </div>
-        </div>
-        <div className="w-full mt-5  ">
-          <label className="block text-sm mb-2 font-medium leading-6 text-gray-900">
-            Genero:
-          </label>
-          <input
-            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
-            type="text"
-            name="genero"
-            value={data.genero}
-            onChange={handleChange}
-            placeholder="Chico o Chica"
-          />
-          <div className="flex flex-row justify-start items-center border-none mx-1 ">
-            {errors.genero && (
+            </div>
+
+             <div>  
+              <label htmlFor="edad" 
+                className="block text-sm font-semibold leading-6 text-gray-900">
+                Genero:
+              </label>
+              <div className="mt-2.5">
+                <select
+                  id="genero"
+                  name="genero"
+                  autoComplete="genero"
+                  checked={data.genero}
+                  onChange={handleChange}
+                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  >
+                  <option value="">Seleccionar Género</option>
+                  <option value="chico">Chico (Niño)</option>
+                  <option value="chica">Chica (Niña)</option>
+                  <option value="universal">Universal</option>
+                </select>
+              </div>
+              {errors.genero && (
               <p className="mt-1  text-left text-small text-red-500">
                 {errors.genero}
               </p>
             )}
-          </div>
+            </div>
+        
         </div>
 
         <fieldset className="mt-5">
@@ -321,15 +337,16 @@ const CreateProduct = () => {
             <div className="relative flex gap-x-3">
               <div className="flex h-6 items-center">
                 <input
+                  id="destacado"
                   name="destacado"
                   type="checkbox"
-                  value={data.destacado}
+                  checked={data.destacado}
                   onChange={handleChange}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
               </div>
               <div className="text-sm leading-6">
-                <label htmlFor="comments" className="font-medium text-gray-900">
+                <label htmlFor="destacado" className="font-medium text-gray-900">
                   Destacado
                 </label>
                 <p className="text-gray-500">
@@ -347,16 +364,16 @@ const CreateProduct = () => {
             <div className="relative flex gap-x-3">
               <div className="flex h-6 items-center">
                 <input
+                  id="inactivo"
                   name="inactivo"
                   type="checkbox"
-                  value={data.inactivo}
                   onChange={handleChange}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
               </div>
               <div className="text-sm leading-6">
                 <label
-                  htmlFor="candidates"
+                  htmlFor="inactivo"
                   className="font-medium text-gray-900"
                 >
                   Inactivo
@@ -378,18 +395,19 @@ const CreateProduct = () => {
         </fieldset>
 
         <fieldset className="grid grid-cols-1 mt-7  gap-y-6 sm:grid-cols-3">
-          <legend className="text-sm  font-semibold leading-6 text-gray-900">
+          <legend className="text-sm mb-5  font-semibold leading-6 text-gray-900">
             Existencia del Producto (Stock):
           </legend>
 
           <div>
             <label
               htmlFor="size"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
             >
               Tamaño
             </label>
             <select
+              id="size"
               name="size"
               value={newStock.size}
               onChange={handleNewStockChange}
@@ -404,11 +422,12 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="color"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
             >
               Color
             </label>
             <select
+              id="color"
               name="color"
               value={newStock.color}
               onChange={handleNewStockChange}
@@ -425,11 +444,12 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="cantidad"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
             >
               Cantidad
             </label>
             <input
+              id="cantidad"
               type="number"
               name="cantidad"
               value={newStock.cantidad}
@@ -450,15 +470,15 @@ const CreateProduct = () => {
         </div>
 
         <div className="w-full mt-5  divide-y-2 divide-gray-100">
-          <label
-            htmlFor="stock"
+          <span
+            htmlFor="itemsAgregados"
             className="text-sm mt-7 -mb-4 font-semibold leading-6 text-gray-900"
           >
             Items agregados:
-          </label>
+          </span>
           {Object.keys(data.stock).map((size) => (
-            <div key={size}>
-              <h3>Tamaño: {size}</h3>
+            <div  key={size}>
+              <h3 >Tamaño: {size}</h3>
               <ul>
                 {data.stock[size].map((item, index) => (
                   <div key={index}>
