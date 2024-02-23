@@ -12,8 +12,7 @@ const Register = ({ isOpen, onClose }) => {
 
 	const handleRegister = (e) => {
 		e.preventDefault();
-		auth.register(emailRegister, passwordRegister, fullName);
-		onClose();
+		auth.register(emailRegister, passwordRegister, fullName, onClose);
 	};
 
 	const handleGoogle = (e) => {

@@ -8,8 +8,9 @@ const UserModal = ({ isOpen, onClose }) => {
 	const { displayName } = auth.user;
 	const userName = displayName?.split(" ")[0];
 
-	const handleLogout = () => {
-		auth.logout();
+	const handleLogout = (e) => {
+		e.preventDefault();
+		auth.logout(onClose);
 	};
 
 	return (
@@ -48,7 +49,7 @@ const UserModal = ({ isOpen, onClose }) => {
 								</div>
 								<div>
 									<Button
-										onClick={() => handleLogout()}
+										onClick={(e) => handleLogout(e)}
 										variant="outline"
 										type="submit"
 										className="flex text-black w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm   ">

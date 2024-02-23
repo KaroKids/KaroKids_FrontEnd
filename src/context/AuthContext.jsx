@@ -4,11 +4,13 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	GoogleAuthProvider,
-	signInWithRedirect,
+	signInWithPopup,
 	signOut,
 	onAuthStateChanged,
 	updateProfile,
 } from "firebase/auth";
+import Swal from "sweetalert2";
+import "./AuthContext.css";
 
 export const authContext = createContext();
 
@@ -21,6 +23,21 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
+	const Toast = Swal.mixin({
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 2000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.onmouseenter = Swal.stopTimer;
+			toast.onmouseleave = Swal.resumeTimer;
+		},
+		customClass: {
+			popup: "my-toast",
+		},
+	});
+
 	const [user, setUser] = useState("");
 	useEffect(() => {
 		const suscribed = onAuthStateChanged(auth, (currentUser) => {
@@ -33,7 +50,7 @@ export function AuthProvider({ children }) {
 		return () => suscribed();
 	}, []);
 
-	const register = async (email, password, displayName) => {
+	const register = async (email, password, displayName, onClose) => {
 		try {
 			const response = await createUserWithEmailAndPassword(
 				auth,
@@ -41,9 +58,17 @@ export function AuthProvider({ children }) {
 				password
 			);
 			await updateDisplayName(response.user, displayName);
-			alert("Te has registrado correctamente.");
+			Swal.fire({
+				title: "Registro finalizado!",
+				text: "Te has registrado correctamente.",
+				icon: "success",
+			});
+			onClose();
 		} catch (error) {
-			alert("Ya existe un usuario asociado a este correo");
+			Toast.fire({
+				icon: "error",
+				title: "Este correo ya se encuentra registrado",
+			});
 		}
 	};
 
@@ -51,24 +76,34 @@ export function AuthProvider({ children }) {
 		try {
 			await updateProfile(user, { displayName });
 		} catch (error) {
-			alert("No se pudo actualizar el display name");
+			console.log("No se pudo actualizar el display name");
 		}
 	};
 
-	const login = async (email, password) => {
+	const login = async (email, password, onClose) => {
 		try {
 			const response = await signInWithEmailAndPassword(auth, email, password);
-			alert("Has ingresado exitosamente.");
+			Toast.fire({
+				icon: "success",
+				title: "Has ingresado exitosamente.",
+			});
+			onClose();
 		} catch (error) {
-			alert("No existe ningun usuario asociado a este correo");
+			Toast.fire({
+				icon: "error",
+				title: "Usuario o contraseña incorrecta",
+			});
 		}
 	};
 
 	const loginWithGoogle = async () => {
 		try {
 			const responseGoogle = new GoogleAuthProvider();
-			return await signInWithRedirect(auth, responseGoogle);
-			alert("Has ingresado exitosamente.");
+			await signInWithPopup(auth, responseGoogle);
+			Toast.fire({
+				icon: "success",
+				title: "Has ingresado exitosamente.",
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -77,17 +112,25 @@ export function AuthProvider({ children }) {
 	const registerWithGoogle = async () => {
 		try {
 			const responseGoogle = new GoogleAuthProvider();
-			return await signInWithRedirect(auth, responseGoogle);
-			alert("Te has registrado correctamente.");
+			await signInWithPopup(auth, responseGoogle);
+			Swal.fire({
+				title: "Registro finalizado!",
+				text: "Te has registrado correctamente.",
+				icon: "success",
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const logout = async () => {
+	const logout = async (onClose) => {
 		try {
 			const response = await signOut(auth);
-			alert("Sesion finalizada con éxito");
+			Toast.fire({
+				icon: "success",
+				title: "Sesión finalizada con éxito.",
+			});
+			onClose();
 		} catch (error) {
 			console.log(error);
 		}
