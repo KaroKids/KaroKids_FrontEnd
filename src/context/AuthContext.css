@@ -1,4 +1,12 @@
-.my-toast {
-	right: 0;
-	top: 80px;
+@media (max-width: 1023px) {
+	.my-toast {
+		right: 10px;
+		top: 80px;
+	}
+}
+@media (min-width: 1024px) {
+	.my-toast {
+		right: 0;
+		top: 80px;
+	}
 }
