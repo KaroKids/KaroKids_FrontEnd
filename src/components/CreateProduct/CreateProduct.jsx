@@ -121,19 +121,22 @@ const CreateProduct = () => {
     });
   };
 
+  //Estas funciones reciben el hash (imagen en Base64) que llega por props desde el componente UploadImage y setean los valores de imagen_principal e imagenes_secundarias que se van a enviar como "data" al Back.
   const getImagenPrincipal = (imagenPrincipal) => {
     setData({ ...data, imagen_principal: imagenPrincipal });
     //console.log("imagen Princiapl en CreateProduct:", imagenPrincipal);
   };
 
+  //Esta función realiza una copia del estado de la propiedad "imagenes_secundarias" de "data" y actualiza su valor agregándole el último archivo recibido desde el componente UploadImage.
   const getImagSecundarias = (imagSecundarias) => {
     let copia = data.imagenes_secundarias;
-    //  console.log('copia', copia)
     copia.push(imagSecundarias);
-    //console.log('copia 2', copia);
     setData({ ...data, imagenes_secundarias: copia });
    // console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
   };
+
+
+  console.log('Data qeu va a viajar en trolebus al Back: ', data)
   return (
     <div className="mx-auto max-w-4xl  px-10 py-24  sm:py-32 lg:px-8  ">
       <div
