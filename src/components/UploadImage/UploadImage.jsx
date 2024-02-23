@@ -8,27 +8,26 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
 
   const [loadingImage, setloadingImage] = useState(false);
 
+  //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
   useEffect(() => {
-    // Esta función se ejecutará cuando imagSecundarias y imagenPrincipal cambie
-   // console.log('image Secundarias previewFiles en useEffect:', imagSecundarias[0]);
-  //  console.log('image Principal previewFiles en useEffect:', imagenPrincipal[0]);
-  if(imagSecundarias[0]!==undefined){
-    onGetImagSecundarias(imagSecundarias[0])
-  }
-  
-  if(imagenPrincipal[0]!==undefined){
-    
-    onGetImagenPrincipal(imagenPrincipal[0])
-  }
+    if(imagenPrincipal[0]!==undefined){ 
+      onGetImagenPrincipal(imagenPrincipal[0])
+    }
 
+    if(imagSecundarias[0]!==undefined){
+      //Se almacena en una variable el último valor hasheado introducido en el arreglo.
+      let i = imagSecundarias.length - 1
+      onGetImagSecundarias(imagSecundarias[i])
+    }
   }, [imagSecundarias, imagenPrincipal]);
 
    
-
+  //Funciones almacenan los valores de previsualización de los archivos cargados por el usuario.
   const previewImagenPrincipal = (e)=>{
     const type='imgPrincipal';
 
     const selectedImage = e.target.files[0];
+
     previewFiles(selectedImage,type);
     // if (selectedImage) {
     //   const reader = new FileReader();
@@ -39,41 +38,29 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
     // }
   }
 
-  const previewImagSecundarias =   (e)=>{
+  const previewImagSecundarias = (e)=>{
     const type='imgSecundarias';
+
     const selectedImage = e.target.files[0];
 
     previewFiles(selectedImage,type);
-   
-    
   }
 
-  function previewFiles(file,type){
-
-    /// Lee los archivos y actualiza los estados 
-    /// setImagSecundarias y/o setImagenPrincipal
-
+  // Función para convertir los archivos previsulizados a Base64 y actualizar los estados ImagSecundarias y/o ImagenPrincipal.
+  function previewFiles (file, type) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
 
     reader.onloadend =  ()=>{
-      if(type==='imgSecundarias'){
-        setImagSecundarias([...imagSecundarias,reader.result]);
-         console.log('imgSecundarias onloadeend', reader.result)
+      if (type==='imgPrincipal'){
+         setImagenPrincipal([reader.result])
       }
-     if (type==='imgPrincipal'){
-
-        setImagenPrincipal([reader.result])
-        console.log('imgPrincipal onloadeend', reader.result)
-       
-     // console.log('image previewFiles', reader.result);
-    }  
-
+        
+      if(type==='imgSecundarias'){
+        setImagSecundarias([...imagSecundarias, reader.result]);
+      }
   }
 }
-
-  
-
     return ( 
 
         <div>
