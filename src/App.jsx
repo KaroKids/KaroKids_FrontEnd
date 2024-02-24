@@ -11,6 +11,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import Login from "./components/Auth/Login";
 import { AuthProvider } from "./context/AuthContext";
 import Register from "./components/Auth/Register";
+import PanelUsuario from "./components/User/PanelUsuario";
 
 function App() {
 	const { pathname } = useLocation();
@@ -30,6 +31,9 @@ function App() {
 					<Route path="/admin" element={<Dashboard />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
+					<Route path="/usuario/panel-control" element={<PanelUsuario />} />
+					<Route path="/usuario/datos-personales" element={<PanelUsuario />} />
+					<Route path="/usuario/pedidos" element={<PanelUsuario />} />
 				</Routes>
 				{pathname !== "/create" && <SideBarSocial />}
 				{pathname !== "/create" && pathname !== "/login" && <Footer />}
