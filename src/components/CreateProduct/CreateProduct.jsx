@@ -4,10 +4,25 @@ import { Link } from "react-router-dom";
 import { postProduct } from "@/redux/productosActions";
 import { useDispatch } from "react-redux";
 import UploadImage from "../UploadImage/UploadImage";
+import Swal from "sweetalert2";
+import spinner from "/assets/images/spinner.svg";
 
 const CreateProduct = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  const Toast = Swal.mixin({
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 2000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.onmouseenter = Swal.stopTimer;
+			toast.onmouseleave = Swal.resumeTimer;
+		},
+		customClass: {
+			popup: "my-toast",
+		},
+	});
+  const initData = {
     nombre: "",
     descripcion: "",
     imagen_principal: "",
@@ -19,7 +34,11 @@ const CreateProduct = () => {
     destacado: false,
     inactivo: false,
     stock: [],
-  });
+  };
+  const dispatch = useDispatch();
+  const [isLoading, setIsloading] = useState(false);
+
+  const [data, setData] = useState(initData);
   const [errors, setErrors] = useState({
     nombre: "",
     descripcion: "",
@@ -64,12 +83,34 @@ const CreateProduct = () => {
   };
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     console.log("handleSubmit");
     console.log('Datos:',data);
     e.preventDefault();
     if (Object.keys(errors).length === 0) {
-      dispatch(postProduct(data));
+      try {
+        setIsloading(true)
+        const response = await  dispatch(postProduct(data));
+        console.log('Respuesta del dispatch:', response);
+
+        if(response.payload) {
+          setIsloading(false);
+          Toast.fire({
+            icon: "success",
+            title: "Producto registrado con exitosamente!",
+           })
+           setData(initData);
+        } else {
+          setIsloading(false)
+          Toast.fire({
+            icon: "error",
+            title: "No fue posible registrar el producto!",
+           })
+        }
+
+      } catch (error) {
+        console.log('Error guardando el producto', error)
+      }
     } else {
       setErrors({
         ...errors,
@@ -465,7 +506,7 @@ const CreateProduct = () => {
             onClick={handleInputStock}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition hover:scale-110 text-blue-500 bg-white-600 ring-1  focus:outline-none focus:ring-2 focus:ring-offset-2 hover:text-white hover:bg-blue-500 focus:ring-blue-500"
           >
-            Agregar
+           Agregar
           </button>
         </div>
 
@@ -500,15 +541,25 @@ const CreateProduct = () => {
         </div>
 
         <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
-          <button
-            className="bg-white hover:bg-blue ring-1 text-blue-500 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400 hover:text-white"
-            onClick={handleSubmit}
-            type="submit"
-            name="submit"
-            id="submitCreate"
-          >
-            CREAR
-          </button>
+         
+        <button
+   className={`bg-white text-blue-500 w-[160px] h-[40px] rounded-md cursor-pointer ${isLoading ? '' : 'hover:bg-blue ring-1 hover:ring-blue hover:text-white transition hover:scale-110 hover:bg-sky-400'} ${isLoading ? 'opacity-50 cursor-not-allowed ring-1' : ''}`}
+   onClick={handleSubmit}
+  type="submit"
+  name="submit"
+  id="submitCreate"
+  disabled={isLoading}
+>
+  {isLoading ? (
+    <div className="flex items-center justify-center">
+      <img className="w-8 h-8" src={spinner} alt="Spinner" />
+      <span className="ml-2">Enviando...</span>
+    </div>
+  ) : (
+    'CREAR'
+  )}
+</button>
+
 
           <Link to="/">
             <span className=" flex items-center justify-center bg-sky-200 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400 hover:text-white">
