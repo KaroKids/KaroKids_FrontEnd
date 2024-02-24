@@ -1,26 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import Register from "./Register";
+import Swal from "sweetalert2";
 
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 export default function Login({ isOpen, onClose, className }) {
 	const auth = useAuth();
-	const [email, setEmail] = useState("");
+	const [mail, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const handleOpenModal = () => {
@@ -33,7 +19,7 @@ export default function Login({ isOpen, onClose, className }) {
 
 	const handleLogin = (e) => {
 		e.preventDefault();
-		auth.login(email, password, onClose);
+		auth.login(mail, password, onClose);
 	};
 
 	const handleGoogle = (e) => {
@@ -42,6 +28,17 @@ export default function Login({ isOpen, onClose, className }) {
 		onClose();
 	};
 
+	const handleReset = async () => {
+		const { value: email } = await Swal.fire({
+			title: "Restablecer contraseña",
+			input: "email",
+			inputLabel: "Ingrese su email",
+			inputPlaceholder: "ejemplo@ejemplo.com",
+		});
+		if (email) {
+			auth.resetPassword(email);
+		}
+	};
 	return (
 		<>
 			<div
@@ -99,6 +96,11 @@ export default function Login({ isOpen, onClose, className }) {
 										className="block text-sm font-medium leading-6 text-gray-900">
 										Contraseña:
 									</label>
+									<span
+										onClick={handleReset}
+										className=" text-sm text-gray-500 cursor-pointer">
+										Olvidé mi contraseña
+									</span>
 								</div>
 								<div className="mt-2">
 									<input

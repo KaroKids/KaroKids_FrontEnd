@@ -45,6 +45,7 @@ const ProductDetail = () => {
 
 	useEffect(() => {
 		dispatch(getProductsById(id));
+		window.scroll(0, 0);
 	}, []);
 
 	const priceArray = product.precio
