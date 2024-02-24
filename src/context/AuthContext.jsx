@@ -11,6 +11,7 @@ import {
 	EmailAuthProvider,
 	reauthenticateWithCredential,
 	updatePassword,
+	sendPasswordResetEmail,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import "./AuthContext.css";
@@ -91,8 +92,10 @@ export function AuthProvider({ children }) {
 		try {
 			await updatePassword(usuario, newPassword);
 		} catch (error) {
-			console.log("No se pudo actualizar la contraseña");
-			throw error;
+			Toast.fire({
+				icon: "error",
+				title: "No se pudo actulizar la contraseña.",
+			});
 		}
 	};
 
@@ -135,11 +138,15 @@ export function AuthProvider({ children }) {
 				title: "Has ingresado exitosamente.",
 			});
 		} catch (error) {
-			console.log(error);
-			if (error.code === "auth/wrong-password") {
+			if (error.code === "auth/invalid-credential") {
 				Toast.fire({
 					icon: "error",
-					title: "Contraseña incorrecta.",
+					title: "Email o contraseña incorrecta.",
+				});
+			} else if (error.code === "auth/invalid-email") {
+				Toast.fire({
+					icon: "error",
+					title: "El correo ingresado no es correcto.",
 				});
 			} else {
 				Toast.fire({
@@ -189,6 +196,24 @@ export function AuthProvider({ children }) {
 			console.log(error);
 		}
 	};
+
+	const resetPassword = async (email) => {
+		try {
+			await sendPasswordResetEmail(auth, email);
+			Toast.fire({
+				icon: "success",
+				title:
+					"Se ha enviado un correo electrónico para restablecer la contraseña.",
+			});
+		} catch (error) {
+			console.log(error);
+			Toast.fire({
+				icon: "error",
+				title:
+					"No se pudo enviar el correo electrónico de restablecimiento de contraseña.",
+			});
+		}
+	};
 	return (
 		<authContext.Provider
 			value={{
@@ -199,6 +224,7 @@ export function AuthProvider({ children }) {
 				logout,
 				user,
 				handleChangePassword,
+				resetPassword,
 			}}>
 			{children}
 		</authContext.Provider>
