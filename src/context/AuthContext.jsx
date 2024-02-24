@@ -1,16 +1,18 @@
 import { auth } from "../firebase/firebase.config.js";
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  updateProfile,
-  EmailAuthProvider,
-  reauthenticateWithCredential,
-  updatePassword,
+
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	GoogleAuthProvider,
+	signInWithPopup,
+	signOut,
+	onAuthStateChanged,
+	updateProfile,
+	EmailAuthProvider,
+	reauthenticateWithCredential,
+	updatePassword,
+	sendPasswordResetEmail,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import "./AuthContext.css";
@@ -91,14 +93,17 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const passwordUpdate = async (usuario, newPassword) => {
-    try {
-      await updatePassword(usuario, newPassword);
-    } catch (error) {
-      console.log("No se pudo actualizar la contraseña");
-      throw error;
-    }
-  };
+
+	const passwordUpdate = async (usuario, newPassword) => {
+		try {
+			await updatePassword(usuario, newPassword);
+		} catch (error) {
+			Toast.fire({
+				icon: "error",
+				title: "No se pudo actulizar la contraseña.",
+			});
+		}
+	};
 
   const register = async (email, password, displayName, onClose) => {
     try {
@@ -130,29 +135,33 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const login = async (email, password, onClose) => {
-    try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      onClose();
-      Toast.fire({
-        icon: "success",
-        title: "Has ingresado exitosamente.",
-      });
-    } catch (error) {
-      console.log(error);
-      if (error.code === "auth/wrong-password") {
-        Toast.fire({
-          icon: "error",
-          title: "Contraseña incorrecta.",
-        });
-      } else {
-        Toast.fire({
-          icon: "error",
-          title: "Error al iniciar sesión.",
-        });
-      }
-    }
-  };
+	const login = async (email, password, onClose) => {
+		try {
+			const response = await signInWithEmailAndPassword(auth, email, password);
+			onClose();
+			Toast.fire({
+				icon: "success",
+				title: "Has ingresado exitosamente.",
+			});
+		} catch (error) {
+			if (error.code === "auth/invalid-credential") {
+				Toast.fire({
+					icon: "error",
+					title: "Email o contraseña incorrecta.",
+				});
+			} else if (error.code === "auth/invalid-email") {
+				Toast.fire({
+					icon: "error",
+					title: "El correo ingresado no es correcto.",
+				});
+			} else {
+				Toast.fire({
+					icon: "error",
+					title: "Error al iniciar sesión.",
+				});
+			}
+		}
+	};
 
   const loginWithGoogle = async () => {
     try {
@@ -181,31 +190,49 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const logout = async (onClose) => {
-    try {
-      const response = await signOut(auth);
-      Toast.fire({
-        icon: "success",
-        title: "Sesión finalizada con éxito.",
-      });
-      onClose();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return (
-    <authContext.Provider
-      value={{
-        register,
-        login,
-        loginWithGoogle,
-        registerWithGoogle,
-        logout,
-        user,
-        handleChangePassword,
-      }}
-    >
-      {!loading && children}
-    </authContext.Provider>
-  );
+	const logout = async (onClose) => {
+		try {
+			const response = await signOut(auth);
+			Toast.fire({
+				icon: "success",
+				title: "Sesión finalizada con éxito.",
+			});
+			onClose();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const resetPassword = async (email) => {
+		try {
+			await sendPasswordResetEmail(auth, email);
+			Toast.fire({
+				icon: "success",
+				title:
+					"Se ha enviado un correo electrónico para restablecer la contraseña.",
+			});
+		} catch (error) {
+			console.log(error);
+			Toast.fire({
+				icon: "error",
+				title:
+					"No se pudo enviar el correo electrónico de restablecimiento de contraseña.",
+			});
+		}
+	};
+	return (
+		<authContext.Provider
+			value={{
+				register,
+				login,
+				loginWithGoogle,
+				registerWithGoogle,
+				logout,
+				user,
+				handleChangePassword,
+				resetPassword,
+			}}>
+			{!loading && children}
+		</authContext.Provider>
+	);
 }
