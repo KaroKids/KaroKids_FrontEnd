@@ -8,6 +8,9 @@ import {
 	signOut,
 	onAuthStateChanged,
 	updateProfile,
+	EmailAuthProvider,
+	reauthenticateWithCredential,
+	updatePassword,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import "./AuthContext.css";
@@ -50,6 +53,49 @@ export function AuthProvider({ children }) {
 		return () => suscribed();
 	}, []);
 
+	const handleChangePassword = async (currentPassword, newPassword) => {
+		try {
+			if (!auth.currentUser) {
+				Toast.fire({
+					icon: "error",
+					title: "No hay una cuenta logueada.",
+				});
+			}
+
+			const credential = EmailAuthProvider.credential(
+				auth.currentUser.email,
+				currentPassword
+			);
+			await reauthenticateWithCredential(auth.currentUser, credential);
+			await passwordUpdate(auth.currentUser, newPassword);
+			Toast.fire({
+				icon: "success",
+				title: "Contraseña cambiada exitosamente.",
+			});
+		} catch (error) {
+			if (error.code === "auth/invalid-credential") {
+				Toast.fire({
+					icon: "error",
+					title: "Contraseña incorrecta.",
+				});
+			} else {
+				Toast.fire({
+					icon: "error",
+					title: "No se pudo cambiar la contraseña.",
+				});
+			}
+		}
+	};
+
+	const passwordUpdate = async (usuario, newPassword) => {
+		try {
+			await updatePassword(usuario, newPassword);
+		} catch (error) {
+			console.log("No se pudo actualizar la contraseña");
+			throw error;
+		}
+	};
+
 	const register = async (email, password, displayName, onClose) => {
 		try {
 			const response = await createUserWithEmailAndPassword(
@@ -83,16 +129,24 @@ export function AuthProvider({ children }) {
 	const login = async (email, password, onClose) => {
 		try {
 			const response = await signInWithEmailAndPassword(auth, email, password);
+			onClose();
 			Toast.fire({
 				icon: "success",
 				title: "Has ingresado exitosamente.",
 			});
-			onClose();
 		} catch (error) {
-			Toast.fire({
-				icon: "error",
-				title: "Usuario o contraseña incorrecta",
-			});
+			console.log(error);
+			if (error.code === "auth/wrong-password") {
+				Toast.fire({
+					icon: "error",
+					title: "Contraseña incorrecta.",
+				});
+			} else {
+				Toast.fire({
+					icon: "error",
+					title: "Error al iniciar sesión.",
+				});
+			}
 		}
 	};
 
@@ -144,6 +198,7 @@ export function AuthProvider({ children }) {
 				registerWithGoogle,
 				logout,
 				user,
+				handleChangePassword,
 			}}>
 			{children}
 		</authContext.Provider>
