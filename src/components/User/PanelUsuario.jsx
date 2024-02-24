@@ -15,9 +15,9 @@ const PanelUsuario = () => {
   return (
     <div className="container flex flex-col justify-start my-40 items-start  min-h-screen xl:mx-auto ">
       <h1 className="text-3xl font-semibold mb-2">Mi cuenta</h1>
-      <div className="flex  flex-col md:flex-row items-start border-t-2  h-[500px] border-t-slate-300 py-6 gap-20 w-full">
-        <div className="flex flex-col   items-start h-[500px] ">
-          <div className="pt-12 px-2  bg-slate-100 h-max md:h-full md:w-80 ">
+      <div className="flex  flex-col lg:flex-row items-start border-t-2 h-auto border-t-slate-300 py-6 gap-20 w-full">
+        <div className="flex flex-col   items-start h-auto w-full lg:w-auto md:h-[500px] ">
+          <div className="pt-12 px-2  bg-slate-100 h-max w-full lg:h-full lg:w-80 ">
             <h1 className="text-left mb-10 text-xl font-medium">
               Hola {userName}!
             </h1>
@@ -26,7 +26,7 @@ const PanelUsuario = () => {
               y actualizar tu informacion.
             </p>
           </div>
-          <ul className="flex flex-col bg-slate-100  justify-evenly items-start pl-4 h-40 md:h-full w-full  md:w-80">
+          <ul className="flex flex-col bg-slate-100  justify-evenly items-start pl-4 h-40 md:h-full w-full  lg:w-80">
             <Link to="/usuario/panel-control">
               <li
                 className={
