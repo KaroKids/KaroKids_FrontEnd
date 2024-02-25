@@ -18,7 +18,7 @@ const Landing = () => {
   return (
     <div className="mt-20">
       <Hero />
-      <button onClick={peticion}>Checkout</button>
+      {/* <button onClick={peticion}>Checkout</button> */}
       <Carrousel />
       <BoyGirl />
       <ServicesHome />

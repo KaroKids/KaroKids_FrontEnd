@@ -13,6 +13,7 @@ import Cart from "./components/Cart/Cart";
 import { AuthProvider } from "./context/AuthContext";
 import Register from "./components/Auth/Register";
 import PanelUsuario from "./components/User/PanelUsuario";
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   const { pathname } = useLocation();
@@ -33,9 +34,31 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/carrito" element={<Cart />} />
-          <Route path="/usuario/panel-control" element={<PanelUsuario />} />
-          <Route path="/usuario/datos-personales" element={<PanelUsuario />} />
-          <Route path="/usuario/pedidos" element={<PanelUsuario />} />
+          <Route
+            path="/usuario/panel-control"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <PanelUsuario />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/usuario/datos-personales"
+            element={
+              <ProtectedRoute>
+                <PanelUsuario />{" "}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/usuario/pedidos"
+            element={
+              <ProtectedRoute>
+                <PanelUsuario />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         {pathname !== "/create" && <SideBarSocial />}
         {pathname !== "/create" && pathname !== "/login" && <Footer />}

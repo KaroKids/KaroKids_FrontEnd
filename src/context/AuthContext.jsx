@@ -11,6 +11,7 @@ import {
 	EmailAuthProvider,
 	reauthenticateWithCredential,
 	updatePassword,
+	sendPasswordResetEmail,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import "./AuthContext.css";
@@ -42,15 +43,19 @@ export function AuthProvider({ children }) {
 	});
 
 	const [user, setUser] = useState("");
+	const [loading, setLoading] = useState(true);
 	useEffect(() => {
-		const suscribed = onAuthStateChanged(auth, (currentUser) => {
-			if (!currentUser) {
-				setUser("");
-			} else {
+		let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			setLoading(false);
+			if (currentUser) {
 				setUser(currentUser);
+			} else {
+				setUser("");
 			}
 		});
-		return () => suscribed();
+		return () => {
+			if (unsubscribe) unsubscribe();
+		};
 	}, []);
 
 	const handleChangePassword = async (currentPassword, newPassword) => {
@@ -58,7 +63,7 @@ export function AuthProvider({ children }) {
 			if (!auth.currentUser) {
 				Toast.fire({
 					icon: "error",
-					title: "No hay una cuenta logueada.",
+					title: "No hay una sesión iniciada.",
 				});
 			}
 
@@ -91,8 +96,10 @@ export function AuthProvider({ children }) {
 		try {
 			await updatePassword(usuario, newPassword);
 		} catch (error) {
-			console.log("No se pudo actualizar la contraseña");
-			throw error;
+			Toast.fire({
+				icon: "error",
+				title: "No se pudo actulizar la contraseña.",
+			});
 		}
 	};
 
@@ -111,10 +118,22 @@ export function AuthProvider({ children }) {
 			});
 			onClose();
 		} catch (error) {
-			Toast.fire({
-				icon: "error",
-				title: "Este correo ya se encuentra registrado",
-			});
+			if (error.code === "auth/invalid-email") {
+				Toast.fire({
+					icon: "error",
+					title: "Ingrese una direccion de correo válida.",
+				});
+			} else if (error.code === "auth/weak-password") {
+				Toast.fire({
+					icon: "error",
+					title: "La contraseña debe contener al menos 6 caracteres.",
+				});
+			} else if (error.code === "auth/email-already-in-use") {
+				Toast.fire({
+					icon: "error",
+					title: "Este correo ya se encuentra registrado.",
+				});
+			}
 		}
 	};
 
@@ -122,7 +141,7 @@ export function AuthProvider({ children }) {
 		try {
 			await updateProfile(user, { displayName });
 		} catch (error) {
-			console.log("No se pudo actualizar el display name");
+			console.log("No se pudo actualizar el display name.");
 		}
 	};
 
@@ -135,11 +154,15 @@ export function AuthProvider({ children }) {
 				title: "Has ingresado exitosamente.",
 			});
 		} catch (error) {
-			console.log(error);
-			if (error.code === "auth/wrong-password") {
+			if (error.code === "auth/invalid-credential") {
 				Toast.fire({
 					icon: "error",
-					title: "Contraseña incorrecta.",
+					title: "Email o contraseña incorrecta.",
+				});
+			} else if (error.code === "auth/invalid-email") {
+				Toast.fire({
+					icon: "error",
+					title: "Ingrese una direccion de correo válida.",
 				});
 			} else {
 				Toast.fire({
@@ -156,7 +179,7 @@ export function AuthProvider({ children }) {
 			await signInWithPopup(auth, responseGoogle);
 			Toast.fire({
 				icon: "success",
-				title: "Has ingresado exitosamente.",
+				title: "Sesión iniciada con éxito.",
 			});
 		} catch (error) {
 			console.log(error);
@@ -189,6 +212,24 @@ export function AuthProvider({ children }) {
 			console.log(error);
 		}
 	};
+
+	const resetPassword = async (email) => {
+		try {
+			await sendPasswordResetEmail(auth, email);
+			Toast.fire({
+				icon: "success",
+				title:
+					"Se ha enviado un correo electrónico para restablecer la contraseña.",
+			});
+		} catch (error) {
+			console.log(error);
+			Toast.fire({
+				icon: "error",
+				title:
+					"No se pudo enviar el correo electrónico de restablecimiento de contraseña.",
+			});
+		}
+	};
 	return (
 		<authContext.Provider
 			value={{
@@ -199,8 +240,9 @@ export function AuthProvider({ children }) {
 				logout,
 				user,
 				handleChangePassword,
+				resetPassword,
 			}}>
-			{children}
+			{!loading && children}
 		</authContext.Provider>
 	);
 }

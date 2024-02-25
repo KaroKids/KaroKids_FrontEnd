@@ -69,10 +69,10 @@ export default function ProductList() {
   };
 
   useEffect(() => {
-    console.log(productos);
     productos.volver === 0
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
+    window.scroll(0, 0);
   }, []);
 
   useEffect(() => {
