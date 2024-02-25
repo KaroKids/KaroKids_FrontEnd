@@ -94,7 +94,7 @@ const Register = ({ isOpen, onClose, className }) => {
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="mail@gmail.com"
+                    placeholder="ejemplo@ejemplo.com"
                     className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -141,7 +141,9 @@ const Register = ({ isOpen, onClose, className }) => {
                     height="50px"
                     alt="logo de google"
                   />
-                  <label className="mx-4">Registrarse con Google</label>
+                  <label className="mx-4 cursor-pointer">
+                    Registrarse con Google
+                  </label>
                 </Button>
               </div>
             </form>
