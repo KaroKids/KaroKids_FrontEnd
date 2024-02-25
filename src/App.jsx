@@ -9,6 +9,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import CreateProduct from "./components/CreateProduct/CreateProduct";
 import Dashboard from "./components/Admin/Dashboard";
 import Login from "./components/Auth/Login";
+import Cart from "./components/Cart/Cart";
 import { AuthProvider } from "./context/AuthContext";
 import Register from "./components/Auth/Register";
 import PanelUsuario from "./components/User/PanelUsuario";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/carrito" element={<Cart />} />
           <Route
             path="/usuario/panel-control"
             element={
