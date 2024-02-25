@@ -9,7 +9,7 @@ import {
 } from "./productosSlice";
 
 // const URL_PRODUCT = "http://localhost:3001/productos";
-const URL_PRODUCT = "https://karokids.onrender.com/productos";
+const URL_PRODUCT = import.meta.env.VITE_URL_SERVER;
 
 export const getAllProducts = () => {
   return async (dispatch) => {
