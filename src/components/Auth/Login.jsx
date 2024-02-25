@@ -86,7 +86,7 @@ export default function Login({ isOpen, onClose, className }) {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    placeholder="mail@gmail.com"
+                    placeholder="ejemplo@ejemplo.com"
                     onChange={(e) => setEmail(e.target.value)}
                     className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -141,7 +141,9 @@ export default function Login({ isOpen, onClose, className }) {
                     height="50px"
                     alt="logo de google"
                   />
-                  <label className="mx-4">Ingresar con Google</label>
+                  <label className="mx-4 cursor-pointer">
+                    Ingresar con Google
+                  </label>
                 </Button>
               </div>
             </form>
@@ -150,7 +152,7 @@ export default function Login({ isOpen, onClose, className }) {
                 onClick={handleOpenModal}
                 className="text-center mt-10 text-sm text-gray-500 cursor-pointer"
               >
-                No se ha registrado aún?
+                ¿Aún no estás registrado? ¡Haz clic aquí!
               </span>
             </div>
           </div>
