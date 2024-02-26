@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsById } from "@/redux/productosActions";
+import { addTalla } from "@/redux/carritoSlice";
 import { useParams } from "react-router-dom";
 
 export function Combobox() {
@@ -29,6 +30,10 @@ export function Combobox() {
 
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+
+  const handleTalla = (value) => {
+    dispatch(addTalla(value));
+  };
 
   useEffect(() => {
     dispatch(getProductsById(id));
@@ -61,6 +66,7 @@ export function Combobox() {
                 onSelect={() => {
                   setValue(key);
                   setOpen(false);
+                  handleTalla(value);
                 }}
               >
                 {key}
