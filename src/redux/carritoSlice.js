@@ -12,7 +12,10 @@ const carritoSlice = createSlice({
     },
     removeCarrito: (state, action) => {
       state.items = state.items.filter(
-        (item) => item.producto_id !== action.payload.id || item.compra_talla !== action.payload.talla || item.compra_color !== action.payload.color
+        (item) =>
+          item.producto_id !== action.payload.id ||
+          item.compra_talla !== action.payload.talla ||
+          item.compra_color !== action.payload.color
       );
     },
     addTalla: (state, action) => {
@@ -40,10 +43,14 @@ const carritoSlice = createSlice({
           item.compra_talla === action.payload.talla &&
           item.compra_color === action.payload.color
         ) {
-          return {
-            ...item,
-            compra_cantidad: item.compra_cantidad - 1,
-          };
+          if (item.compra_cantidad === 1) {
+            return item;
+          } else {
+            return {
+              ...item,
+              compra_cantidad: item.compra_cantidad - 1,
+            };
+          }
         }
         return item;
       });
@@ -51,5 +58,11 @@ const carritoSlice = createSlice({
   },
 });
 
-export const { addToCarrito, removeCarrito, addTalla, incrementarCantidad, decrementarCantidad } = carritoSlice.actions;
+export const {
+  addToCarrito,
+  removeCarrito,
+  addTalla,
+  incrementarCantidad,
+  decrementarCantidad,
+} = carritoSlice.actions;
 export default carritoSlice.reducer;
