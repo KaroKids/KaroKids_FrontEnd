@@ -1,6 +1,19 @@
 import { Button } from "../ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCarrito } from "@/redux/carritoSlice";
+import { useEffect } from "react";
 
-const ProductCart = ({ products }) => {
+const ProductCart = () => {
+  const productosCarrito = useSelector((state) => state.carrito.items);
+  const dispatch = useDispatch();
+
+  const handleDelete = (itemId) => {
+    dispatch(removeCarrito(itemId));
+    console.log("click");
+  };
+
+  useEffect(() => {}, [productosCarrito]);
+
   return (
     <article
       id="table"
@@ -21,28 +34,28 @@ const ProductCart = ({ products }) => {
         </h4>
       </nav>
       <div className="h-[400px] style-scrollbar overflow-y-auto remove-scroll w-full grid grid-cols-4 place-items-center gap-y-4 py-4">
-        {products.map((product) => {
+        {productosCarrito.map((product) => {
           return (
             <>
               <div id="productMain" className="flex items-center gap-x-4">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={product.imagen_principal}
+                  alt={product.nombre}
                   className="w-28 h-28"
                 />
                 <p className="hidden sm:flex flex-col gap-1 text-xl">
-                  <strong>{product.name}</strong>
+                  <strong>{product.nombre}</strong>
                   <p className="flex flex-col text-sm">
                     <span>
-                      <strong>Color:</strong> {product.color}
+                      <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
-                      <strong>Talle:</strong> {product.talle}
+                      <strong>Talle:</strong> {product.compra_talla}
                     </span>
                   </p>
                 </p>
               </div>
-              <div id="price">$ {product.price}</div>
+              <div id="price">$ {product.precio}</div>
               <form
                 id="counter"
                 className="place-items-center flex gap-x-0 sm:gap-x-4"
@@ -51,15 +64,23 @@ const ProductCart = ({ products }) => {
                   -
                 </Button>
                 <input
-                  className="remove-arrow w-4 h-10 text-center"
+                  className="remove-arrow w-fit h-10 text-center"
                   type="number"
-                  value={product.quantity}
+                  value={product.compra_cantidad}
                 />
                 <Button variant="detail" className="w-1 h-1 sm:w-10 sm:h-10">
                   +
                 </Button>
               </form>
-              <div id="total">$ {product.price * product.quantity}</div>
+              <div id="total">
+                $ {product.precio * product.compra_cantidad}{" "}
+                <span
+                  onClick={() => handleDelete(product.producto_id)}
+                  className="border border-black p-2 rounded"
+                >
+                  X
+                </span>
+              </div>
             </>
           );
         })}
