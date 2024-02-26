@@ -39,7 +39,7 @@ const ProductDetail = () => {
     },
   ]);
   const [selectedTalle, setSelectedTalle] = useState(false);
-  const [selectedQuantity, setselectedQuantity] = useState(0);
+  const [selectedQuantity, setselectedQuantity] = useState(1);
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -168,6 +168,7 @@ const ProductDetail = () => {
             <div className="grid grid-rows-1 place-items-center py-2  w-full border-t-2 border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
               <label>Cantidad:</label>
               <input
+                value = {selectedQuantity}
                 type="text"
                 className="border-gray-200 border-2 focus:outline-none w-14 h-10 text-center xl:w-24 mt-2 mb-4 "
                 onChange={handleQuantityChange}

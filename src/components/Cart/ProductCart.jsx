@@ -1,19 +1,26 @@
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { removeCarrito } from "@/redux/carritoSlice";
+import { decrementarCantidad, incrementarCantidad, removeCarrito } from "@/redux/carritoSlice";
 import { useEffect } from "react";
 
 const ProductCart = () => {
   const productosCarrito = useSelector((state) => state.carrito.items);
   const dispatch = useDispatch();
 
-  const handleDelete = (itemId) => {
-    dispatch(removeCarrito(itemId));
+  const handleDelete = (id ,talla, color) => {
+    dispatch(removeCarrito({id, talla, color}));
     console.log("click");
   };
-
+const handleIncrementar= (e, id ,talla, color)=>{
+  e.preventDefault();
+  dispatch(incrementarCantidad({id ,talla, color}))
+}
+const handleDecrementar= (e, id ,talla, color)=>{
+  e.preventDefault();
+  dispatch(decrementarCantidad({id ,talla, color}))
+}
   useEffect(() => {}, [productosCarrito]);
-
+console.log(productosCarrito)
   return (
     <article
       id="table"
@@ -60,7 +67,7 @@ const ProductCart = () => {
                 id="counter"
                 className="place-items-center flex gap-x-0 sm:gap-x-4"
               >
-                <Button variant="detail" className="w-1 h-1 sm:w-10 sm:h-10">
+                <Button onClick={(e) => handleDecrementar(e, product.producto_id, product.compra_talla, product.compra_color)} variant="detail" className="w-1 h-1 sm:w-10 sm:h-10">
                   -
                 </Button>
                 <input
@@ -68,14 +75,14 @@ const ProductCart = () => {
                   type="number"
                   value={product.compra_cantidad}
                 />
-                <Button variant="detail" className="w-1 h-1 sm:w-10 sm:h-10">
+                <Button onClick={(e) => handleIncrementar(e, product.producto_id, product.compra_talla, product.compra_color)} variant="detail" className="w-1 h-1 sm:w-10 sm:h-10">
                   +
                 </Button>
               </form>
               <div id="total">
                 $ {product.precio * product.compra_cantidad}{" "}
                 <span
-                  onClick={() => handleDelete(product.producto_id)}
+                  onClick={() => handleDelete(product.producto_id, product.compra_talla, product.compra_color)}
                   className="border border-black p-2 rounded"
                 >
                   X
