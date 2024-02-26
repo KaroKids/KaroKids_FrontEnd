@@ -11,7 +11,7 @@ import { Card } from "@/components/ui/card";
 import ServicesDetail from "../Services/ServicesDetail";
 import Swal from "sweetalert2";
 import Carrousel from "../Home/Carrousel";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
 import { addToCarrito } from "@/redux/carritoSlice";
@@ -41,7 +41,7 @@ const ProductDetail = () => {
   const [selectedTalle, setSelectedTalle] = useState(false);
   const [selectedQuantity, setselectedQuantity] = useState(1);
   const { id } = useParams();
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
   let stock = product.stock;
@@ -71,7 +71,6 @@ const ProductDetail = () => {
     dispatch(
       addToCarrito({ ...item, producto_id, nombre, imagen_principal, precio })
     );
-    // navigate("/carrito");
 
     Toast.fire({
       icon: "success",
@@ -132,7 +131,7 @@ const ProductDetail = () => {
           </Carousel>
 
           <div className="flex flex-col items-center xl:items-start justify-evenly w-full xl:mx-4 h-full ">
-            <h2 className="text-slate-500 font-medium text-2xl text-center sm:text-3xl">
+            <h2 className="text-slate-500 font-semibold text-2xl text-center sm:text-3xl">
               {product.nombre}
             </h2>
             <div className="m-0">
@@ -148,8 +147,8 @@ const ProductDetail = () => {
                 </span>
               </Link>
             </div>
-            <p className="text-slate-500 font-medium my-4  text-3xl text-center xl:my-0 xl:text-left xl:font-semibold">
-              COP ${fixedPrice}
+            <p className="text-slate-500 font-semibold my-4  text-3xl text-center xl:my-0 xl:text-left xl:font-semibold">
+              ${fixedPrice}
             </p>
             <div className=" w-full border-t-2 border-gray-100  py-4 xl:border-gray-200 xl:py-0 xl:pt-0">
               <p className="text-sm md:text-base xl:text-lg xl:mt-4">
@@ -173,9 +172,8 @@ const ProductDetail = () => {
             <div className="grid grid-rows-1 place-items-center py-2  w-full border-t-2 border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
               <label>Cantidad:</label>
               <input
-                value = {selectedQuantity}
-                type="text"
                 value={selectedQuantity}
+                type="text"
                 className="border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                 onChange={handleQuantityChange}
               />
