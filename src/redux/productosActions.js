@@ -8,7 +8,7 @@ import {
 	getProdById,
 } from "./productosSlice";
 
-const URL_PRODUCT = import.meta.env.VITE_URL_SERVER;
+const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
 export const getAllProducts = () => {
 	return async (dispatch) => {
