@@ -2,20 +2,23 @@ import { Button } from "../ui/button";
 import ProductCart from "./ProductCart";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
       <header className="flex justify-between text-4xl font-semibold mb-2">
         <h2>Mi carrito</h2>
-        <Button variant="detail" className="text-base ">
-          <img
-            src="/public/assets/navbar-icons/back-black.svg"
-            alt=""
-            className="w-6 mr-2"
-          />
-          Volver a la tienda
-        </Button>
+        <Link to="/productos">
+          <Button variant="detail" className="text-base ">
+            <img
+              src="/public/assets/navbar-icons/back-black.svg"
+              alt=""
+              className="w-6 mr-2"
+            />
+            Volver a la tienda
+          </Button>
+        </Link>
       </header>
       <main className="mt-6 border-t-2 border-t-slate-300">
         <ProductCart />

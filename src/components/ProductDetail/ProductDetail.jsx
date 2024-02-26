@@ -65,13 +65,18 @@ const ProductDetail = () => {
       setSelectedColor(null);
     }
   };
-  console.log(stock);
+
   const handleAddToCart = (item) => {
     const { producto_id, nombre, imagen_principal, precio } = product;
     dispatch(
       addToCarrito({ ...item, producto_id, nombre, imagen_principal, precio })
     );
-    navigate("/carrito");
+    // navigate("/carrito");
+
+    Toast.fire({
+      icon: "success",
+      title: "Producto agregado al carrito",
+    });
   };
 
   useEffect(() => {
@@ -170,7 +175,8 @@ const ProductDetail = () => {
               <input
                 value = {selectedQuantity}
                 type="text"
-                className="border-gray-200 border-2 focus:outline-none w-14 h-10 text-center xl:w-24 mt-2 mb-4 "
+                value={selectedQuantity}
+                className="border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                 onChange={handleQuantityChange}
               />
               <label>Color:</label>
@@ -180,7 +186,7 @@ const ProductDetail = () => {
                     key={color.value}
                     className={`w-8 h-6  rounded-full  mx-1 my-2 cursor-pointer border ${
                       selectedColor && selectedColor === color.value
-                        ? "border-slate-800 border-2"
+                        ? "border-sky-500 border-2"
                         : "border-slate-300"
                     }`}
                     style={{ backgroundColor: color.value }}
@@ -194,7 +200,7 @@ const ProductDetail = () => {
               variant="detail"
               className="my-2 w-full xl:mt-0 "
               onClick={() =>
-                selectedColor && selectedTalle
+                selectedColor && selectedTalle && selectedQuantity != 0
                   ? handleAddToCart({
                       usuario_id: "",
                       compra_talla: selectedTalle,
@@ -203,7 +209,7 @@ const ProductDetail = () => {
                     })
                   : Toast.fire({
                       icon: "error",
-                      title: "Falta seleccionar Talla o Color",
+                      title: "Falta seleccionar Talla, Color o Cantidad",
                     })
               }
             >

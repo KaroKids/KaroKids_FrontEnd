@@ -91,14 +91,15 @@ const NavbarDesktop = () => {
             className="w-6 h-6"
           />
         </li>
-
-        <li className="cursor-pointer">
-          <img
-            src="/assets/navbar-icons/cart-blue.svg"
-            alt="Logo del carrito de compras"
-            className="w-6 h-6"
-          />
-        </li>
+        <Link to="/carrito">
+          <li className="cursor-pointer">
+            <img
+              src="/assets/navbar-icons/cart-blue.svg"
+              alt="Logo del carrito de compras"
+              className="w-6 h-6"
+            />
+          </li>
+        </Link>
       </ul>
 
       <Login
