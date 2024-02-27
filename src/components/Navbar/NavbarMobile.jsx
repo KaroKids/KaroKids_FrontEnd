@@ -79,13 +79,15 @@ const NavbarMobile = () => {
             </Link>
           </li>
 
-          <li>
-            <img
-              src="/assets/navbar-icons/cart.svg"
-              alt="Logo del carrito de compras"
-              className="w-6 h-6"
-            />
-          </li>
+          <Link to="/carrito">
+            <li>
+              <img
+                src="/assets/navbar-icons/cart.svg"
+                alt="Logo del carrito de compras"
+                className="w-6 h-6"
+              />
+            </li>
+          </Link>
 
           <li onClick={showMenu}>
             <img
