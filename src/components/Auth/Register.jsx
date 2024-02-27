@@ -1,23 +1,84 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { postUser } from "@/redux/userAction";
+import { getUserByEmail } from "@/redux/userAction";
+import Swal from "sweetalert2";
 
 const Register = ({ isOpen, onClose, className }) => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
   const auth = useAuth();
+
+  const dispatch = useDispatch();
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
   const [nameRegister, setNameRegister] = useState("");
   const [lastNameRegister, setLastNameRegister] = useState("");
+  const userGlobal = useSelector((state) => state.users.user);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    auth.register(emailRegister, passwordRegister, nameRegister, onClose);
+    const { payload } = await dispatch(getUserByEmail(emailRegister));
+    if (payload.email_usuario) {
+      Toast.fire({
+        icon: "error",
+        title: "El email ya existe en la BD",
+      });
+    } else {
+      const body = {
+        nombre_usuario: nameRegister,
+        apellido_usuario: lastNameRegister,
+        email_usuario: emailRegister,
+      };
+
+      dispatch(postUser(body));
+      auth.register(emailRegister, passwordRegister, nameRegister, onClose);
+    }
   };
 
-  const handleGoogle = (e) => {
+  const handleGoogle = async (e) => {
     e.preventDefault();
-    auth.registerWithGoogle();
-    onClose();
+    await auth.registerWithGoogle();
+    const { user } = auth;
+    const response = await dispatch(getUserByEmail(user.email));
+    const payload = response?.payload; // Verificar si response existe y luego obtener payload
+
+    if (payload && payload.email_usuario) {
+      Toast.fire({
+        icon: "error",
+        title: "El email ya existe en la BD",
+      });
+    } else {
+      const FirstName = user.displayName?.split(" ")[0];
+      const LastName =
+        user.displayName?.split(" ")[user.displayName?.split(" ").length - 1];
+      const body = {
+        nombre_usuario: FirstName,
+        apellido_usuario: LastName,
+        email_usuario: user.email,
+      };
+      await dispatch(postUser(body));
+      Swal.fire({
+        title: "Registro finalizado!",
+        text: "Te has registrado correctamente.",
+        icon: "success",
+      });
+      onClose();
+    }
   };
 
   return (
