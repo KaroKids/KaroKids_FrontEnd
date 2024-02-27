@@ -30,7 +30,7 @@ const carritoSlice = createSlice({
         ) {
           return {
             ...item,
-            compra_cantidad: item.compra_cantidad + 1,
+            compra_cantidad: Number(item.compra_cantidad) + 1,
           };
         }
         return item;
@@ -48,7 +48,7 @@ const carritoSlice = createSlice({
           } else {
             return {
               ...item,
-              compra_cantidad: item.compra_cantidad - 1,
+              compra_cantidad: Number(item.compra_cantidad) - 1,
             };
           }
         }
