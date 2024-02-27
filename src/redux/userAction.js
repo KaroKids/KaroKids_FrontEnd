@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { allUsers, UserByEmail } from "./userSlice.js";
+import { allUsers, UserByEmail, UserPut } from "./userSlice.js";
 
 const URL_USERS = import.meta.env.VITE_URL_USERS;
 
@@ -27,6 +27,18 @@ export const getUserByEmail = (email) => {
       );
 
       return await dispatch(UserByEmail(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const getPutUser = (body) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`${URL_USERS}`, body);
+      console.log(data);
+      return await dispatch(UserPut(data));
     } catch (error) {
       console.error(error);
     }
