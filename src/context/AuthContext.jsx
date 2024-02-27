@@ -192,7 +192,7 @@ export function AuthProvider({ children }) {
   const registerWithGoogle = async () => {
     try {
       const responseGoogle = new GoogleAuthProvider();
-      await signInWithPopup(auth, responseGoogle);
+      return await signInWithPopup(auth, responseGoogle);
     } catch (error) {
       console.log(error);
     }

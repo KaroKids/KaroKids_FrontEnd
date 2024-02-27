@@ -52,12 +52,13 @@ const Register = ({ isOpen, onClose, className }) => {
 
   const handleGoogle = async (e) => {
     e.preventDefault();
-    await auth.registerWithGoogle();
-    const { user } = auth;
+    const google = await auth.registerWithGoogle();
+
+    const { user } = google;
     const response = await dispatch(getUserByEmail(user.email));
     const payload = response?.payload; // Verificar si response existe y luego obtener payload
 
-    if (payload && payload.email_usuario) {
+    if (payload && payload.data && payload.data.email_usuario) {
       Toast.fire({
         icon: "error",
         title: "El email ya existe en la BD",
