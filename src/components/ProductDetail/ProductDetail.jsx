@@ -173,7 +173,7 @@ const ProductDetail = () => {
               <label>Cantidad:</label>
               <input
                 value={selectedQuantity}
-                type="text"
+                type="number"
                 className="border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                 onChange={handleQuantityChange}
               />
