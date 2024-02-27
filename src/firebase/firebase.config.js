@@ -2,18 +2,25 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+
+const API_KEY = import.meta.env.VITE_API_KEY;
+const AUTH_DOMAIN = import.meta.env.VITE_AUTH_DOMAIN;
+const PROJECT_ID = import.meta.env.VITE_PROJECT_ID;
+const STORAGE_BUCKET = import.meta.env.VITE_STORAGE_BUCKET;
+const MESSAGING_SENDER_ID = import.meta.env.VITE_MESSAGING_SENDER_ID;
+const APP_ID = import.meta.env.VITE_APP_ID;
+const MEASUREMENT_ID = import.meta.env.VITE_MEASUREMENT_ID;
+
 const firebaseConfig = {
-	apiKey: "AIzaSyAbv1kvAXUiJfomGtmcAJqp7DgU6wQohrw",
-	authDomain: "karokids-2cb6a.firebaseapp.com",
-	projectId: "karokids-2cb6a",
-	storageBucket: "karokids-2cb6a.appspot.com",
-	messagingSenderId: "309517758272",
-	appId: "1:309517758272:web:89c6f76e1d61ef85c114a5",
-	measurementId: "G-DH8K74YVBB",
+	apiKey: API_KEY,
+	authDomain: AUTH_DOMAIN,
+	projectId: PROJECT_ID,
+	storageBucket: STORAGE_BUCKET,
+	messagingSenderId: MESSAGING_SENDER_ID,
+	appId: APP_ID,
+	measurementId: MEASUREMENT_ID,
 };
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 const analytics = getAnalytics(app);

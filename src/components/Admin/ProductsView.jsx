@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import { numberMaskUnit } from "@/utils/numberMask";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllProducts,
@@ -9,11 +9,25 @@ import {
 
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
-
-import ProductCard from "./ProductCard";
-import PaginationControls from "./PaginationControls";
-import FilterOptions from "./FilterOptions";
+import Swal from "sweetalert2";
+ 
+import PaginationControls from "../ProductList/PaginationControls";
+import FilterOptions from "../ProductList/FilterOptions";
 import { Link } from "react-router-dom";
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+  customClass: {
+    popup: "my-toast",
+  },
+});
 
 const relevancias = [
   {
@@ -38,7 +52,28 @@ const relevancias = [
   },
 ];
 
+
+const handleLogicDelete = () =>{
+  Swal.fire({
+    title: "Estás seguro?",
+    text: "Al confirmar el producto se pondrá inactivo!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, borrar el item!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Desactivado!",
+        text: "El producto se ha desactivado con éxito.",
+        icon: "success"
+      });
+    }
+  });
+}
 export default function ProductList() {
+ 
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -85,9 +120,7 @@ export default function ProductList() {
     <div className="bg-white mt-20 sm:mt-0">
       {productos && (
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
-          <h2 className="flex flex-col mb-8  text-center xl:text-left  font-medium ">
-            PRODUCTOS DISPONIBLES EN KAROKIDS
-          </h2>
+         <h2 className="text-xl font-semibold mb-4">Lista de Productos</h2>
           <div className="flex flex-row gap-x-2 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
             <select
               name="ordenarpor"
@@ -111,20 +144,39 @@ export default function ProductList() {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {productos &&
-              productos.productos.map((product, i) => (
-                <Link key={i} to={`/producto/${product.producto_id}`}>
-                  <ProductCard
-                    id={product.producto_id}
-                    imageSrc={product.imagen_principal}
-                    imageAlt={product.nombre}
-                    name={product.nombre}
-                    price={product.precio}
-                  />
-                </Link>
-              ))}
+ <div className="table w-full border-collapse">
+  <div className="table-header-group bg-gray-50">
+    <div className="table-row">
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</div>
+    </div>
+  </div>
+  <div className="table-row-group">
+    {productos &&
+      productos.productos.map((product) => (
+        <div key={product.producto_id} className="table-row">
+          <div className="table-cell px-6 py-4 whitespace-nowrap">
+            <img src={product.imagen_principal} alt={product.nombre} className="h-12 w-12 object-cover rounded" />
           </div>
+          <div className="table-cell px-6 py-4 whitespace-nowrap">{product.nombre}</div>
+          <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">{product.descripcion}</div>
+          <div className="table-cell px-6 py-4 whitespace-nowrap">$ {numberMaskUnit(product.precio)}</div>
+          <div className="table-cell px-6 py-4 whitespace-nowrap">
+            <Link to={`/producto/${product.producto_id}`}>
+              <button className="text-indigo-600 hover:text-indigo-900 mr-2">Visualizar</button>
+            </Link>
+            <button  className="text-yellow-600 hover:text-indigo-900 mr-2">Editar</button>
+            <button onClick={handleLogicDelete} className="text-red-600 hover:text-indigo-900 mr-2">Desactivar</button>
+      
+          </div>
+        </div>
+      ))}
+  </div>
+</div>
+
           <PaginationControls filtros={filtrosAplicados} />
         </div>
       )}
