@@ -15,8 +15,14 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
 import { addToCarrito } from "@/redux/carritoSlice";
+import { getUserByEmail } from "@/redux/userAction";
+import { useContext } from "react";
+import { authContext } from "@/context/AuthContext";
+import { addProducto } from "@/redux/carritoActions";
 
 const ProductDetail = () => {
+  const { user } = useContext(authContext);
+
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -33,6 +39,8 @@ const ProductDetail = () => {
   });
 
   const [selectedColor, setSelectedColor] = useState(false);
+  const user2 = useSelector((state) => state.users.user);
+
   const [color, setColor] = useState([
     {
       value: "",
@@ -67,7 +75,9 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = (item) => {
-    const { producto_id, nombre, imagen_principal, precio } = product;
+    console.log(item);
+    const { producto_id, precio, nombre, imagen_principal } = product;
+    dispatch(addProducto({ ...item, producto_id, precio }));
     dispatch(
       addToCarrito({ ...item, producto_id, nombre, imagen_principal, precio })
     );
@@ -80,6 +90,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     dispatch(getProductsById(id));
+    dispatch(getUserByEmail(user.email));
     window.scroll(0, 0);
     setSelectedColor("");
   }, []);
@@ -200,10 +211,10 @@ const ProductDetail = () => {
               onClick={() =>
                 selectedColor && selectedTalle && selectedQuantity != 0
                   ? handleAddToCart({
-                      usuario_id: "",
+                      usuario_id: user2.usuario_id,
                       compra_talla: selectedTalle,
                       compra_color: selectedColor,
-                      compra_cantidad: selectedQuantity,
+                      compra_cantidad: Number(selectedQuantity),
                     })
                   : Toast.fire({
                       icon: "error",
