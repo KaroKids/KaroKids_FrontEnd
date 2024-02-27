@@ -8,7 +8,7 @@ import {
   agregarProducto,
   eliminarProducto,
   actualizarProducto,
-  borrarCarrito
+  borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
 
@@ -20,22 +20,33 @@ const ProductCart = () => {
   // }
 
   //* if (usuario === registrado) {
-    dispatch(allCarrito(usuario_id));
-    const miCarrito = useSelector ((state) => state.carrito.productos_compra)
+  dispatch(allCarrito());
+  const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
   const handleAdd = (id, talla, color) => {
     //if (usuario === no registrado) {}
     //* if (usuario === registrado) {
-      dispatch(agregarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad, producto_precio))
+    dispatch(
+      agregarProducto(
+        usuario_id,
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad,
+        producto_precio
+      )
+    );
     //* }
   };
 
   const handleBuy = (id, talla, color) => {
     //if (usuario === no registrado) {}
     //* if (usuario === registrado) {
-      const compraFinalizada = useSelector ((state) => state.carrito.productos_compra)
-      dispatch(borrarCarrito(usuario_id))
+    const compraFinalizada = useSelector(
+      (state) => state.carrito.productos_compra
+    );
+    dispatch(borrarCarrito(usuario_id));
     //* }
   };
 
@@ -46,7 +57,9 @@ const ProductCart = () => {
     // }
 
     //* if (usuario === registrado) {
-      dispatch(eliminarProducto(usuario_id, producto_id,compra_talla, compra_color))
+    dispatch(
+      eliminarProducto(usuario_id, producto_id, compra_talla, compra_color)
+    );
     //* }
   };
 
@@ -57,7 +70,15 @@ const ProductCart = () => {
     // }
 
     //* if (usuario === registrado) {
-      dispatch(actualizarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad))
+    dispatch(
+      actualizarProducto(
+        usuario_id,
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad
+      )
+    );
     //* }
   };
 
@@ -68,7 +89,15 @@ const ProductCart = () => {
     // }
 
     //* if (usuario === registrado) {
-      dispatch(actualizarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad))
+    dispatch(
+      actualizarProducto(
+        usuario_id,
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad
+      )
+    );
     //* }
   };
 

@@ -9,6 +9,7 @@ const carritoSlice = createSlice({
   name: "carrito",
   initialState: {
     items: loadCartFromLocalStorage(),
+    carrito: [],
     talla: "",
 
     //*Estados para usuarios registrados
@@ -25,27 +26,19 @@ const carritoSlice = createSlice({
   reducers: {
     //*Destinados a usuarios registrados.
     allCarrito: (state, action) => {
-      const { 
-        usuario_id, 
-        productos_compra, 
-        carrito_id } = action.payload;
-        
-      state.usuario_id = usuario_id;
-      state.productos_compra = productos_compra;
-      state.carrito_id = carrito_id;
-     
+      state.carrito = action.payload;
     },
     agregarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra
+      state.productos_compra = action.payload.productos_compra;
     },
     eliminarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra
+      state.productos_compra = action.payload.productos_compra;
     },
     actualizarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra
+      state.productos_compra = action.payload.productos_compra;
     },
     borrarCarrito: (state, action) => {
-      state.productos_compra = action.payload.productos_compra
+      state.productos_compra = action.payload.productos_compra;
     },
     //*
 
@@ -103,7 +96,6 @@ const carritoSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
   },
-  
 });
 
 export const {
