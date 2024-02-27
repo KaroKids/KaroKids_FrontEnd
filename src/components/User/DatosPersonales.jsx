@@ -1,18 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPutUser, getUserByEmail } from "@/redux/userAction";
+import Swal from "sweetalert2";
 
 const DatosPersonales = () => {
   const auth = useAuth();
   const { photoURL, email } = auth.user;
+  const user = useSelector((state) => state.users.user);
+  const [nombre, setNombre] = useState(user.nombre_usuario);
+  const [apellido, setApellido] = useState(user.apellido_usuario);
+  const [emailData, setEmail] = useState(user.email_usuario);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const user = useSelector((state) => state.users.user);
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
+
+  const dispatch = useDispatch();
+  const handlePut = (e) => {
+    e.preventDefault();
+    const body = {
+      nombre_usuario: nombre,
+      apellido_usuario: apellido,
+      email_usuario: emailData,
+      usuario_id: user.usuario_id,
+    };
+    dispatch(getPutUser(body));
+    Toast.fire({
+      icon: "success",
+      title: "Informacion modificada exitosamente.",
+    });
+  };
   const handlePasswordChange = (e) => {
     e.preventDefault();
     auth.handleChangePassword(currentPassword, newPassword);
   };
+
+  useEffect(() => {
+    dispatch(getUserByEmail(email));
+  }, []);
 
   return (
     <div className="flex flex-col lg:flex-row justify-center  lg:h-[500px] w-full">
@@ -31,7 +71,8 @@ const DatosPersonales = () => {
             id="nombre"
             name="nombre"
             type="text"
-            value={user.nombre_usuario}
+            onChange={(e) => setNombre(e.target.value)}
+            defaultValue={user.nombre_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -50,7 +91,8 @@ const DatosPersonales = () => {
             id="apellido"
             name="apellido"
             type="text"
-            value={user.apellido_usuario}
+            onChange={(e) => setApellido(e.target.value)}
+            defaultValue={user.apellido_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -69,28 +111,15 @@ const DatosPersonales = () => {
             id="email"
             name="email"
             type="email"
-            value={user.email_usuario}
+            onChange={(e) => setEmail(e.target.value)}
+            defaultValue={user.email_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="date"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            Número de Teléfono:
-          </label>
-          <input
-            id="tel"
-            name="tel"
-            type="number"
-            className="block pl-2 w-full rounded-md mb-8 xl:mb-0 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
 
         <Button
           variant="outline"
+          onClick={(e) => handlePut(e)}
           className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm   "
         >
           Modificar
