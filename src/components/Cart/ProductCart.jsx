@@ -4,26 +4,76 @@ import {
   decrementarCantidad,
   incrementarCantidad,
   removeCarrito,
+  allCarrito,
+  agregarProducto,
+  eliminarProducto,
+  actualizarProducto,
+  borrarCarrito
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
 
 const ProductCart = () => {
-  const productosCarrito = useSelector((state) => state.carrito.items);
   const dispatch = useDispatch();
 
+  // if (usuario === no_registrado) {
+  const productosCarrito = useSelector((state) => state.carrito.items);
+  // }
+
+  //* if (usuario === registrado) {
+    dispatch(allCarrito(usuario_id));
+    const miCarrito = useSelector ((state) => state.carrito.productos_compra)
+  //* }
+
+  const handleAdd = (id, talla, color) => {
+    //if (usuario === no registrado) {}
+    //* if (usuario === registrado) {
+      dispatch(agregarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad, producto_precio))
+    //* }
+  };
+
+  const handleBuy = (id, talla, color) => {
+    //if (usuario === no registrado) {}
+    //* if (usuario === registrado) {
+      const compraFinalizada = useSelector ((state) => state.carrito.productos_compra)
+      dispatch(borrarCarrito(usuario_id))
+    //* }
+  };
+
   const handleDelete = (id, talla, color) => {
+    //if (usuario === no registrado) {
     dispatch(removeCarrito({ id, talla, color }));
     console.log("click");
+    // }
+
+    //* if (usuario === registrado) {
+      dispatch(eliminarProducto(usuario_id, producto_id,compra_talla, compra_color))
+    //* }
   };
+
   const handleIncrementar = (e, id, talla, color) => {
+    //if (usuario === no registrado) {
     e.preventDefault();
     dispatch(incrementarCantidad({ id, talla, color }));
+    // }
+
+    //* if (usuario === registrado) {
+      dispatch(actualizarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad))
+    //* }
   };
+
   const handleDecrementar = (e, id, talla, color) => {
+    //if (usuario === no registrado) {
     e.preventDefault();
     dispatch(decrementarCantidad({ id, talla, color }));
+    // }
+
+    //* if (usuario === registrado) {
+      dispatch(actualizarProducto(usuario_id, producto_id, compra_talla, compra_color, compra_cantidad))
+    //* }
   };
+
   useEffect(() => {}, []);
+
   return (
     <article
       id="table"

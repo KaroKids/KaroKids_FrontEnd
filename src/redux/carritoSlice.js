@@ -25,9 +25,15 @@ const carritoSlice = createSlice({
   reducers: {
     //*Destinados a usuarios registrados.
     allCarrito: (state, action) => {
-      state.usuario_id = action.payload.usuario_id,
-      state.productos_compra = action.payload.productos_compra,
-      state.carrito_id = action.payload.carrito_id
+      const { 
+        usuario_id, 
+        productos_compra, 
+        carrito_id } = action.payload;
+        
+      state.usuario_id = usuario_id;
+      state.productos_compra = productos_compra;
+      state.carrito_id = carrito_id;
+     
     },
     agregarProducto: (state, action) => {
       state.productos_compra = action.payload.productos_compra

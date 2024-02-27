@@ -33,69 +33,77 @@ export const getCarrito = async (id) => {
 };
 
 export const addProducto = async (body) => {
-    try {
-        const { carritoUsuario } = await axios.get(`${URL_CARRITO}`, body);
+    return async (dispatch) => {
+        try {
+            const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
 
-        const { 
-            productos_compra} = carritoUsuario
+            const { 
+                productos_compra} = carritoUsuario
 
-        return dispatch(
-            agregarProducto({
-                productos_compra: productos_compra
-            })
-        )
-      } catch (error) {
-        console.error(error);
-      }
+            return dispatch(
+                agregarProducto({
+                    productos_compra: productos_compra
+                })
+            )
+        } catch (error) {
+            console.error(error);
+        }
+    }
 };
 
 export const deleteProducto = async (body) => {
-    try {
-        const { carritoUsuario } = await axios.get(`${URL_CARRITO}`, body);
+    return async (dispatch) => {
+        try {
+            const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
 
-        const { 
-            productos_compra} = carritoUsuario
+            const { 
+                productos_compra} = carritoUsuario
 
-        return dispatch(
-            eliminarProducto({
-                productos_compra: productos_compra
-            })
-        )
-      } catch (error) {
-        console.error(error);
-      }
+            return dispatch(
+                eliminarProducto({
+                    productos_compra: productos_compra
+                })
+            )
+        } catch (error) {
+            console.error(error);
+        }
+    }
 };
 
 export const updateProducto = async (body) => {
-    try {
-        const { carritoUsuario } = await axios.get(`${URL_CARRITO}`, body);
+    return async (dispatch) => {
+        try {
+            const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
 
-        const { 
-            productos_compra} = carritoUsuario
+            const { 
+                productos_compra} = carritoUsuario
 
-        return dispatch(
-            actualizarProducto({
-                productos_compra: productos_compra
-            })
-        )
-      } catch (error) {
-        console.error(error);
-      }
+            return dispatch(
+                actualizarProducto({
+                    productos_compra: productos_compra
+                })
+            )
+        } catch (error) {
+            console.error(error);
+        }
+    }
 };
 
 export const deleteCarrito = async (id) => {
-    try {
-        const { carritoUsuario } = await axios.get(`${URL_CARRITO}/${id}`);
+    return async (dispatch) => {
+        try {
+            const { carritoUsuario } = await axios.delete(`${URL_CARRITO}/${id}`);
 
-        const { 
-            productos_compra} = carritoUsuario
+            const { 
+                productos_compra} = carritoUsuario
 
-        return dispatch(
-            borrarCarrito({
-                productos_compra: productos_compra
-            })
-        )
-      } catch (error) {
-        console.error(error);
-      }
-};
+            return dispatch(
+                borrarCarrito({
+                    productos_compra: productos_compra
+                })
+            )
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
