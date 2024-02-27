@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 export default function Login({ isOpen, onClose, className }) {
   const auth = useAuth();
+
   const [mail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +26,7 @@ export default function Login({ isOpen, onClose, className }) {
   const handleGoogle = (e) => {
     e.preventDefault();
     auth.loginWithGoogle();
+
     onClose();
   };
 
@@ -45,7 +47,7 @@ export default function Login({ isOpen, onClose, className }) {
         className={`fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 z-[20] bg-opacity-50 ${className}`}
       >
         <div className="flex justify-end  min-w-full min-h-10 ">
-          <div className="  justify-center items-center bg-white p-8 rounded-lg w-full  h-[700px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
+          <div className="  justify-center items-center bg-white p-8 rounded-b-lg w-full  h-[700px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-gray-800 focus:outline-none   "
