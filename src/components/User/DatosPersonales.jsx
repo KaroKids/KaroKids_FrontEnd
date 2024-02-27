@@ -42,7 +42,7 @@ const DatosPersonales = () => {
     dispatch(getPutUser(body));
     Toast.fire({
       icon: "success",
-      title: "Informacion modificada exitosamente.",
+      title: "Información actualizada exitosamente.",
     });
   };
   const handlePasswordChange = (e) => {
@@ -58,7 +58,7 @@ const DatosPersonales = () => {
     <div className="flex flex-col lg:flex-row justify-center  lg:h-[500px] w-full">
       <form className="lg:space-y-6 py-6 w-full px-4">
         <h1 className=" mb-10 font-semibold text-left text-xl">
-          Modificá tus datos personales
+          Actualizar datos personales
         </h1>
         <div className="my-4">
           <label
@@ -118,17 +118,17 @@ const DatosPersonales = () => {
         </div>
 
         <Button
-          variant="outline"
+          variant="detail"
           onClick={(e) => handlePut(e)}
-          className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm   "
+          className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
         >
           Modificar
         </Button>
       </form>
 
-      <form className="flex flex-col justify-end mx-auto h-full py-6 px-4  w-full">
+      <form className="flex flex-col justify-end mx-auto h-auto py-6 px-4  w-full">
         <h1 className="mb-6 font-semibold text-left text-xl">
-          Modificá tu contraseña
+          Actualizar contraseña
         </h1>
         <div className="flex flex-col py-4  lg:h-[450px] xl:h-[346px]">
           <label
@@ -160,9 +160,9 @@ const DatosPersonales = () => {
           />
         </div>
         <Button
-          variant="outline"
+          variant="detail"
           onClick={(e) => handlePasswordChange(e)}
-          className=" w-full text-sm font-semibold leading-6 my-auto text-black shadow-sm "
+          className="w-full text-sm font-semibold leading-6 my-auto text-white shadow-sm"
         >
           Modificar
         </Button>
