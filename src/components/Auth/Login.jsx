@@ -105,7 +105,7 @@ export default function Login({ isOpen, onClose, className }) {
                   </label>
                   <span
                     onClick={handleReset}
-                    className=" text-sm text-gray-500 cursor-pointer"
+                    className=" text-sm text-black cursor-pointer"
                   >
                     Olvidé mi contraseña
                   </span>
@@ -152,7 +152,7 @@ export default function Login({ isOpen, onClose, className }) {
             <div className="flex justify-center">
               <span
                 onClick={handleOpenModal}
-                className="text-center mt-10 text-sm text-gray-500 cursor-pointer"
+                className="text-center mt-10 text-sm text-black cursor-pointer"
               >
                 ¿Aún no estás registrado? ¡Haz clic aquí!
               </span>
