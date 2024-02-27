@@ -26,7 +26,7 @@ export const getUserByEmail = (email) => {
         `${URL_USERS}/usuario?email_usuario=${email.toString()}`
       );
 
-      return dispatch(UserByEmail(data));
+      return await dispatch(UserByEmail(data));
     } catch (error) {
       console.error(error);
     }

@@ -31,7 +31,7 @@ const DatosPersonales = () => {
             id="nombre"
             name="nombre"
             type="text"
-            value={user[0].nombre_usuario}
+            value={user.nombre_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -50,7 +50,7 @@ const DatosPersonales = () => {
             id="apellido"
             name="apellido"
             type="text"
-            value={user[0].apellido_usuario}
+            value={user.apellido_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
@@ -69,7 +69,7 @@ const DatosPersonales = () => {
             id="email"
             name="email"
             type="email"
-            value={user[0].email_usuario}
+            value={user.email_usuario}
             className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>

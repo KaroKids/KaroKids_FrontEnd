@@ -32,10 +32,8 @@ const Register = ({ isOpen, onClose, className }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(userGlobal);
-    await dispatch(getUserByEmail(emailRegister));
-    console.log(userGlobal);
-    if (userGlobal?.email_usuario) {
+    const { payload } = await dispatch(getUserByEmail(emailRegister));
+    if (payload.email_usuario) {
       Toast.fire({
         icon: "error",
         title: "El email ya existe en la BD",
@@ -51,14 +49,14 @@ const Register = ({ isOpen, onClose, className }) => {
       auth.register(emailRegister, passwordRegister, nameRegister, onClose);
     }
   };
+
   const handleGoogle = async (e) => {
     e.preventDefault();
     await auth.registerWithGoogle();
     const { user } = auth;
+    const { payload } = await dispatch(getUserByEmail(user.email));
 
-    await dispatch(getUserByEmail(user.email));
-
-    if (userGlobal && userGlobal.email_usuario) {
+    if (payload.email_usuario) {
       Toast.fire({
         icon: "error",
         title: "El email ya existe en la BD",

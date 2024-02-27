@@ -10,7 +10,6 @@ const ControlView = () => {
   const dispatch = useDispatch();
   const { photoURL, email } = auth.user;
   const user = useSelector((state) => state.users.user);
-  console.log(user);
 
   useEffect(() => {
     dispatch(getUserByEmail(email));
@@ -18,7 +17,7 @@ const ControlView = () => {
 
   return (
     <div className="flex flex-col items-center justify-evenly rounded border-2  w-full h-auto md:h-[500px]">
-      {user[0].nombre_usuario ? (
+      {user.nombre_usuario ? (
         <>
           <div className="mt-4 rounded-full   ">
             {photoURL ? (
@@ -37,19 +36,19 @@ const ControlView = () => {
             <div className="flex flex-row ">
               <h1 className="text-base md:text-lg">Nombre:</h1>
               <label className=" text-sm md:text-lg ml-4">
-                {user[0].nombre_usuario}
+                {user.nombre_usuario}
               </label>
             </div>
             <div className="flex flex-row ">
               <h1 className="text-base md:text-lg">Apellido:</h1>
               <label className=" text-sm md:text-lg ml-4">
-                {user[0].apellido_usuario}
+                {user.apellido_usuario}
               </label>
             </div>
             <div className="flex flex-row ">
               <h1 className="text-base md:text-lg">Email:</h1>
               <label className=" text-sm md:text-lg ml-4">
-                {user[0].email_usuario}
+                {user.email_usuario}
               </label>
             </div>
 
