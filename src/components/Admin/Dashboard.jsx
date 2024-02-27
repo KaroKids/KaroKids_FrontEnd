@@ -2,6 +2,9 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Stats from './Stats'
+import  ProductsView from './ProductsView';
+import UsersView from './UsersView';
+
 
 const user = {
   name: 'Lisandro Cook',
@@ -11,8 +14,8 @@ const user = {
 }
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
+  { name: 'Usuarios', href: '#', current: false },
+  { name: 'Create', href: '/create', current: false },
   { name: 'Calendar', href: '#', current: false },
   { name: 'Reports', href: '#', current: false },
 ]
@@ -188,7 +191,11 @@ export default function Dashboard() {
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"><Stats/></div>
+          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+                        <UsersView />
+                        <ProductsView/>
+
+          </div>
           
         </main>
       </div>

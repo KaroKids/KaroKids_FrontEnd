@@ -1,47 +1,78 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import validation from "../../utils/validation";
 import { Link } from "react-router-dom";
 import { postProduct } from "@/redux/productosActions";
 import { useDispatch } from "react-redux";
 import UploadImage from "../UploadImage/UploadImage";
+import Swal from "sweetalert2";
+import spinner from "/assets/images/spinner.svg";
+import { numeroEnPalabras } from "@/utils/numerosEnPalabras";
+ 
+import { numberMask, numberMaskUnit  } from "@/utils/numberMask";
+ 
+ 
+
 
 const CreateProduct = () => {
-  const dispatch = useDispatch();
-  const [data, setData] = useState({
+  
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
+  const initData = {
     nombre: "",
     descripcion: "",
     imagen_principal: "",
     imagenes_secundarias: [],
-    video: "",
-    precio: "",
+    precio: 0,
     edad: "",
     genero: "",
     destacado: false,
     inactivo: false,
-    stock: [],
-  });
+    stock: {},
+  };
+  const dispatch = useDispatch();
+  const [isLoading, setIsloading] = useState(false);
+ 
+
+  const [data, setData] = useState(initData);
   const [errors, setErrors] = useState({
     nombre: "",
     descripcion: "",
     imagen_principal: "",
     imagenes_secundarias: [],
-    video: "",
     precio: "",
     edad: "",
     genero: "",
     destacado: false,
     inactivo: false,
     stock: {},
+    msgData:'',
+
   });
 
   const [newStock, setNewStock] = useState({
     size: "",
     color: "",
-    cantidad: "",
+    cantidad: 1,
+    total: 0
   });
+
   const handleChange = (e) => {
-    const property = e.target.name;
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const property = e.target.name ;
+    console.log(property);
+    const value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
   
     if (property === "edad") {
       // Si el cambio es en el campo de edad, actualiza directamente el valor de data.edad
@@ -55,49 +86,84 @@ const CreateProduct = () => {
         [stockProperty]: e.target.value,
       };
       setData({ ...data, stock: updatedStock });
+    } else if (property === "precio") {
+      // Si es el campo de precio, formatea el valor antes de actualizar el estado
+      const formattedValue = value.replace(/,/g, "");
+      setData({ ...data, [property]: formattedValue });
     } else {
-      // Si no es un campo relacionado con el stock ni con la edad, actualiza el estado normalmente
+      // Si no es un campo relacionado con el stock, ni con la edad, ni con el precio,
+      // actualiza el estado normalmente
       setData({ ...data, [property]: value });
     }
-  
-    setErrors(validation({ ...data, [property]: value }));
+     
+    setErrors(validation({ ...data, [property]: value }, { newStock }));
   };
   
 
-  const handleSubmit = (e) => {
-    console.log("handleSubmit");
-    console.log('Datos:',data);
+  const handleSubmit = async (e) => {
+  
+    console.log("Datos:", data);
     e.preventDefault();
-    if (Object.keys(errors).length === 0) {
-      dispatch(postProduct(data));
+  // Realizar la validación inicial
+  const validationErrors = validation(data, newStock);
+  setErrors(validationErrors);
+
+  // Verificar si hay errores de validación
+  if (!validationErrors.msgData) {
+      try {
+        setIsloading(true);
+        const response = await dispatch(postProduct(data));
+       // console.log("Respuesta del dispatch:", response);
+
+        if (response.payload) {
+          setIsloading(false);
+          Toast.fire({
+            icon: "success",
+            title: "Producto registrado con exitosamente!",
+          });
+          setData(initData);
+          setErrors(validation(data));
+        } else {
+          setIsloading(false);
+          Toast.fire({
+            icon: "error",
+            title: "No fue posible registrar el producto!",
+          });
+        }
+      } catch (error) {
+        setIsloading(false);
+        console.log("Error al guardar el producto", error);
+        Toast.fire({
+          icon: "error",
+          title: "No fue posible registrar el producto!",
+        });
+      }
     } else {
-      setErrors({
-        ...errors,
-      });
+
+       
+    // Mostrar errores de validación
+    Toast.fire({
+      icon: "error",
+      title: `${validationErrors.msgData}, favor intenta nuevamente!`,
+    });
+     
+      
     }
   };
 
-  // const createProduct = ()=>{
-  //    console.log('Will save the data...:',data);
-
-  //    try {
-
-  //    } catch (error) {
-  //      console.log('Error creating product:', error)
-  //    }
-
-  // }
 
   const handleNewStockChange = (e) => {
     const property = e.target.name;
     const value = e.target.value;
-
+   // console.log(property,value);
     setNewStock({ ...newStock, [property]: value });
+    setErrors(validation({ ...data, [property]: value }, { newStock }));
   };
 
   const handleInputStock = () => {
-    const { size, color, cantidad } = newStock;
-
+    const { size, color, cantidad, total } = newStock;
+    const newTotal = total + parseInt(cantidad); // Calcular el nuevo total sumando la cantidad actual
+    
     // Crear un nuevo objeto de stock con la estructura deseada
     const newStockItem = { color, cantidad };
     const updatedStock = { ...data.stock };
@@ -112,33 +178,62 @@ const CreateProduct = () => {
 
     // Actualizar el estado con el nuevo stock
     setData({ ...data, stock: updatedStock });
-
+    setErrors(validation(data,newStock));
+    
+    
     // Restablecer el estado de newStock
     setNewStock({
-      size: "",
-      color: "",
-      cantidad: "",
+      ...newStock,
+      total:newTotal,
+     // size: "",
+    //  color: "",
+    //  cantidad: 1,
+     
     });
   };
 
   //Estas funciones reciben el hash (imagen en Base64) que llega por props desde el componente UploadImage y setean los valores de imagen_principal e imagenes_secundarias que se van a enviar como "data" al Back.
   const getImagenPrincipal = (imagenPrincipal) => {
+   // console.log('parametro', imagenPrincipal);
     setData({ ...data, imagen_principal: imagenPrincipal });
-    //console.log("imagen Princiapl en CreateProduct:", imagenPrincipal);
+   
+    setErrors(validation(data , newStock));
   };
-
+  
+  useEffect(() => {
+   // console.log("UseEffect Data imagen Principal en CreateProduct:", data.imagen_principal);
+  }, [data.imagen_principal]);
+  
+  
+  
   //Esta función realiza una copia del estado de la propiedad "imagenes_secundarias" de "data" y actualiza su valor agregándole el último archivo recibido desde el componente UploadImage.
   const getImagSecundarias = (imagSecundarias) => {
     let copia = data.imagenes_secundarias;
     copia.push(imagSecundarias);
     setData({ ...data, imagenes_secundarias: copia });
-   // console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
+    setErrors(validation({ ...data, imagenes_secundarias: copia }, newStock));
+    // console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
   };
+  
+  
+  // useEffect(() => {
+  //   // Realizar la validación solo cuando el usuario interactúe con el formulario
+  //   if (Object.keys(errors).length === 0) {
+  //     setErrors(validation(data, newStock));
+  //   }
+  // }, [data]);
+  
 
+useEffect( ()=>{
+ // Realizar la validación solo cuando el usuario interactúe con el formulario
+ if (Object.keys(errors).length === 0) {
+  setErrors(validation(data, newStock));
+  
+}
+}, [data]);
 
-  console.log('Data qeu va a viajar en trolebus al Back: ', data)
   return (
-    <div className="mx-auto max-w-4xl  px-10 py-24  sm:py-32 lg:px-8  ">
+    <div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8  ">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -151,7 +246,7 @@ const CreateProduct = () => {
           }}
         />
       </div>
-      <div className="mx-auto max-w-2xl text-center">
+      <div className="mx-auto max-w-2xl -mt-12 text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Registrar Producto
         </h2>
@@ -177,10 +272,11 @@ const CreateProduct = () => {
                 value={data.nombre}
                 onChange={handleChange}
                 placeholder="Nombre del producto..."
+                
               />
             </div>
             <div className="flex flex-row justify-start items-center border-none mx-1 ">
-              {errors.nombre && (
+              {errors?.nombre && (
                 <p className="mt-1  text-left text-small text-red-500 ">
                   {errors.nombre}
                 </p>
@@ -208,7 +304,7 @@ const CreateProduct = () => {
               <div className="flex flex-row justify-start items-center border-none mx-1 ">
                 {errors.descripcion && (
                   <p className="mt-1  text-left text-small text-red-500 ">
-                    {errors.descripcion}
+                    {errors?.descripcion}
                   </p>
                 )}
               </div>
@@ -218,118 +314,95 @@ const CreateProduct = () => {
         <UploadImage
           onGetImagenPrincipal={getImagenPrincipal}
           onGetImagSecundarias={getImagSecundarias}
+          errors={errors}
         />
 
-        <div className="w-full  mt-5">
-          <label
-            htmlFor="video"
-            className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
-          >
-            Video:
-          </label>
-          <input
-            id="video"
-            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
-            type="text"
-            name="video"
-            value={data.video}
-            onChange={handleChange}
-            placeholder="URL Video..."
-          />
-          <div className="flex flex-row justify-start items-center border-none mx-1  ">
-            {errors.video && (
-              <p className="mt-1  text-left text-small text-red-500">
-                {errors.video}
-              </p>
-            )}
-          </div>
-        </div>
-
-      
-      
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 sm:flow-col mt-5">
-        <div >
-          <label
-            htmlFor="precio"
-            className="block text-sm font-semibold leading-6 text-gray-900">
+          <div>
+            <label
+              htmlFor="precio"
+              className="block text-sm font-semibold leading-6 text-gray-900"
+            >
+              Precio:
+            </label>
          
-            Precio:
-          </label>
-          <div className="mt-2.5">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>
-            <input
-              id="precio"
-              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              type="number"
-              name="precio"
-              value={data.precio}
-              onChange={handleChange}
-              placeholder="0.00"
-            />
-            <div className="flex flex-row justify-start items-center border-none mx-1">
-              {errors.precio && (
-                <p className="mt-1  text-left text-small text-red-500">
-                  {errors.precio}
-                </p>
-              )}
+            <div className="mt-2.5">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>
+              <input
+                id="precio"
+                className="block w-full rounded-md border-0 py-1.5 pl-7 pr-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                type="text"
+                name="precio"
+                value={data.precio ? numberMaskUnit((data.precio)) : ''}
+                onChange={handleChange}
+                placeholder="0.00"
+              />
+              <div className="flex flex-row justify-start items-center border-none mx-1">
+                {errors.precio && (
+                  <p className="mt-1  text-left text-small text-red-500">
+                    {errors?.precio}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-        </div>
           <div>
-              <label htmlFor="edad" 
-               className="block text-sm font-semibold leading-6 text-gray-900">
-                Rango de Edad:
-              </label>
-              <div className="mt-2.5">
-                <select
-                  id="edad"
-                  name="edad"
-                  onChange={handleChange}
-                  value={data.edad}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  >
-                  <option value="">Seleccionar Edad</option>
-                  <option value="recien_nacido">Recién Nacido</option>
-                  <option value="bebe">Bebe</option>
-                  <option value="infantil">Infantíl</option>
-                  <option value="junior">Junior</option>
-                  <option value="otros">Otros</option>
-                </select>
-              </div>
-              {errors.edad && (
+            <label
+              htmlFor="edad"
+              className="block text-sm font-semibold leading-6 text-gray-900"
+            >
+              Rango de Edad:
+            </label>
+            <div className="mt-2.5">
+              <select
+                id="edad"
+                name="edad"
+                onChange={handleChange}
+                value={data.edad}
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+                <option value="">Seleccionar Edad</option>
+                <option value="recien_nacido">Recién Nacido</option>
+                <option value="bebe">Bebe</option>
+                <option value="infantil">Infantíl</option>
+                <option value="junior">Junior</option>
+                <option value="otros">Otros</option>
+              </select>
+            </div>
+            {errors?.edad && (
               <p className="mt-1  text-left text-small text-red-500">
                 {errors.edad}
               </p>
             )}
-            </div>
+          </div>
 
-             <div>  
-              <label htmlFor="edad" 
-                className="block text-sm font-semibold leading-6 text-gray-900">
-                Genero:
-              </label>
-              <div className="mt-2.5">
-                <select
-                  id="genero"
-                  name="genero"
-                  autoComplete="genero"
-                  checked={data.genero}
-                  onChange={handleChange}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  >
-                  <option value="">Seleccionar Género</option>
-                  <option value="chico">Chico (Niño)</option>
-                  <option value="chica">Chica (Niña)</option>
-                  <option value="universal">Universal</option>
-                </select>
-              </div>
-              {errors.genero && (
+          <div>
+            <label
+              htmlFor="genero"
+              className="block text-sm font-semibold leading-6 text-gray-900"
+            >
+              Genero:
+            </label>
+            <div className="mt-2.5">
+              <select
+                id="genero"
+                name="genero"
+                value={data.genero}
+                onChange={handleChange}
+                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+                <option value="">Seleccionar Género</option>
+                <option value="chico">Chico (Niño)</option>
+                <option value="chica">Chica (Niña)</option>
+                <option value="universal">Universal</option>
+              </select>
+            </div>
+            {errors?.genero && (
               <p className="mt-1  text-left text-small text-red-500">
                 {errors.genero}
               </p>
             )}
-            </div>
-        
+          </div>
         </div>
 
         <fieldset className="mt-5">
@@ -349,7 +422,10 @@ const CreateProduct = () => {
                 />
               </div>
               <div className="text-sm leading-6">
-                <label htmlFor="destacado" className="font-medium text-gray-900">
+                <label
+                  htmlFor="destacado"
+                  className="font-medium text-gray-900"
+                >
                   Destacado
                 </label>
                 <p className="text-gray-500">
@@ -375,10 +451,7 @@ const CreateProduct = () => {
                 />
               </div>
               <div className="text-sm leading-6">
-                <label
-                  htmlFor="inactivo"
-                  className="font-medium text-gray-900"
-                >
+                <label htmlFor="inactivo" className="font-medium text-gray-900">
                   Inactivo
                 </label>
                 <p className="text-gray-500">
@@ -387,7 +460,7 @@ const CreateProduct = () => {
                 </p>
               </div>
               <div className="flex flex-row justify-start items-center border-none mx-1 ">
-                {errors.inactivo && (
+                {errors?.inactivo && (
                   <p className="mt-1  text-left text-small text-red-500">
                     {errors.inactivo}
                   </p>
@@ -397,95 +470,114 @@ const CreateProduct = () => {
           </div>
         </fieldset>
 
-        <fieldset className="grid grid-cols-1 mt-7  gap-y-6 sm:grid-cols-3">
-          <legend className="text-sm mb-5  font-semibold leading-6 text-gray-900">
-            Existencia del Producto (Stock):
-          </legend>
+        <fieldset className="grid grid-cols-1 gap-x-4 mt-7 gap-y-6 sm:grid-cols-3">
+  <legend className="text-sm mb-5 font-semibold leading-6 text-gray-900">
+    Existencia del Producto (Stock):
+  </legend>
 
-          <div>
-            <label
-              htmlFor="size"
-              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
-            >
-              Tamaño
-            </label>
-            <select
-              id="size"
-              name="size"
-              value={newStock.size}
-              onChange={handleNewStockChange}
-              className="block w-full  rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="">Selecciona un tamaño</option>
-              <option value="S">Pequeño</option>
-              <option value="M">Mediano</option>
-              <option value="L">Grande</option>
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="color"
-              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
-            >
-              Color
-            </label>
-            <select
-              id="color"
-              name="color"
-              value={newStock.color}
-              onChange={handleNewStockChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-            >
-              <option value="">Selecciona un color</option>
-              <option value="red">Rojo</option>
-              <option value="blue">Azul</option>
-              <option value="black">Negro</option>
-              <option value="azul">Azul</option>
-              <option value="pink">Pink</option>
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="cantidad"
-              className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
-            >
-              Cantidad
-            </label>
-            <input
-              id="cantidad"
-              type="number"
-              name="cantidad"
-              value={newStock.cantidad}
-              onChange={handleNewStockChange}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              placeholder="Cantidad"
-            />
-          </div>
-        </fieldset>
-        <div className="flex justify-center mt-6">
-          <button
-            type="button"
-            onClick={handleInputStock}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition hover:scale-110 text-blue-500 bg-white-600 ring-1  focus:outline-none focus:ring-2 focus:ring-offset-2 hover:text-white hover:bg-blue-500 focus:ring-blue-500"
-          >
-            Agregar
-          </button>
-        </div>
+  <div className="flex flex-col mt-2">
+    <label
+      htmlFor="size"
+      className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
+    >
+      Talla:
+    </label>
+    <select
+      id="size"
+      name="size"
+      value={newStock.size}
+      onChange={handleNewStockChange}
+      className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+      <option value="">Selecciona una talla</option>
+      <option value="S">Pequeño</option>
+      <option value="M">Mediano</option>
+      <option value="L">Grande</option>
+    </select>
+    {errors && errors.stock && errors.stock[0]?.talla  && (
+      <p className="mt-1 text-left text-sm text-red-500">{!newStock.size  ? errors?.stock[0].talla :''}</p>
+    )}
+  </div>
 
-        <div className="w-full mt-5  divide-y-2 divide-gray-100">
+  <div className="flex flex-col mt-2">
+    <label
+      htmlFor="color"
+      className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
+    >
+      Color:
+    </label>
+    <select
+      id="color"
+      name="color"
+      value={newStock.color}
+      onChange={handleNewStockChange}
+      className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+    >
+      <option value="">Selecciona un color</option>
+      <option value="red">Rojo</option>
+      <option value="blue">Azul</option>
+      <option value="black">Negro</option>
+      <option value="azul">Azul</option>
+      <option value="pink">Pink</option>
+    </select>
+    {errors && errors.stock && errors.stock[1]?.color  && (
+      <p className="mt-1 text-left text-sm text-red-500">{!newStock.color ? errors?.stock[1].color :''}</p>
+    )}
+  </div>
+
+  <div className="flex flex-col mt-2">
+    <label
+      htmlFor="cantidad"
+      className="block text-sm mb-2 font-semibold leading-6 text-gray-900"
+    >
+      Cantidad:
+    </label>
+    <input
+      id="cantidad"
+      type="number"
+      name="cantidad"
+      value={newStock.cantidad}
+      onChange={handleNewStockChange}
+      className="block w-full rounded-md border-0 py-1.5  pl-7 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      placeholder="Cantidad"
+      min={1}
+    />
+  {errors && errors.stock && errors.stock[2]?.cantidad  && (
+      <p className="mt-1 text-left text-sm text-red-500">{!newStock.cantidad ? errors?.stock[2].cantidad : ''}</p>
+    )}
+  </div>
+
+</fieldset>
+  <div className="flex flex-col justify-end  mt-4  sm:flex-row  sm:items-end">
+    <button
+      disabled={!newStock.size || !newStock.color || !newStock.cantidad}
+      type="button"
+      onClick={handleInputStock}
+      className={` items-center  px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+        !newStock.size || !newStock.color || !newStock.cantidad
+          ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+          : "bg-blue-500 text-white hover:bg-blue-600"
+      }`}
+    >
+      Agregar
+    </button>
+  </div>
+        <div className="w-full mt-5  divide-y-2 divide-gray-100 overflow-y-auto max-h-[150px]">
           <span
             htmlFor="itemsAgregados"
-            className="text-sm mt-7 -mb-4 font-semibold leading-6 text-gray-900"
-          >
-            Items agregados:
+            className="text-sm mt-7  font-semibold leading-6 text-gray-900">
+            Items agregados:  
           </span>
-          {Object.keys(data.stock).map((size) => (
-            <div  key={size}>
-              <h3 >Tamaño: {size}</h3>
-              <ul>
+          {Object.keys(data.stock).map((size) => ( 
+            
+            <div key={size} className="overflow-y-[50px] max-h-[150px]">
+              <h3 >Talla: <span className="font-bold">{size}</span></h3>
+              <ul className="border-t border-gray-100">
+               
                 {data.stock[size].map((item, index) => (
-                  <div key={index}>
-                    <span>
+                 
+                  <div key={index} >
+                    <span  >
                       {" "}
                       Color:{" "}
                       <span className={`text-${item.color}-500 font-bold`}>
@@ -493,24 +585,39 @@ const CreateProduct = () => {
                           item.color.slice(1)}
                       </span>{" "}
                       - Cantidad:{" "}
-                      <span className="font-bold">{item.cantidad}</span>
+                      <span className="font-bold">{numberMaskUnit(item.cantidad)}</span>
                     </span>
                   </div>
                 ))}
+                
               </ul>
             </div>
           ))}
         </div>
+                {/* Mostrar el total */}
+        <div className="mt-3 border pr-2 pl-2">
+          <span className="font-semibold">Total items:</span>{" "}
+          <span className="font-bold">{numberMask(newStock.total)} </span>
+          <span className="font-thin font-italic"> - {newStock.total > 0 ? ((numeroEnPalabras(newStock.total))) + ' unidad(es)' :''}. </span>
+        </div>
 
         <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
           <button
-            className="bg-white hover:bg-blue ring-1 text-blue-500 w-[160px] h-[40px] rounded-md cursor-pointer transition hover:scale-110 hover:bg-sky-400 hover:text-white"
+            className={`bg-white text-blue-500 w-[160px] h-[40px] rounded-md cursor-pointer ${isLoading ? "" : "hover:bg-blue ring-1 hover:ring-blue hover:text-white transition hover:scale-110 hover:bg-sky-400"} ${isLoading ? "opacity-50 cursor-not-allowed ring-1" : ""}`}
             onClick={handleSubmit}
             type="submit"
             name="submit"
             id="submitCreate"
+            disabled={isLoading}
           >
-            CREAR
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <img className="w-8 h-8" src={spinner} alt="Spinner" />
+                <span className="ml-2">Enviando...</span>
+              </div>
+            ) : (
+              "CREAR"
+            )}
           </button>
 
           <Link to="/">

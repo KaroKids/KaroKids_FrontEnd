@@ -86,9 +86,9 @@ export const getProductsByFilters = (filters) => {
 export const postProduct = (body) => {
 	return async (dispatch) => {
 		try {
-			const { data } = await axios.post(`${URL_PRODUCT}`, body);
-			console.log(data);
-			return dispatch(getProdById(data.id));
+			const response  = await axios.post(`${URL_PRODUCT}`, body);
+			console.log('response:', response);
+			return dispatch(getProdById(response.data.producto_id));
 		} catch (error) {
 			console.error(error);
 		}
