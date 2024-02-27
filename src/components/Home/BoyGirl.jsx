@@ -1,10 +1,9 @@
-import boysImg from "/assets/images/logo-chicos.svg";
-import girlsImg from "/assets/images/logo-chicas.svg";
+import boysImg from "/assets/images/chicos_k.png";
+import girlsImg from "/assets/images/chicas_k.png";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { getProductsByFilters } from "@/redux/productosActions";
-import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const BoyGirl = () => {
   const dispatch = useDispatch();
   const callouts = [
@@ -44,11 +43,11 @@ const BoyGirl = () => {
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:space-y-0">
             {callouts.map((callout) => (
               <div key={callout.name} className="group">
-                <div className="border-2 mt-6 mb-10 h-80 w-full  rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
+                <div className="flex justify-center border-2 mt-6 mb-10 h-80 w-full  rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
                   <img
                     src={callout.imageSrc}
                     alt={callout.imageAlt}
-                    className="h-full w-full object-cover object-center "
+                    className="h-full w-auto  object-center "
                   />
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">
