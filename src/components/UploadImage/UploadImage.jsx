@@ -10,19 +10,22 @@ console.log(errors)
 
   //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
   useEffect(() => {
-    console.log(imagSecundarias)
+
     if(imagenPrincipal[0]!==undefined){ 
       onGetImagenPrincipal(imagenPrincipal[0])
      // console.log('useEffect Upload Image imagenPrincipal:', imagenPrincipal[0])
     }
 
-    if(imagSecundarias[0]!==undefined){
-      //Se almacena en una variable el último valor hasheado introducido en el arreglo.
-      let i = imagSecundarias.length - 1
-      onGetImagSecundarias(imagSecundarias[i])
-    }
-  }, [imagSecundarias, imagenPrincipal]);
+    
+  }, [imagenPrincipal]);
 
+  useEffect(() => {
+  if(imagSecundarias[0]!==undefined){
+    //Se almacena en una variable el último valor hasheado introducido en el arreglo.
+    let i = imagSecundarias.length - 1
+    onGetImagSecundarias(imagSecundarias[i])
+  }
+}, [imagSecundarias]);
    
   //Funciones almacenan los valores de previsualización de los archivos cargados por el usuario.
   const previewImagenPrincipal = (e)=>{
@@ -51,10 +54,11 @@ console.log(errors)
       if (type==='imgPrincipal'){
          setImagenPrincipal([reader.result])
          //console.log('imagen principal', imagenPrincipal)
-         
+         console.log("entro a la primera")
       }
         
       if(type==='imgSecundarias'){
+        console.log("entro a la segund")
         setImagSecundarias([...imagSecundarias, reader.result]);
       }
   }

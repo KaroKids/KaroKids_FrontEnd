@@ -5,7 +5,7 @@ const validation =   (inputs, newStock) => {
   const urlRegExp =
     /(http|https?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_.~#?&//=]*)/;
   let errors = {}
-
+console.log(inputs)
   if (!inputs.nombre) {
     errors.nombre = "Nombre es requerido";
     errors.msgData = "Nombre es requerido"
@@ -18,6 +18,8 @@ const validation =   (inputs, newStock) => {
     return errors;
   }
  // console.log('validation imagen principal', inputs.imagen_principal)
+ console.log("esta es la imagen principal: ")
+ console.log( inputs.imagen_principal)
   if (!inputs.imagen_principal) {
     errors.imagen_principal = "Una imagen principal es requerida";
     errors.msgData = "Una imagen principal es requerida";
