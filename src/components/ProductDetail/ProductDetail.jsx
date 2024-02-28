@@ -76,7 +76,6 @@ const ProductDetail = () => {
 
   const handleAddToCart = (item) => {
     
-    console.log(item);
     const { producto_id, precio, nombre} = product;
     let complementado = {
       usuario_id : item.usuario_id,

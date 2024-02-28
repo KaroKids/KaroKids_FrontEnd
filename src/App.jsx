@@ -31,7 +31,14 @@ function App() {
 					<Route path="/" element={<Landing />} />
 					<Route path="/producto/:id" element={<ProductDetail />} />
 					<Route path="/productos" element={<ProductList />} />
-					<Route path="/create" element={<CreateProduct />} />
+					<Route
+						path="/create"
+						element={
+							<ProtectedAdmin>
+								<CreateProduct />
+							</ProtectedAdmin>
+						}
+					/>
 					<Route
 						path="/admin"
 						element={
@@ -42,7 +49,14 @@ function App() {
 					/>
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
-					<Route path="/users" element={<UsersView />} />
+					<Route
+						path="/users"
+						element={
+							<ProtectedAdmin>
+								<UsersView />
+							</ProtectedAdmin>
+						}
+					/>
 					<Route path="/carrito" element={<Cart />} />
 					<Route
 						path="/usuario/panel-control"
