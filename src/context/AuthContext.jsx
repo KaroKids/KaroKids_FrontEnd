@@ -12,9 +12,12 @@ import {
   reauthenticateWithCredential,
   updatePassword,
   sendPasswordResetEmail,
+  sendEmailVerification,
 } from "firebase/auth";
 import Swal from "sweetalert2";
 import "./AuthContext.css";
+import { useDispatch } from "react-redux";
+import { resetState } from "@/redux/userSlice.js";
 
 export const authContext = createContext();
 
@@ -42,6 +45,7 @@ export function AuthProvider({ children }) {
     },
   });
 
+  const dispatch = useDispatch();
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -111,12 +115,14 @@ export function AuthProvider({ children }) {
         password
       );
 
+      await sendEmailVerification(auth.currentUser);
       await updateDisplayName(response.user, displayName);
       Swal.fire({
         title: "Registro finalizado!",
-        text: "Te has registrado correctamente.",
+        text: "Se te ha enviado un enlace de verificacion a tu correo, verificalo antes de ingresar.",
         icon: "success",
       });
+      const response2 = await signOut(auth);
       onClose();
     } catch (error) {
       if (error.code === "auth/invalid-email") {
@@ -149,11 +155,25 @@ export function AuthProvider({ children }) {
   const login = async (email, password, onClose) => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      onClose();
-      Toast.fire({
-        icon: "success",
-        title: "Has ingresado exitosamente.",
-      });
+      console.log(response);
+      if (response.user) {
+        let email = response.user.emailVerified;
+        if (email) {
+          Toast.fire({
+            icon: "success",
+            title: "Has ingresado exitosamente.",
+          });
+          onClose();
+        } else {
+          await auth.signOut(auth);
+          Toast.fire({
+            icon: "error",
+            title: "Verifique su email antes de ingresar.",
+          });
+        }
+      } else {
+        console.log("Usuario Inactivo");
+      }
     } catch (error) {
       if (error.code === "auth/invalid-credential") {
         Toast.fire({
@@ -177,9 +197,7 @@ export function AuthProvider({ children }) {
   const loginWithGoogle = async () => {
     try {
       const responseGoogle = new GoogleAuthProvider();
-
-      await signInWithPopup(auth, responseGoogle);
-
+      const response = await signInWithPopup(auth, responseGoogle);
       Toast.fire({
         icon: "success",
         title: "Sesión iniciada con éxito.",

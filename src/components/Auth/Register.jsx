@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { postUser } from "@/redux/userAction";
 import { getUserByEmail } from "@/redux/userAction";
 import Swal from "sweetalert2";
@@ -28,11 +28,11 @@ const Register = ({ isOpen, onClose, className }) => {
   const [passwordRegister, setPasswordRegister] = useState("");
   const [nameRegister, setNameRegister] = useState("");
   const [lastNameRegister, setLastNameRegister] = useState("");
-  const userGlobal = useSelector((state) => state.users.user);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     const { payload } = await dispatch(getUserByEmail(emailRegister));
+
     if (payload.email_usuario) {
       Toast.fire({
         icon: "error",
@@ -57,8 +57,7 @@ const Register = ({ isOpen, onClose, className }) => {
     const { user } = google;
     const response = await dispatch(getUserByEmail(user.email));
     const payload = response?.payload; // Verificar si response existe y luego obtener payload
-
-    if (payload && payload.data && payload.data.email_usuario) {
+    if (payload && payload.email_usuario) {
       Toast.fire({
         icon: "error",
         title: "El email ya existe en la BD",
@@ -73,10 +72,10 @@ const Register = ({ isOpen, onClose, className }) => {
         email_usuario: user.email,
       };
       await dispatch(postUser(body));
-      Swal.fire({
-        title: "Registro finalizado!",
-        text: "Te has registrado correctamente.",
+      await auth.logout();
+      Toast.fire({
         icon: "success",
+        title: "Registro finalizado!",
       });
       onClose();
     }
