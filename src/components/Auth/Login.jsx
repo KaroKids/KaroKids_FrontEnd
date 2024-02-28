@@ -1,15 +1,20 @@
 import { useAuth } from "@/context/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Register from "./Register";
 import Swal from "sweetalert2";
+import { getUserByEmail } from "@/redux/userAction";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Login({ isOpen, onClose, className }) {
   const auth = useAuth();
+  const { user } = auth;
 
+  const dispatch = useDispatch();
   const [mail, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userGlobal = useSelector((state) => state.users.user);
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -18,15 +23,14 @@ export default function Login({ isOpen, onClose, className }) {
     setIsModalOpen(false);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     auth.login(mail, password, onClose);
   };
 
-  const handleGoogle = (e) => {
+  const handleGoogle = async (e) => {
     e.preventDefault();
-    auth.loginWithGoogle();
-
+    auth.loginWithGoogle(userGlobal);
     onClose();
   };
 
@@ -41,6 +45,10 @@ export default function Login({ isOpen, onClose, className }) {
       auth.resetPassword(email);
     }
   };
+
+  useEffect(() => {
+    dispatch(getUserByEmail(user.email));
+  }, [dispatch, user.email]);
   return (
     <>
       <div
