@@ -34,26 +34,26 @@ const ControlView = () => {
           </div>
           <div className="flex flex-col justify-evenly  px-2  w-auto  md:w-auto h-auto xl:h-60 mt-4">
             <div className="flex flex-row ">
-              <h1 className="text-base md:text-lg">Nombre:</h1>
-              <label className=" text-sm md:text-lg ml-4">
+              <h1 className="text-base md:text-lg font-bold">Nombre:</h1>
+              <label className=" text-sm md:text-lg ml-2">
                 {user.nombre_usuario}
               </label>
             </div>
             <div className="flex flex-row ">
-              <h1 className="text-base md:text-lg">Apellido:</h1>
-              <label className=" text-sm md:text-lg ml-4">
+              <h1 className="text-base md:text-lg font-bold">Apellido:</h1>
+              <label className=" text-sm md:text-lg ml-2">
                 {user.apellido_usuario}
               </label>
             </div>
             <div className="flex flex-row ">
-              <h1 className="text-base md:text-lg">Email:</h1>
-              <label className=" text-sm md:text-lg ml-4">
+              <h1 className="text-base md:text-lg font-bold">Email:</h1>
+              <label className=" text-sm md:text-lg ml-2">
                 {user.email_usuario}
               </label>
             </div>
 
             <Link to="/usuario/datos-personales">
-              <Button variant="outline" className="w-full my-2">
+              <Button variant="detail" className="w-full my-2 text-white">
                 Modificar
               </Button>
             </Link>

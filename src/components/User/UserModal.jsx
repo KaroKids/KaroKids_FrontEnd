@@ -19,14 +19,14 @@ const UserModal = ({ isOpen, onClose }) => {
         className={`fixed top-0 right-0 bottom-0 left-0 flex  z-[20]  bg-gray-800 bg-opacity-50 ${isOpen ? "" : "hidden"}`}
       >
         <div className="flex justify-end  min-w-full min-h-10">
-          <div className=" justify-center items-center bg-white p-8 rounded-lg w-full  h-[580px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
+          <div className="justify-center items-center bg-white p-8 w-full h-screen max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-gray-800 focus:outline-none "
             >
               <img
                 src="/assets/navbar-icons/back.svg"
-                width="30px"
+                width="24px"
                 alt="logo atras"
               />
             </button>

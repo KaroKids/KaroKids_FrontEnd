@@ -44,10 +44,10 @@ export default function Login({ isOpen, onClose, className }) {
   return (
     <>
       <div
-        className={`fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 z-[20] bg-opacity-50 ${className}`}
+        className={`overflow-y-auto fixed top-0 right-0 bottom-0 left-0 flex bg-gray-800 z-[20] bg-opacity-50 ${className}`}
       >
         <div className="flex justify-end  min-w-full min-h-10 ">
-          <div className="  justify-center items-center bg-white p-8 rounded-b-lg w-full  h-[700px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
+          <div className="justify-center items-center bg-white p-8 w-full h-screen max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-gray-800 focus:outline-none   "
@@ -105,7 +105,7 @@ export default function Login({ isOpen, onClose, className }) {
                   </label>
                   <span
                     onClick={handleReset}
-                    className=" text-sm text-gray-500 cursor-pointer"
+                    className=" text-sm text-black cursor-pointer"
                   >
                     Olvidé mi contraseña
                   </span>
@@ -152,7 +152,7 @@ export default function Login({ isOpen, onClose, className }) {
             <div className="flex justify-center">
               <span
                 onClick={handleOpenModal}
-                className="text-center mt-10 text-sm text-gray-500 cursor-pointer"
+                className="text-center mt-10 text-sm text-black cursor-pointer"
               >
                 ¿Aún no estás registrado? ¡Haz clic aquí!
               </span>
