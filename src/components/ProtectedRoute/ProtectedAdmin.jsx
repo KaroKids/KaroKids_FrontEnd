@@ -13,9 +13,7 @@ export const ProtectedAdmin = ({ children }) => {
 		dispatch(getUserByEmail(user.email));
 	}, [dispatch, user.email]);
 
-	console.log(userGlobal.roles);
-
-	if (userGlobal && userGlobal.roles === "client") {
+	if (!user || (userGlobal && userGlobal.roles === "client")) {
 		return <Navigate to="/" replace />;
 	} else {
 		return children;
