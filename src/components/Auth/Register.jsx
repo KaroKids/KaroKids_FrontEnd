@@ -88,7 +88,7 @@ const Register = ({ isOpen, onClose, className }) => {
         className={`overflow-y-auto fixed top-0 right-0 bottom-0 left-0 flex  z-[20] bg-opacity-50 ${className}`}
       >
         <div className="flex justify-end  min-w-full min-h-10">
-          <div className=" justify-center items-center bg-white p-8 rounded-lg w-full  h-[700px] max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
+          <div className="justify-center items-center bg-white p-8 w-full h-screen max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
             <button
               onClick={onClose}
               className="text-gray-600 hover:text-gray-800 focus:outline-none   "
