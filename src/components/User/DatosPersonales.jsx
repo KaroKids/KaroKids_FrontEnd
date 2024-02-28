@@ -123,6 +123,7 @@ const DatosPersonales = () => {
 						id="contraseñaActual"
 						name="contraseñaActual"
 						type="password"
+						autoComplete="current-password"
 						disabled={auth.user.providerData[0].providerId === "google.com"}
 						onChange={(e) => setCurrentPassword(e.target.value)}
 						className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -142,6 +143,7 @@ const DatosPersonales = () => {
 						id="nuevaContraseña"
 						name="nuevaContraseña"
 						type="password"
+						autoComplete="new-password"
 						disabled={auth.user.providerData[0].providerId === "google.com"}
 						onChange={(e) => setNewPassword(e.target.value)}
 						className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
