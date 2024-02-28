@@ -34,24 +34,23 @@ export const addProducto = (body) => {
     try {
       const response = await axios.put(`${URL_CARRITO}/agregar`, body);
       console.log(response);
-      return dispatch(agregarProducto(response.data.producto_id));
+      return dispatch(agregarProducto(response.data.productos_compra));
     } catch (error) {
       console.error(error);
     }
   };
 };
 
-export const deleteProducto = async (body) => {
+export const deleteProducto = (body) => {
   return async (dispatch) => {
     try {
-      const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
-
-      const { productos_compra } = carritoUsuario;
+      const response = await axios.put(`${URL_CARRITO}/eliminar`, body);
+      console.log("hasta aca no entra")
 
       return dispatch(
-        eliminarProducto({
-          productos_compra: productos_compra,
-        })
+        eliminarProducto(
+         response.data.productos_compra
+        )
       );
     } catch (error) {
       console.error(error);

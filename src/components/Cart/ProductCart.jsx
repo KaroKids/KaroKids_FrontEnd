@@ -11,6 +11,7 @@ import {
   borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
+import { deleteProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const ProductCart = () => {
   // if (usuario === no_registrado) {
   const productosCarrito = useSelector((state) => state.carrito.items);
   // }
+  const usuario = useSelector((state)=> state.users.user)
 
   //* if (usuario === registrado) {
   dispatch(allCarrito());
@@ -50,16 +52,15 @@ const ProductCart = () => {
     //* }
   };
 
-  const handleDelete = (id, talla, color) => {
+  const handleDelete = (usuario_id, producto_id, compra_talla, compra_color) => {
     //if (usuario === no registrado) {
-    dispatch(removeCarrito({ id, talla, color }));
+    dispatch(removeCarrito({usuario_id, producto_id, compra_talla, compra_color }));
     console.log("click");
     // }
+    console.log({usuario_id, producto_id, compra_talla, compra_color })
 
     //* if (usuario === registrado) {
-    dispatch(
-      eliminarProducto(usuario_id, producto_id, compra_talla, compra_color)
-    );
+    dispatch(deleteProducto({usuario_id, producto_id, compra_talla, compra_color}));
     //* }
   };
 
@@ -188,8 +189,9 @@ const ProductCart = () => {
               <div id="total">
                 $ {product.precio * product.compra_cantidad}{" "}
                 <span
-                  onClick={() =>
+                  onClick={()=>
                     handleDelete(
+                      usuario.usuario_id,
                       product.producto_id,
                       product.compra_talla,
                       product.compra_color
