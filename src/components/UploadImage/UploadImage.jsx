@@ -5,11 +5,12 @@ import clsx from 'clsx';
 const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias, errors}) => {
   const [imagenPrincipal, setImagenPrincipal] = useState([]);
   const [imagSecundarias, setImagSecundarias] = useState([]);
-
+console.log(errors)
   const [loadingImage, setloadingImage] = useState(false);
 
   //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
   useEffect(() => {
+    console.log(imagSecundarias)
     if(imagenPrincipal[0]!==undefined){ 
       onGetImagenPrincipal(imagenPrincipal[0])
      // console.log('useEffect Upload Image imagenPrincipal:', imagenPrincipal[0])
@@ -50,6 +51,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias, errors}) => {
       if (type==='imgPrincipal'){
          setImagenPrincipal([reader.result])
          //console.log('imagen principal', imagenPrincipal)
+         
       }
         
       if(type==='imgSecundarias'){

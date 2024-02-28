@@ -44,7 +44,8 @@ const CreateProduct = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsloading] = useState(false);
  
-
+  const [limpiar, setLimpiar] = useState(false)
+  const [limpio, setLimpio] = useState(true)
   const [data, setData] = useState(initData);
   const [errors, setErrors] = useState({
     nombre: "",
@@ -123,6 +124,8 @@ const CreateProduct = () => {
           });
           setData(initData);
           setErrors(validation(data));
+          setLimpio(false)
+          setLimpiar(!limpiar)
         } else {
           setIsloading(false);
           Toast.fire({
@@ -201,6 +204,7 @@ const CreateProduct = () => {
   };
   
   useEffect(() => {
+    setErrors(validation(data,newStock))
    // console.log("UseEffect Data imagen Principal en CreateProduct:", data.imagen_principal);
   }, [data.imagen_principal]);
   
@@ -222,7 +226,11 @@ const CreateProduct = () => {
   //     setErrors(validation(data, newStock));
   //   }
   // }, [data]);
-  
+useEffect(()=>{
+if(limpiar === true || limpiar === false){
+  setLimpio(true)
+}
+},[limpiar])
 
 useEffect( ()=>{
  // Realizar la validación solo cuando el usuario interactúe con el formulario
@@ -311,12 +319,13 @@ useEffect( ()=>{
             </div>
           </div>
         </div>
+        {limpio && (
         <UploadImage
           onGetImagenPrincipal={getImagenPrincipal}
           onGetImagSecundarias={getImagSecundarias}
           errors={errors}
         />
-
+      )}
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 sm:flow-col mt-5">
           <div>
             <label
