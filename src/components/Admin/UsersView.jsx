@@ -7,7 +7,7 @@ function UsersView() {
   const [users, setUsers] = useState([]);
 
   const toggleUserStatus = async (usuario_id) => {
-    console.log(usuario_id);
+    console.log("primer valor togle " + usuario_id);
     try {
       // Enviar una solicitud DELETE al servidor con el usuarioId en la URL
       // await axios.delete(`${URL_USERS}/usuarios/${usuarioId}`);
@@ -17,23 +17,23 @@ function UsersView() {
       console.log("body", body);
 
       //const bodyJSON = JSON.stringify(body);
-      await axios.delete(`${URL_USERS}`, body);
+     const result = await axios.put(`${URL_USERS}/delete`, body);
+     console.log(result)
 
       // Actualizar la lista de usuarios después de la eliminación
       setUsers(
         users.map((usuario) => {
-          if (usuario.usuario_id === usuarioId) {
+          if (usuario.usuario_id === usuario_id) {
             // Invertir el estado de inactivo del usuario
             return { ...usuario, inactivo: !usuario.inactivo };
           }
           return usuario;
         })
       );
-
       // Mostrar notificación de éxito
       Toast.fire({
         icon: "success",
-        title: `Usuario ${usuarioId} activado/desactivado exitosamente.`,
+        title: `Usuario ${usuario_id} activado/desactivado exitosamente.`,
       });
     } catch (error) {
       console.log("Error al activar/desactivar usuario:", error);
@@ -51,7 +51,6 @@ function UsersView() {
       try {
         const response = await axios.get(`${URL_USERS}`);
         // Verificar si response.data es un array antes de asignarlo a users
-
         console.log("usuarios:", response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
@@ -83,6 +82,7 @@ function UsersView() {
 
   const handleLogicDelete = (usuarioId, inactivo) => {
     // Mostrar confirmación antes de activar/desactivar usuario
+    console.log("es inactivo? "+inactivo)
     Swal.fire({
       title: inactivo ? "Activar Usuario" : "Desactivar Usuario",
       text: inactivo
@@ -131,8 +131,8 @@ function UsersView() {
               <div className="table-row-group">
                 {users?.map((usuario) => (
                   <div
-                    key={usuario.usuario_id}
-                    className="table-row border-gray-900"
+                  key={usuario.usuario_id}
+                  className="table-row border-gray-900"
                   >
                     <div className="table-cell px-6 py-4 whitespace-nowrap">
                       {usuario.nombre_usuario + " " + usuario.apellido_usuario}

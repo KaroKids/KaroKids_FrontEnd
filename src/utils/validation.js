@@ -18,7 +18,7 @@ const validation =   (inputs, newStock) => {
     return errors;
   }
  // console.log('validation imagen principal', inputs.imagen_principal)
-  if (!inputs.imagen_principal || inputs.imagen_principal === "") {
+  if (!inputs.imagen_principal) {
     errors.imagen_principal = "Una imagen principal es requerida";
     errors.msgData = "Una imagen principal es requerida";
     return errors;
