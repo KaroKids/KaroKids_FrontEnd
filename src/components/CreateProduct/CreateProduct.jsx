@@ -198,15 +198,15 @@ const CreateProduct = () => {
   //Estas funciones reciben el hash (imagen en Base64) que llega por props desde el componente UploadImage y setean los valores de imagen_principal e imagenes_secundarias que se van a enviar como "data" al Back.
   const getImagenPrincipal = (imagenPrincipal) => {
    // console.log('parametro', imagenPrincipal);
-    setData({ ...data, imagen_principal: imagenPrincipal });
-   
-    setErrors(validation(data , newStock));
+   console.log("llego a la funcion para setear con:")
+   console.log
+   setData({ ...data, imagen_principal: imagenPrincipal });
+   console.log("data de primaria")
+   console.log(data)
+   console.log("lo que se metio : " + imagenPrincipal)
+   setErrors(validation(data,newStock));
   };
   
-  useEffect(() => {
-    setErrors(validation(data,newStock))
-   // console.log("UseEffect Data imagen Principal en CreateProduct:", data.imagen_principal);
-  }, [data.imagen_principal]);
   
   
   
@@ -215,10 +215,16 @@ const CreateProduct = () => {
     let copia = data.imagenes_secundarias;
     copia.push(imagSecundarias);
     setData({ ...data, imagenes_secundarias: copia });
-    setErrors(validation({ ...data, imagenes_secundarias: copia }, newStock));
+    console.log("esta es la data v")
+    console.log(data)
+    setErrors(validation(data, newStock));
     // console.log("imagen Secundaria en CreateProduct:", imagSecundarias);
   };
   
+  useEffect(() => {
+    setErrors(validation(data,newStock))
+   // console.log("UseEffect Data imagen Principal en CreateProduct:", data.imagen_principal);
+  }, [data]);
   
   // useEffect(() => {
   //   // Realizar la validación solo cuando el usuario interactúe con el formulario
@@ -239,7 +245,6 @@ useEffect( ()=>{
   
 }
 }, [data]);
-
   return (
     <div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8  ">
       <div
@@ -310,9 +315,9 @@ useEffect( ()=>{
                 placeholder="Descripcion del producto..."
               />
               <div className="flex flex-row justify-start items-center border-none mx-1 ">
-                {errors.descripcion && (
+                {errors?.descripcion && (
                   <p className="mt-1  text-left text-small text-red-500 ">
-                    {errors?.descripcion}
+                    {errors.descripcion}
                   </p>
                 )}
               </div>
