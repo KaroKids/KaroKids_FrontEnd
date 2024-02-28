@@ -29,16 +29,18 @@ const carritoSlice = createSlice({
       state.carrito = action.payload;
     },
     agregarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra;
+      console.log("action.payload: " + action.payload)
+      state.productos_compra = action.payload;
     },
     eliminarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra;
+      console.log("action.payload: " + action.payload)
+      state.productos_compra = action.payload;
     },
     actualizarProducto: (state, action) => {
-      state.productos_compra = action.payload.productos_compra;
+      state.productos_compra = action.payload;
     },
     borrarCarrito: (state, action) => {
-      state.productos_compra = action.payload.productos_compra;
+      state.productos_compra = action.payload;
     },
     //*
 
@@ -48,11 +50,12 @@ const carritoSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
     removeCarrito: (state, action) => {
+      console.log("aca si entra")
       state.items = state.items.filter(
         (item) =>
-          item.producto_id !== action.payload.id ||
-          item.compra_talla !== action.payload.talla ||
-          item.compra_color !== action.payload.color
+          item.producto_id !== action.payload.producto_id ||
+          item.compra_talla !== action.payload.compra_talla ||
+          item.compra_color !== action.payload.compra_color
       );
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
