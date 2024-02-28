@@ -2,16 +2,18 @@ import  { useState, useEffect } from 'react';
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx';
  
-const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
+const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias, errors}) => {
   const [imagenPrincipal, setImagenPrincipal] = useState([]);
   const [imagSecundarias, setImagSecundarias] = useState([]);
-
+console.log(errors)
   const [loadingImage, setloadingImage] = useState(false);
 
   //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
   useEffect(() => {
+    console.log(imagSecundarias)
     if(imagenPrincipal[0]!==undefined){ 
       onGetImagenPrincipal(imagenPrincipal[0])
+     // console.log('useEffect Upload Image imagenPrincipal:', imagenPrincipal[0])
     }
 
     if(imagSecundarias[0]!==undefined){
@@ -29,13 +31,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
     const selectedImage = e.target.files[0];
 
     previewFiles(selectedImage,type);
-    // if (selectedImage) {
-    //   const reader = new FileReader();
-    //   reader.onload = () => {
-    //     setImagenPrincipal([reader.result]); 
-    //   };
-    //   reader.readAsDataURL(selectedImage);
-    // }
+  
   }
 
   const previewImagSecundarias = (e)=>{
@@ -50,10 +46,12 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
   function previewFiles (file, type) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-
+   console.log('type:', type);
     reader.onloadend =  ()=>{
       if (type==='imgPrincipal'){
          setImagenPrincipal([reader.result])
+         //console.log('imagen principal', imagenPrincipal)
+         
       }
         
       if(type==='imgSecundarias'){
@@ -66,12 +64,20 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
         <div>
 
        
-        <div className="col-span-full">
+        <div className="col-span-full r">
         <label htmlFor="imagenPrincipal" className="block text-sm font-semibold mt-5 leading-6 text-gray-900">
-         Imagen Principal
+         Imagen Principal  
         </label>
-        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+        <div className={`mt-2 flex justify-center rounded-lg border ${errors?.imagen_principal ? 'border-red-400' : 'border-dashed'} border-dashed border-gray-900/25 px-6 py-10`}>
+
           <div className="text-center">
+          <div className="flex flex-row justify-start items-center border-none mx-1 ">
+                {errors.imagen_principal && (
+                  <p className="mt-1  text-left text-small text-red-500 ">
+                    {errors?.imagen_principal}
+                  </p>
+                )}
+              </div>
           {imagenPrincipal && (
      
           
@@ -95,7 +101,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
                 <span className='flex justify-center text-center'>Subir la foto</span>
                 <input id="imagenPrincipal" onChange={previewImagenPrincipal} name="imagenPrincipal" type="file" className="sr-only" />
               </label>
-              <p className="pl-1">arrastrar o soltar</p>
+              <p className="pl-1">click para subir la foto</p>
             </div>
             <p className="flex flex-col text-xs leading-5 text-gray-600">PNG, JPG, GIF hasta 1 MB</p>
           </div>
@@ -108,10 +114,18 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
 
         <div className="col-span-full">
         <label htmlFor="imagSecundarias" className="block text-sm font-semibold mt-5 leading-6 text-gray-900">
-         Imagenes Secundarias
+         Imagenes Secundarias {errors.imagSecundarias}
         </label>
-        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+        <div className={`mt-2 flex justify-center rounded-lg border ${errors && errors.imagenes_secundarias && errors.imagenes_secundarias.length > 0 ? 'border-red-400' : 'border-dashed'} border-dashed border-gray-900/25 px-6 py-10`}>
+
           <div className="text-center">
+          <div className="flex flex-row justify-start items-center border-none mx-1 ">
+                {errors.imagenes_secundarias && (
+                  <p className="mt-1  text-left text-small text-red-500 ">
+                    {errors?.imagenes_secundarias}
+                  </p>
+                )}
+              </div>
           {imagSecundarias && (
      
           
@@ -135,7 +149,7 @@ const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias}) => {
                 <span className='flex justify-center text-center'>Subir la foto</span>
                 <input id="imagSecundarias" onChange={previewImagSecundarias} name="file-upload-second" type="file" className="sr-only" />
               </label>
-              <p className="pl-1">arrastrar o soltar</p>
+              <p className="pl-1">click para subir foto</p>
             </div>
             <p className="flex flex-col text-xs leading-5 text-gray-600">PNG, JPG, GIF hasta 1 MB</p>
           </div>

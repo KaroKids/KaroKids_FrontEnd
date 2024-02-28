@@ -14,6 +14,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Register from "./components/Auth/Register";
 import PanelUsuario from "./components/User/PanelUsuario";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import UsersView from "./components/Admin/UsersView";
 
 function App() {
   const { pathname } = useLocation();
@@ -33,6 +34,7 @@ function App() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/users" element={<UsersView />} />
           <Route path="/carrito" element={<Cart />} />
           <Route
             path="/usuario/panel-control"

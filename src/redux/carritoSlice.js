@@ -9,9 +9,40 @@ const carritoSlice = createSlice({
   name: "carrito",
   initialState: {
     items: loadCartFromLocalStorage(),
+    carrito: [],
     talla: "",
+
+    //*Estados para usuarios registrados
+    usuario_id: "",
+    productos_compra: [], //Array que almacena los objetos del array "productos_compra" del Back.
+    carrito_id: "",
+    // producto_id: "",
+    // compra_talla: "",
+    // compra_color: "",
+    // compra_cantidad: 0,
+    // producto_precio: 0
+    //*
   },
   reducers: {
+    //*Destinados a usuarios registrados.
+    allCarrito: (state, action) => {
+      state.carrito = action.payload;
+    },
+    agregarProducto: (state, action) => {
+      state.productos_compra = action.payload.productos_compra;
+    },
+    eliminarProducto: (state, action) => {
+      state.productos_compra = action.payload.productos_compra;
+    },
+    actualizarProducto: (state, action) => {
+      state.productos_compra = action.payload.productos_compra;
+    },
+    borrarCarrito: (state, action) => {
+      state.productos_compra = action.payload.productos_compra;
+    },
+    //*
+
+    //Destinadas a usuarios no registrados:
     addToCarrito: (state, action) => {
       state.items = [...state.items, action.payload];
       localStorage.setItem("cart", JSON.stringify(state.items));
@@ -73,5 +104,13 @@ export const {
   addTalla,
   incrementarCantidad,
   decrementarCantidad,
+
+  //* Destinado a usuarios registrados
+  allCarrito,
+  agregarProducto,
+  eliminarProducto,
+  actualizarProducto,
+  borrarCarrito,
+  //*
 } = carritoSlice.actions;
 export default carritoSlice.reducer;
