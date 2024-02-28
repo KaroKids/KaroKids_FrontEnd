@@ -152,7 +152,6 @@ export function AuthProvider({ children }) {
 	const login = async (email, password, onClose) => {
 		try {
 			const response = await signInWithEmailAndPassword(auth, email, password);
-			console.log(response);
 			if (response.user) {
 				let email = response.user.emailVerified;
 				if (email) {

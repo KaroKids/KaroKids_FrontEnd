@@ -62,7 +62,7 @@ const DatosPersonales = () => {
 				</h1>
 				<div className="my-4">
 					<label
-						htmlFor="nombre"
+						htmlFor="nombreLabel"
 						className="block text-sm font-medium leading-6 text-gray-900">
 						Nombre:
 					</label>
@@ -76,10 +76,10 @@ const DatosPersonales = () => {
 					/>
 				</div>
 
-				<div className="my-4">
+				<div className="my-4 ">
 					<div className="flex items-center justify-between">
 						<label
-							htmlFor="apellido"
+							htmlFor="apellidoLabel"
 							className="block text-sm font-medium leading-6 text-gray-900">
 							Apellido:
 						</label>
@@ -95,72 +95,66 @@ const DatosPersonales = () => {
 					/>
 				</div>
 
-				<div className="my-4">
-					<div className="flex items-center justify-between">
-						<label
-							htmlFor="email"
-							className="block text-sm font-medium leading-6 text-gray-900">
-							Email:
-						</label>
-					</div>
+				<Button
+					variant="detail"
+					onClick={(e) => handlePut(e)}
+					className="w-full text-sm font-semibold leading-6 my-auto text-white shadow-sm">
+					Modificar
+				</Button>
+			</form>
+			<form className="lg:space-y-6 py-6 w-full px-4">
+				{auth.user.providerData[0].providerId === "google.com" ? (
+					<h1 className="mb-10 font-semibold text-left text-xl">
+						Operación inválida para cuenta de Google
+					</h1>
+				) : (
+					<h1 className="mb-10 font-semibold text-left text-xl">
+						Actualizar contraseña
+					</h1>
+				)}
 
+				<div className="my-4">
+					<label
+						htmlFor="contraseñaActualLabel"
+						className="block text-sm font-medium leading-6 text-gray-900">
+						Contraseña actual:
+					</label>
 					<input
-						id="email"
-						name="email"
-						type="email"
-						onChange={(e) => setEmail(e.target.value)}
-						value={user.email_usuario}
+						id="contraseñaActual"
+						name="contraseñaActual"
+						type="password"
+						disabled={auth.user.providerData[0].providerId === "google.com"}
+						onChange={(e) => setCurrentPassword(e.target.value)}
 						className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 					/>
 				</div>
 
+				<div className="my-4 ">
+					<div className="flex items-center justify-between">
+						<label
+							htmlFor="nuevaContraseñaLabel"
+							className="block text-sm font-medium leading-6 text-gray-900">
+							Nueva contraseña:
+						</label>
+					</div>
+
+					<input
+						id="nuevaContraseña"
+						name="nuevaContraseña"
+						type="password"
+						disabled={auth.user.providerData[0].providerId === "google.com"}
+						onChange={(e) => setNewPassword(e.target.value)}
+						className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+					/>
+				</div>
 				<Button
 					variant="detail"
-					onClick={(e) => handlePut(e)}
-					className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm">
+					disabled={auth.user.providerData[0].providerId === "google.com"}
+					onClick={(e) => handlePasswordChange(e)}
+					className="w-full text-sm font-semibold leading-6 my-1 text-white shadow-sm">
 					Modificar
 				</Button>
 			</form>
-			{auth.user.providerData[0].providerId === "password" && (
-				<form className="flex flex-col justify-end mx-auto h-auto py-6 px-4  w-full">
-					<h1 className="mb-6 font-semibold text-left text-xl">
-						Actualizar contraseña
-					</h1>
-					<div className="flex flex-col py-4  lg:h-[450px] xl:h-[346px]">
-						<label
-							htmlFor="password"
-							className="block text-sm mb-2 font-medium leading-6 text-gray-900">
-							Contraseña actual:
-						</label>
-						<input
-							id="actualPassword"
-							name="actualPassword"
-							type="password"
-							onChange={(e) => setCurrentPassword(e.target.value)}
-							className="block pl-2 w-full mb-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-						/>
-
-						<label
-							htmlFor="password"
-							className="block text-sm  mb-2 font-medium leading-6 text-gray-900">
-							Nueva contraseña:
-						</label>
-						<input
-							id="newPassword"
-							name="newPassword"
-							type="password"
-							onChange={(e) => setNewPassword(e.target.value)}
-							className="block pl-2 w-full rounded-md  border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-						/>
-					</div>
-					<Button
-						variant="detail"
-						onClick={(e) => handlePasswordChange(e)}
-						className="w-full text-sm font-semibold leading-6 my-auto text-white shadow-sm">
-						Modificar
-					</Button>
-				</form>
-			)}
 		</div>
 	);
 };
