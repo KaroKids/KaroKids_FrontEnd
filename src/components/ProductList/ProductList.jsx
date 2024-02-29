@@ -14,6 +14,7 @@ import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { Link } from "react-router-dom";
+import { resetStateProduct } from "@/redux/productosSlice";
 
 const relevancias = [
   {
@@ -46,6 +47,7 @@ export default function ProductList() {
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
+  const loading = useSelector((state) => state.productos.loading);
 
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);
@@ -69,6 +71,7 @@ export default function ProductList() {
   };
 
   useEffect(() => {
+    dispatch(resetStateProduct());
     productos.volver === 0
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
@@ -112,18 +115,25 @@ export default function ProductList() {
           </div>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {productos &&
-              productos?.productos?.map((product, i) => (
-                <Link key={i} to={`/producto/${product.producto_id}`}>
-                  <ProductCard
-                    id={product.producto_id}
-                    imageSrc={product.imagen_principal}
-                    imageAlt={product.nombre}
-                    name={product.nombre}
-                    price={product.precio}
-                  />
-                </Link>
-              ))}
+            {!loading // Corrección: Cambiado !loading por loading
+              ? [1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                      <img className="h-80 w-full object-cover bg-gray-300 object-center group-hover:opacity-75" />
+                    </div>
+                  </div>
+                ))
+              : productos?.productos.map((product, i) => (
+                  <Link key={i} to={`/producto/${product.producto_id}`}>
+                    <ProductCard
+                      id={product.producto_id}
+                      imageSrc={product.imagen_principal}
+                      imageAlt={product.nombre}
+                      name={product.nombre}
+                      price={product.precio}
+                    />
+                  </Link>
+                ))}
           </div>
           <PaginationControls filtros={filtrosAplicados} />
         </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,16 +12,19 @@ import {
   borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
+import { deleteProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
   const dispatch = useDispatch();
 
   // if (usuario === no_registrado) {
   const productosCarrito = useSelector((state) => state.carrito.items);
+
   // }
+  const usuario = useSelector((state) => state.users.user);
 
   //* if (usuario === registrado) {
-  dispatch(allCarrito());
+  // dispatch(allCarrito());
   const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
@@ -50,15 +54,21 @@ const ProductCart = () => {
     //* }
   };
 
-  const handleDelete = (id, talla, color) => {
+  const handleDelete = (
+    usuario_id,
+    producto_id,
+    compra_talla,
+    compra_color
+  ) => {
     //if (usuario === no registrado) {
-    dispatch(removeCarrito({ id, talla, color }));
-    console.log("click");
+    dispatch(
+      removeCarrito({ usuario_id, producto_id, compra_talla, compra_color })
+    );
     // }
 
     //* if (usuario === registrado) {
     dispatch(
-      eliminarProducto(usuario_id, producto_id, compra_talla, compra_color)
+      deleteProducto({ usuario_id, producto_id, compra_talla, compra_color })
     );
     //* }
   };
@@ -101,7 +111,9 @@ const ProductCart = () => {
     //* }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(allCarrito());
+  }, []);
 
   return (
     <article
@@ -125,7 +137,7 @@ const ProductCart = () => {
       <div className="h-[400px] style-scrollbar overflow-y-auto remove-scroll w-full grid grid-cols-4 place-items-center gap-y-4 py-4">
         {productosCarrito.map((product) => {
           return (
-            <>
+            <React.Fragment key={product.producto_id}>
               <div id="productMain" className="flex items-center gap-x-4">
                 <img
                   src={product.imagen_principal}
@@ -134,14 +146,14 @@ const ProductCart = () => {
                 />
                 <p className="hidden sm:flex flex-col gap-1 text-xl">
                   <strong>{product.nombre}</strong>
-                  <p className="flex flex-col text-sm">
+                  <small className="flex flex-col text-sm">
                     <span>
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
                       <strong>Talle:</strong> {product.compra_talla}
                     </span>
-                  </p>
+                  </small>
                 </p>
               </div>
               <div id="price">$ {product.precio}</div>
@@ -169,6 +181,7 @@ const ProductCart = () => {
                   className="remove-arrow max-w-10 w-auto h-10 text-center"
                   type="number"
                   value={product.compra_cantidad}
+                  readOnly
                 />
                 <Button
                   onClick={(e) =>
@@ -190,17 +203,19 @@ const ProductCart = () => {
                 <span
                   onClick={() =>
                     handleDelete(
+                      usuario.usuario_id,
                       product.producto_id,
                       product.compra_talla,
                       product.compra_color
                     )
                   }
-                  className="border border-black p-2 rounded  cursor-pointer"
+                  className="cursor-pointer"
                 >
-                  X
+                  ❌
                 </span>
               </div>
-            </>
+              <div></div>
+            </React.Fragment>
           );
         })}
       </div>

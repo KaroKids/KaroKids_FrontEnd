@@ -18,12 +18,12 @@ const PanelUsuario = () => {
       <div className="flex  flex-col lg:flex-row items-start border-t-2 h-auto border-t-slate-300 py-6 gap-20 w-full">
         <div className="flex flex-col   items-start h-auto w-full lg:w-auto md:h-[500px] ">
           <div className="pt-12 px-2  bg-slate-100 h-max w-full lg:h-full lg:w-80 ">
-            <h1 className="text-left mb-10 text-xl font-medium">
+            <h1 className="text-center mb-10 text-xl font-medium">
               Hola {userName}!
             </h1>
-            <p className="text-start border-b-2 border-b-slate-300 h-36 w-full text-slate-500">
+            <p className="text-justify border-b-2 border-b-slate-300 h-36 w-full text-slate-500 p-1">
               Desde Mi Cuenta puedes ver un resumen de tus actividades recientes
-              y actualizar tu informacion.
+              y actualizar tu información.
             </p>
           </div>
           <ul className="flex flex-col bg-slate-100  justify-evenly items-start pl-4 h-40 md:h-full w-full  lg:w-80">

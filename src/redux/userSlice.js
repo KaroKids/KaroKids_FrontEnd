@@ -16,8 +16,14 @@ export const userSlice = createSlice({
     UserPut: (state, action) => {
       state.user = action.payload;
     },
+    resetState: () => {
+      return {
+        users: [],
+        user: {},
+      };
+    },
   },
 });
 
-export const { allUsers, UserByEmail, UserPut } = userSlice.actions;
+export const { allUsers, UserByEmail, UserPut, resetState } = userSlice.actions;
 export default userSlice.reducer;
