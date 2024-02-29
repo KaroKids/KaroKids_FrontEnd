@@ -315,11 +315,11 @@ useEffect(()=>{
           <div className="table-cell px-6 py-4 whitespace-nowrap">{product.nombre}</div>
           <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">{product.genero}</div>
           <div className="table-cell px-6 py-4 whitespace-nowrap">$ {numberMaskUnit(product.precio)}</div>
-          <div className="table-cell px-6 py-4 whitespace-nowrap">
+          <div className="table-cell px-8 py-4 whitespace-nowrap">
             <Link to={`/producto/${product.producto_id}`}>
-              <button className="text-indigo-600 hover:text-indigo-900 mr-2">Visualizar</button>
+              <button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">Visualizar</button>
             </Link>
-            <button  className="text-yellow-600 hover:text-indigo-900 mr-2">Editar</button>
+            <button  className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">Editar</button>
              {product.inactivo ? (
                         <button
                           onClick={() =>
@@ -335,7 +335,7 @@ useEffect(()=>{
                           onClick={() =>
                             handleLogicDelete(product.producto_id, false)
                           }
-                          className="text-white w-22 h-6 pl-2 pr-2 ring-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
+                          className="text-white w-22 h-6 pl-2 pr-2 ring-1 w-[78px] rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
                           >
            
                           Activo
