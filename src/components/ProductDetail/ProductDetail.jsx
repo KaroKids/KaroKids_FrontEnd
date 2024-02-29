@@ -136,7 +136,7 @@ const ProductDetail = () => {
             >
               <CarouselContent>
                 <CarouselItem>
-                  <Card className="flex justify-center border-2  shadow-none mb-4 w-fit mx-auto  sm:h-[550px] md:h-[620px]">
+                  <Card className="flex justify-center border-2  shadow-none mb-4 w-fit mx-auto md:w-full sm:h-[550px] md:h-[620px]">
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
@@ -146,7 +146,7 @@ const ProductDetail = () => {
                 </CarouselItem>
                 {product.imagenes_secundarias.map((prod, i) => (
                   <CarouselItem key={i}>
-                    <Card className="flex  border-2 justify-center  shadow-none w-fit mx-auto sm:h-[550px] md:h-[620px]">
+                    <Card className="flex  border-2 justify-center  shadow-none w-fit mx-auto md:w-full  sm:h-[550px] md:h-[620px]">
                       <img
                         src={prod}
                         alt={product.nombre}
