@@ -58,17 +58,14 @@ export const deleteProducto = (body) => {
   };
 };
 
-export const updateProducto = async (body) => {
+export const updateProducto = (body) => {
   return async (dispatch) => {
     try {
-      const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
-
-      const { productos_compra } = carritoUsuario;
-
+      const response = await axios.put(`${URL_CARRITO}/modificar`, body);
       return dispatch(
-        actualizarProducto({
-          productos_compra: productos_compra,
-        })
+        actualizarProducto(
+          response.data
+        )
       );
     } catch (error) {
       console.error(error);
@@ -76,17 +73,15 @@ export const updateProducto = async (body) => {
   };
 };
 
-export const deleteCarrito = async (id) => {
+export const deleteCarrito = (usuario_id) => {
   return async (dispatch) => {
     try {
-      const { carritoUsuario } = await axios.delete(`${URL_CARRITO}/${id}`);
-
-      const { productos_compra } = carritoUsuario;
-
+      const response = await axios.put(`${URL_CARRITO}/resetear`,{usuario_id});
+console.log(response.data)
       return dispatch(
-        borrarCarrito({
-          productos_compra: productos_compra,
-        })
+        borrarCarrito(
+          response.data
+        )
       );
     } catch (error) {
       console.error(error);

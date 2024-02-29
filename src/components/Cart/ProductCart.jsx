@@ -11,7 +11,7 @@ import {
   borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
-import { deleteProducto } from "@/redux/carritoActions";
+import { deleteProducto, updateProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
   const dispatch = useDispatch();
@@ -64,44 +64,63 @@ const ProductCart = () => {
     //* }
   };
 
-  const handleIncrementar = (e, id, talla, color) => {
+  const handleIncrementar = (e,  producto_id,
+    compra_talla,
+    compra_color,
+    compra_cantidad) => {
+      compra_cantidad = compra_cantidad +1;
     //if (usuario === no registrado) {
     e.preventDefault();
-    dispatch(incrementarCantidad({ id, talla, color }));
+    dispatch(incrementarCantidad({  producto_id,
+      compra_talla,
+      compra_color,
+      compra_cantidad }));
     // }
-
+const body ={
+  usuario_id : usuario.usuario_id,
+        producto_id : producto_id,
+        compra_talla : compra_talla,
+        compra_color: compra_color,
+        compra_cantidad: compra_cantidad
+}
     //* if (usuario === registrado) {
     dispatch(
-      actualizarProducto(
-        usuario_id,
-        producto_id,
-        compra_talla,
-        compra_color,
-        compra_cantidad
+      updateProducto(
+        body
       )
     );
     //* }
   };
 
-  const handleDecrementar = (e, id, talla, color) => {
+
+  const handleDecrementar = (e,  producto_id,
+    compra_talla,
+    compra_color,
+    compra_cantidad) => {
+      compra_cantidad = compra_cantidad -1;
     //if (usuario === no registrado) {
     e.preventDefault();
-    dispatch(decrementarCantidad({ id, talla, color }));
+    dispatch(decrementarCantidad({  producto_id,
+      compra_talla,
+      compra_color,
+      compra_cantidad }));
     // }
-
+const body ={
+  usuario_id : usuario.usuario_id,
+        producto_id : producto_id,
+        compra_talla : compra_talla,
+        compra_color: compra_color,
+        compra_cantidad: compra_cantidad
+}
     //* if (usuario === registrado) {
     dispatch(
-      actualizarProducto(
-        usuario_id,
-        producto_id,
-        compra_talla,
-        compra_color,
-        compra_cantidad
+      updateProducto(
+        body
       )
     );
     //* }
   };
-
+  
   useEffect(() => {}, []);
 
   return (
@@ -156,7 +175,8 @@ const ProductCart = () => {
                       e,
                       product.producto_id,
                       product.compra_talla,
-                      product.compra_color
+                      product.compra_color,
+                      product.compra_cantidad
                     )
                   }
                   variant="detail"
@@ -177,7 +197,8 @@ const ProductCart = () => {
                       e,
                       product.producto_id,
                       product.compra_talla,
-                      product.compra_color
+                      product.compra_color,
+                      product.compra_cantidad
                     )
                   }
                   variant="detail"

@@ -37,9 +37,11 @@ const carritoSlice = createSlice({
       state.productos_compra = action.payload;
     },
     actualizarProducto: (state, action) => {
+      console.log("action.payload: " + action.payload)
       state.productos_compra = action.payload;
     },
     borrarCarrito: (state, action) => {
+      console.log("action.payload: " + action.payload)
       state.productos_compra = action.payload;
     },
     //*
@@ -49,6 +51,11 @@ const carritoSlice = createSlice({
       state.items = [...state.items, action.payload];
       localStorage.setItem("cart", JSON.stringify(state.items));
     },
+    deleteStorage: (state, action) => {
+      localStorage.removeItem("cart");
+      window.location.reload()
+    },
+   
     removeCarrito: (state, action) => {
       console.log("aca si entra")
       state.items = state.items.filter(
@@ -65,9 +72,9 @@ const carritoSlice = createSlice({
     incrementarCantidad: (state, action) => {
       state.items = state.items.map((item) => {
         if (
-          item.producto_id === action.payload.id &&
-          item.compra_talla === action.payload.talla &&
-          item.compra_color === action.payload.color
+          item.producto_id === action.payload.producto_id &&
+          item.compra_talla === action.payload.compra_talla &&
+          item.compra_color === action.payload.compra_color
         ) {
           return {
             ...item,
@@ -81,9 +88,9 @@ const carritoSlice = createSlice({
     decrementarCantidad: (state, action) => {
       state.items = state.items.map((item) => {
         if (
-          item.producto_id === action.payload.id &&
-          item.compra_talla === action.payload.talla &&
-          item.compra_color === action.payload.color
+          item.producto_id === action.payload.producto_id &&
+          item.compra_talla === action.payload.compra_talla &&
+          item.compra_color === action.payload.compra_color
         ) {
           if (item.compra_cantidad === 1) {
             return item;
@@ -94,6 +101,7 @@ const carritoSlice = createSlice({
             };
           }
         }
+
         return item;
       });
       localStorage.setItem("cart", JSON.stringify(state.items));
@@ -107,6 +115,8 @@ export const {
   addTalla,
   incrementarCantidad,
   decrementarCantidad,
+  resetCarrito,
+  deleteStorage,
 
   //* Destinado a usuarios registrados
   allCarrito,

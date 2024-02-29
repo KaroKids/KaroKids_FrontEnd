@@ -3,8 +3,22 @@ import ProductCart from "./ProductCart";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCarrito } from "@/redux/carritoActions";
+import { deleteStorage } from "@/redux/carritoSlice";
+import { useEffect } from "react";
+
 
 const Cart = () => {
+
+  const usuario = useSelector((state)=> state.users.user)
+const dispatch = useDispatch()
+
+  const handleLimpiar = (e)=>{  
+  e.preventDefault()
+    dispatch(deleteCarrito(usuario.usuario_id))
+    dispatch(deleteStorage())
+  }
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
       <header className="flex justify-between text-4xl font-semibold mb-2">
@@ -19,6 +33,17 @@ const Cart = () => {
             Volver a la tienda
           </Button>
         </Link>
+        <Link to="/productos">
+          <Button onClick={(e)=>handleLimpiar(e)}variant="detail" className="text-base ">
+            <img
+              src="/public/assets/navbar-icons/back-black.svg"
+              alt=""
+              className="w-6 mr-2"
+            />
+            limpiar carrito
+          </Button>
+        </Link>
+        
       </header>
       <main className="mt-6 border-t-2 border-t-slate-300">
         <ProductCart />
