@@ -42,7 +42,7 @@ const NavbarMobile = () => {
           {userName ? (
             <li
               onClick={handleOpenUser}
-              className="flex flex-row gap-x-2 items-end cursor-pointer"
+              className="flex flex-row gap-x-2 items-end"
             >
               <img
                 src="/assets/navbar-icons/user-black.svg"
@@ -53,7 +53,7 @@ const NavbarMobile = () => {
           ) : (
             <li
               onClick={handleOpenModal}
-              className="flex flex-row gap-x-2 items-end cursor-pointer"
+              className="flex flex-row gap-x-2 items-end"
             >
               <img
                 src="/assets/navbar-icons/user-black.svg"
@@ -111,6 +111,9 @@ const NavbarMobile = () => {
           <li>Bebé</li>
           <li>Infantil</li>
           <li>Junior</li>
+          <li onClick={showMenu}>
+            <small>❌</small>
+          </li>
         </ul>
         <Login
           isOpen={isModalOpen}
