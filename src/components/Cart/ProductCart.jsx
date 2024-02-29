@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,7 +24,7 @@ const ProductCart = () => {
   const usuario = useSelector((state) => state.users.user);
 
   //* if (usuario === registrado) {
-  dispatch(allCarrito());
+  // dispatch(allCarrito());
   const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
@@ -110,7 +111,9 @@ const ProductCart = () => {
     //* }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(allCarrito());
+  }, []);
 
   return (
     <article
@@ -133,9 +136,8 @@ const ProductCart = () => {
       </nav>
       <div className="h-[400px] style-scrollbar overflow-y-auto remove-scroll w-full grid grid-cols-4 place-items-center gap-y-4 py-4">
         {productosCarrito.map((product) => {
-          console.log(product);
           return (
-            <>
+            <React.Fragment key={product.producto_id}>
               <div id="productMain" className="flex items-center gap-x-4">
                 <img
                   src={product.imagen_principal}
@@ -144,14 +146,14 @@ const ProductCart = () => {
                 />
                 <p className="hidden sm:flex flex-col gap-1 text-xl">
                   <strong>{product.nombre}</strong>
-                  <p className="flex flex-col text-sm">
+                  <small className="flex flex-col text-sm">
                     <span>
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
                       <strong>Talle:</strong> {product.compra_talla}
                     </span>
-                  </p>
+                  </small>
                 </p>
               </div>
               <div id="price">$ {product.precio}</div>
@@ -179,6 +181,7 @@ const ProductCart = () => {
                   className="remove-arrow max-w-10 w-auto h-10 text-center"
                   type="number"
                   value={product.compra_cantidad}
+                  readOnly
                 />
                 <Button
                   onClick={(e) =>
@@ -206,12 +209,13 @@ const ProductCart = () => {
                       product.compra_color
                     )
                   }
-                  className="border border-black p-2 rounded  cursor-pointer"
+                  className="cursor-pointer ml-2"
                 >
-                  X
+                  ❌
                 </span>
               </div>
-            </>
+              <div></div>
+            </React.Fragment>
           );
         })}
       </div>
