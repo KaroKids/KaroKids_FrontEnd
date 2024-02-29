@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,18 +11,19 @@ import {
   borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
-import { deleteProducto, updateProducto } from "@/redux/carritoActions";
+import { deleteProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
   const dispatch = useDispatch();
 
   // if (usuario === no_registrado) {
   const productosCarrito = useSelector((state) => state.carrito.items);
+
   // }
   const usuario = useSelector((state) => state.users.user);
 
   //* if (usuario === registrado) {
-  // dispatch(allCarrito());
+  dispatch(allCarrito());
   const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
@@ -72,71 +72,45 @@ const ProductCart = () => {
     //* }
   };
 
-  const handleIncrementar = (
-    e,
-    producto_id,
-    compra_talla,
-    compra_color,
-    compra_cantidad
-  ) => {
-    compra_cantidad = compra_cantidad + 1;
+  const handleIncrementar = (e, id, talla, color) => {
     //if (usuario === no registrado) {
     e.preventDefault();
+    dispatch(incrementarCantidad({ id, talla, color }));
+    // }
+
+    //* if (usuario === registrado) {
     dispatch(
-      incrementarCantidad({
+      actualizarProducto(
+        usuario_id,
         producto_id,
         compra_talla,
         compra_color,
-        compra_cantidad,
-      })
+        compra_cantidad
+      )
     );
-    // }
-    const body = {
-      usuario_id: usuario.usuario_id,
-      producto_id: producto_id,
-      compra_talla: compra_talla,
-      compra_color: compra_color,
-      compra_cantidad: compra_cantidad,
-    };
-    //* if (usuario === registrado) {
-    dispatch(updateProducto(body));
     //* }
   };
 
-  const handleDecrementar = (
-    e,
-    producto_id,
-    compra_talla,
-    compra_color,
-    compra_cantidad
-  ) => {
-    compra_cantidad = compra_cantidad - 1;
+  const handleDecrementar = (e, id, talla, color) => {
     //if (usuario === no registrado) {
     e.preventDefault();
+    dispatch(decrementarCantidad({ id, talla, color }));
+    // }
+
+    //* if (usuario === registrado) {
     dispatch(
-      decrementarCantidad({
+      actualizarProducto(
+        usuario_id,
         producto_id,
         compra_talla,
         compra_color,
-        compra_cantidad,
-      })
+        compra_cantidad
+      )
     );
-    // }
-    const body = {
-      usuario_id: usuario.usuario_id,
-      producto_id: producto_id,
-      compra_talla: compra_talla,
-      compra_color: compra_color,
-      compra_cantidad: compra_cantidad,
-    };
-    //* if (usuario === registrado) {
-    dispatch(updateProducto(body));
     //* }
   };
 
-  useEffect(() => {
-    dispatch(allCarrito());
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <article
@@ -159,13 +133,10 @@ const ProductCart = () => {
       </nav>
       <div className="h-[400px] style-scrollbar overflow-y-auto remove-scroll w-full grid grid-cols-4 place-items-center gap-y-4 py-4">
         {productosCarrito.map((product) => {
+          console.log(product);
           return (
-            <React.Fragment key={product.producto_id}>
-              <div
-                key={product.producto_id}
-                id="productMain"
-                className="flex items-center gap-x-4"
-              >
+            <>
+              <div id="productMain" className="flex items-center gap-x-4">
                 <img
                   src={product.imagen_principal}
                   alt={product.nombre}
@@ -173,14 +144,14 @@ const ProductCart = () => {
                 />
                 <p className="hidden sm:flex flex-col gap-1 text-xl">
                   <strong>{product.nombre}</strong>
-                  <small className="flex flex-col text-sm">
+                  <p className="flex flex-col text-sm">
                     <span>
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
                       <strong>Talle:</strong> {product.compra_talla}
                     </span>
-                  </small>
+                  </p>
                 </p>
               </div>
               <div id="price">$ {product.precio}</div>
@@ -194,8 +165,7 @@ const ProductCart = () => {
                       e,
                       product.producto_id,
                       product.compra_talla,
-                      product.compra_color,
-                      product.compra_cantidad
+                      product.compra_color
                     )
                   }
                   variant="detail"
@@ -208,7 +178,7 @@ const ProductCart = () => {
                 <input
                   className="remove-arrow max-w-10 w-auto h-10 text-center"
                   type="number"
-                  defaultValue={product.compra_cantidad}
+                  value={product.compra_cantidad}
                 />
                 <Button
                   onClick={(e) =>
@@ -216,8 +186,7 @@ const ProductCart = () => {
                       e,
                       product.producto_id,
                       product.compra_talla,
-                      product.compra_color,
-                      product.compra_cantidad
+                      product.compra_color
                     )
                   }
                   variant="detail"
@@ -242,7 +211,7 @@ const ProductCart = () => {
                   X
                 </span>
               </div>
-            </React.Fragment>
+            </>
           );
         })}
       </div>

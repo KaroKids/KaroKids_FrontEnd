@@ -52,33 +52,38 @@ export const deleteProducto = (body) => {
 	};
 };
 
-export const updateProducto = (body) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.put(`${URL_CARRITO}/modificar`, body);
-      return dispatch(
-        actualizarProducto(
-          response.data
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+export const updateProducto = async (body) => {
+	return async (dispatch) => {
+		try {
+			const { carritoUsuario } = await axios.put(`${URL_CARRITO}`, body);
+
+			const { productos_compra } = carritoUsuario;
+
+			return dispatch(
+				actualizarProducto({
+					productos_compra: productos_compra,
+				})
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 };
 
-export const deleteCarrito = (usuario_id) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.put(`${URL_CARRITO}/resetear`,{usuario_id});
-console.log(response.data)
-      return dispatch(
-        borrarCarrito(
-          response.data
-        )
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+export const deleteCarrito = async (id) => {
+	return async (dispatch) => {
+		try {
+			const { carritoUsuario } = await axios.delete(`${URL_CARRITO}/${id}`);
+
+			const { productos_compra } = carritoUsuario;
+
+			return dispatch(
+				borrarCarrito({
+					productos_compra: productos_compra,
+				})
+			);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 };
