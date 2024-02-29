@@ -131,28 +131,28 @@ const ProductDetail = () => {
     <div className="  py-24 px-10 text-center ">
       {product.nombre ? (
         <>
-          <div className="grid grid-cols-1 mb-0  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
+          <div className="grid grid-cols-1 mb-0 xl:gap-10  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
             <Carousel
               orientation="horizontal"
-              className="  rounded-sm mb-4 w-auto   md:h-[624px] xl:w-[530px]"
+              className="  rounded-sm mb-4 w-auto   md:h-[602px] xl:w-[570px]"
             >
               <CarouselContent>
                 <CarouselItem>
-                  <Card className="flex justify-center border-2  shadow-none mb-4 w-fit mx-auto md:w-full sm:h-[550px] md:h-[620px]">
+                  <Card className="flex justify-center border-2  shadow-none mb-4  h-[352px]  mx-auto md:w-full sm:h-[550px] md:h-[604px]">
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
-                      className=" w-auto h-full  "
+                      className=" w-auto h-full xl:h-full  "
                     />
                   </Card>
                 </CarouselItem>
                 {product.imagenes_secundarias.map((prod, i) => (
                   <CarouselItem key={i}>
-                    <Card className="flex  border-2 justify-center  shadow-none w-fit mx-auto md:w-full  sm:h-[550px] md:h-[620px]">
+                    <Card className="flex  border-2 justify-center  shadow-none  h-[352px] mx-auto md:w-full  sm:h-[550px] md:h-[604px]">
                       <img
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto h-full  "
+                        className="w-auto h-full xl:h-full  "
                       />
                     </Card>
                   </CarouselItem>
