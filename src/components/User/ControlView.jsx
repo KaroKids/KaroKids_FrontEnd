@@ -60,7 +60,32 @@ const ControlView = () => {
           </div>
         </>
       ) : (
-        <>...</>
+        <>
+          <div className="  animate-pulse ">
+            <div className="flex mt-4 rounded-full xl:w-80 justify-center">
+              <img
+                src="/assets/panel-icons/user-profile.svg"
+                className="bg-slate-200 rounded-full w-[200px] md:w-[250px]"
+              />
+            </div>
+            <div className="flex flex-col justify-evenly rounded-md bg-gray-300  px-2  w-64 xl:w-auto my-4 h-auto xl:h-48 mt-4">
+              <div className="flex flex-row ">
+                <h1 className="bg-gray-500 mt-2 h-4 w-14 md:text-lg font-bold"></h1>
+                <label className=" text-sm mt-2 bg-gray-400 h-4 w-full md:text-lg ml-2"></label>
+              </div>
+              <div className="flex flex-row ">
+                <h1 className="text-base my-2 bg-gray-500 h-4 w-14 md:text-lg font-bold"></h1>
+                <label className=" text-sm my-2 bg-gray-400 h-4 w-full md:text-lg ml-2"></label>
+              </div>
+              <div className="flex flex-row ">
+                <h1 className="text-base bg-gray-500 h-4 w-14 md:text-lg font-bold"></h1>
+                <label className=" text-sm bg-gray-400 h-4 w-full md:text-lg ml-2"></label>
+              </div>
+
+              <Button className="w-full my-2 bg-slate-500 text-white"></Button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
