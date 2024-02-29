@@ -1,134 +1,142 @@
+import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	decrementarCantidad,
-	incrementarCantidad,
-	removeCarrito,
-	allCarrito,
-	agregarProducto,
-	eliminarProducto,
-	actualizarProducto,
-	borrarCarrito,
+  decrementarCantidad,
+  incrementarCantidad,
+  removeCarrito,
+  allCarrito,
+  agregarProducto,
+  eliminarProducto,
+  actualizarProducto,
+  borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
 import { deleteProducto, updateProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	// if (usuario === no_registrado) {
-	const productosCarrito = useSelector((state) => state.carrito.items);
-	// }
-	const usuario = useSelector((state) => state.users.user);
+  // if (usuario === no_registrado) {
+  const productosCarrito = useSelector((state) => state.carrito.items);
+  // }
+  const usuario = useSelector((state) => state.users.user);
 
-	//* if (usuario === registrado) {
-	dispatch(allCarrito());
-	const miCarrito = useSelector((state) => state.carrito.productos_compra);
-	//* }
+  //* if (usuario === registrado) {
+  // dispatch(allCarrito());
+  const miCarrito = useSelector((state) => state.carrito.productos_compra);
+  //* }
 
-	const handleAdd = (id, talla, color) => {
-		//if (usuario === no registrado) {}
-		//* if (usuario === registrado) {
-		dispatch(
-			agregarProducto(
-				usuario_id,
-				producto_id,
-				compra_talla,
-				compra_color,
-				compra_cantidad,
-				producto_precio
-			)
-		);
-		//* }
-	};
-
-	const handleBuy = (id, talla, color) => {
-		//if (usuario === no registrado) {}
-		//* if (usuario === registrado) {
-		const compraFinalizada = useSelector(
-			(state) => state.carrito.productos_compra
-		);
-		dispatch(borrarCarrito(usuario_id));
-		//* }
-	};
-
-	const handleDelete = (
-		usuario_id,
-		producto_id,
-		compra_talla,
-		compra_color
-	) => {
-		//if (usuario === no registrado) {
-		dispatch(
-			removeCarrito({ usuario_id, producto_id, compra_talla, compra_color })
-		);
-		// }
-
-		//* if (usuario === registrado) {
-		dispatch(
-			deleteProducto({ usuario_id, producto_id, compra_talla, compra_color })
-		);
-		//* }
-	};
-
-  const handleIncrementar = (e,  producto_id,
-    compra_talla,
-    compra_color,
-    compra_cantidad) => {
-      compra_cantidad = compra_cantidad +1;
-    //if (usuario === no registrado) {
-    e.preventDefault();
-    dispatch(incrementarCantidad({  producto_id,
-      compra_talla,
-      compra_color,
-      compra_cantidad }));
-    // }
-const body ={
-  usuario_id : usuario.usuario_id,
-        producto_id : producto_id,
-        compra_talla : compra_talla,
-        compra_color: compra_color,
-        compra_cantidad: compra_cantidad
-}
+  const handleAdd = (id, talla, color) => {
+    //if (usuario === no registrado) {}
     //* if (usuario === registrado) {
     dispatch(
-      updateProducto(
-        body
+      agregarProducto(
+        usuario_id,
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad,
+        producto_precio
       )
     );
     //* }
   };
 
+  const handleBuy = (id, talla, color) => {
+    //if (usuario === no registrado) {}
+    //* if (usuario === registrado) {
+    const compraFinalizada = useSelector(
+      (state) => state.carrito.productos_compra
+    );
+    dispatch(borrarCarrito(usuario_id));
+    //* }
+  };
 
-  const handleDecrementar = (e,  producto_id,
+  const handleDelete = (
+    usuario_id,
+    producto_id,
     compra_talla,
-    compra_color,
-    compra_cantidad) => {
-      compra_cantidad = compra_cantidad -1;
+    compra_color
+  ) => {
     //if (usuario === no registrado) {
-    e.preventDefault();
-    dispatch(decrementarCantidad({  producto_id,
-      compra_talla,
-      compra_color,
-      compra_cantidad }));
+    dispatch(
+      removeCarrito({ usuario_id, producto_id, compra_talla, compra_color })
+    );
     // }
-const body ={
-  usuario_id : usuario.usuario_id,
-        producto_id : producto_id,
-        compra_talla : compra_talla,
-        compra_color: compra_color,
-        compra_cantidad: compra_cantidad
-}
+
     //* if (usuario === registrado) {
     dispatch(
-      updateProducto(
-        body
-      )
+      deleteProducto({ usuario_id, producto_id, compra_talla, compra_color })
     );
     //* }
   };
-  
-  useEffect(() => {}, []);
+
+  const handleIncrementar = (
+    e,
+    producto_id,
+    compra_talla,
+    compra_color,
+    compra_cantidad
+  ) => {
+    compra_cantidad = compra_cantidad + 1;
+    //if (usuario === no registrado) {
+    e.preventDefault();
+    dispatch(
+      incrementarCantidad({
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad,
+      })
+    );
+    // }
+    const body = {
+      usuario_id: usuario.usuario_id,
+      producto_id: producto_id,
+      compra_talla: compra_talla,
+      compra_color: compra_color,
+      compra_cantidad: compra_cantidad,
+    };
+    //* if (usuario === registrado) {
+    dispatch(updateProducto(body));
+    //* }
+  };
+
+  const handleDecrementar = (
+    e,
+    producto_id,
+    compra_talla,
+    compra_color,
+    compra_cantidad
+  ) => {
+    compra_cantidad = compra_cantidad - 1;
+    //if (usuario === no registrado) {
+    e.preventDefault();
+    dispatch(
+      decrementarCantidad({
+        producto_id,
+        compra_talla,
+        compra_color,
+        compra_cantidad,
+      })
+    );
+    // }
+    const body = {
+      usuario_id: usuario.usuario_id,
+      producto_id: producto_id,
+      compra_talla: compra_talla,
+      compra_color: compra_color,
+      compra_cantidad: compra_cantidad,
+    };
+    //* if (usuario === registrado) {
+    dispatch(updateProducto(body));
+    //* }
+  };
+
+  useEffect(() => {
+    dispatch(allCarrito());
+  }, []);
 
   return (
     <article
@@ -152,8 +160,12 @@ const body ={
       <div className="h-[400px] style-scrollbar overflow-y-auto remove-scroll w-full grid grid-cols-4 place-items-center gap-y-4 py-4">
         {productosCarrito.map((product) => {
           return (
-            <>
-              <div id="productMain" className="flex items-center gap-x-4">
+            <React.Fragment key={product.producto_id}>
+              <div
+                key={product.producto_id}
+                id="productMain"
+                className="flex items-center gap-x-4"
+              >
                 <img
                   src={product.imagen_principal}
                   alt={product.nombre}
@@ -161,14 +173,14 @@ const body ={
                 />
                 <p className="hidden sm:flex flex-col gap-1 text-xl">
                   <strong>{product.nombre}</strong>
-                  <p className="flex flex-col text-sm">
+                  <small className="flex flex-col text-sm">
                     <span>
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
                       <strong>Talle:</strong> {product.compra_talla}
                     </span>
-                  </p>
+                  </small>
                 </p>
               </div>
               <div id="price">$ {product.precio}</div>
@@ -196,7 +208,7 @@ const body ={
                 <input
                   className="remove-arrow max-w-10 w-auto h-10 text-center"
                   type="number"
-                  value={product.compra_cantidad}
+                  defaultValue={product.compra_cantidad}
                 />
                 <Button
                   onClick={(e) =>
@@ -217,7 +229,7 @@ const body ={
               <div id="total">
                 $ {product.precio * product.compra_cantidad}{" "}
                 <span
-                  onClick={()=>
+                  onClick={() =>
                     handleDelete(
                       usuario.usuario_id,
                       product.producto_id,
@@ -230,7 +242,7 @@ const body ={
                   X
                 </span>
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
