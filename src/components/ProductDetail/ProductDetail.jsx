@@ -250,7 +250,7 @@ const ProductDetail = () => {
                     </div>
                   </>
                 )}
-                {anchoPantalla > 1024 && (
+                {anchoPantalla > 1023 && (
                   <Button
                     variant="detail"
                     className="w-full"
