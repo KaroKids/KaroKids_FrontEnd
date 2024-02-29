@@ -1,68 +1,75 @@
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  decrementarCantidad,
-  incrementarCantidad,
-  removeCarrito,
-  allCarrito,
-  agregarProducto,
-  eliminarProducto,
-  actualizarProducto,
-  borrarCarrito,
+	decrementarCantidad,
+	incrementarCantidad,
+	removeCarrito,
+	allCarrito,
+	agregarProducto,
+	eliminarProducto,
+	actualizarProducto,
+	borrarCarrito,
 } from "@/redux/carritoSlice";
 import { useEffect } from "react";
 import { deleteProducto, updateProducto } from "@/redux/carritoActions";
 
 const ProductCart = () => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  // if (usuario === no_registrado) {
-  const productosCarrito = useSelector((state) => state.carrito.items);
-  // }
-  const usuario = useSelector((state)=> state.users.user)
+	// if (usuario === no_registrado) {
+	const productosCarrito = useSelector((state) => state.carrito.items);
+	// }
+	const usuario = useSelector((state) => state.users.user);
 
-  //* if (usuario === registrado) {
-  dispatch(allCarrito());
-  const miCarrito = useSelector((state) => state.carrito.productos_compra);
-  //* }
+	//* if (usuario === registrado) {
+	dispatch(allCarrito());
+	const miCarrito = useSelector((state) => state.carrito.productos_compra);
+	//* }
 
-  const handleAdd = (id, talla, color) => {
-    //if (usuario === no registrado) {}
-    //* if (usuario === registrado) {
-    dispatch(
-      agregarProducto(
-        usuario_id,
-        producto_id,
-        compra_talla,
-        compra_color,
-        compra_cantidad,
-        producto_precio
-      )
-    );
-    //* }
-  };
+	const handleAdd = (id, talla, color) => {
+		//if (usuario === no registrado) {}
+		//* if (usuario === registrado) {
+		dispatch(
+			agregarProducto(
+				usuario_id,
+				producto_id,
+				compra_talla,
+				compra_color,
+				compra_cantidad,
+				producto_precio
+			)
+		);
+		//* }
+	};
 
-  const handleBuy = (id, talla, color) => {
-    //if (usuario === no registrado) {}
-    //* if (usuario === registrado) {
-    const compraFinalizada = useSelector(
-      (state) => state.carrito.productos_compra
-    );
-    dispatch(borrarCarrito(usuario_id));
-    //* }
-  };
+	const handleBuy = (id, talla, color) => {
+		//if (usuario === no registrado) {}
+		//* if (usuario === registrado) {
+		const compraFinalizada = useSelector(
+			(state) => state.carrito.productos_compra
+		);
+		dispatch(borrarCarrito(usuario_id));
+		//* }
+	};
 
-  const handleDelete = (usuario_id, producto_id, compra_talla, compra_color) => {
-    //if (usuario === no registrado) {
-    dispatch(removeCarrito({usuario_id, producto_id, compra_talla, compra_color }));
-    console.log("click");
-    // }
-    console.log({usuario_id, producto_id, compra_talla, compra_color })
+	const handleDelete = (
+		usuario_id,
+		producto_id,
+		compra_talla,
+		compra_color
+	) => {
+		//if (usuario === no registrado) {
+		dispatch(
+			removeCarrito({ usuario_id, producto_id, compra_talla, compra_color })
+		);
+		// }
 
-    //* if (usuario === registrado) {
-    dispatch(deleteProducto({usuario_id, producto_id, compra_talla, compra_color}));
-    //* }
-  };
+		//* if (usuario === registrado) {
+		dispatch(
+			deleteProducto({ usuario_id, producto_id, compra_talla, compra_color })
+		);
+		//* }
+	};
 
   const handleIncrementar = (e,  producto_id,
     compra_talla,

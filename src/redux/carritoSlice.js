@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const loadCartFromLocalStorage = () => {
-  const storedCart = localStorage.getItem("cart");
-  return storedCart ? JSON.parse(storedCart) : [];
+	const storedCart = localStorage.getItem("cart");
+	return storedCart ? JSON.parse(storedCart) : [];
 };
 
 const carritoSlice = createSlice({
-  name: "carrito",
-  initialState: {
-    items: loadCartFromLocalStorage(),
-    carrito: [],
-    talla: "",
+	name: "carrito",
+	initialState: {
+		items: loadCartFromLocalStorage(),
+		carrito: [],
+		talla: "",
 
     //*Estados para usuarios registrados
     usuario_id: "",
@@ -117,13 +117,12 @@ export const {
   decrementarCantidad,
   resetCarrito,
   deleteStorage,
-
-  //* Destinado a usuarios registrados
-  allCarrito,
-  agregarProducto,
-  eliminarProducto,
-  actualizarProducto,
-  borrarCarrito,
-  //*
+	//* Destinado a usuarios registrados
+	allCarrito,
+	agregarProducto,
+	eliminarProducto,
+	actualizarProducto,
+	borrarCarrito,
+	//*
 } = carritoSlice.actions;
 export default carritoSlice.reducer;
