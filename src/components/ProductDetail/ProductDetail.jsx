@@ -76,7 +76,7 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = (item) => {
-    const { producto_id, precio, nombre } = product;
+    const { producto_id, precio, nombre, imagen_principal } = product;
     let complementado = {
       usuario_id: item.usuario_id,
       producto_id: producto_id,
@@ -87,7 +87,9 @@ const ProductDetail = () => {
       producto_nombre: nombre,
     };
     dispatch(addProducto(complementado));
-    dispatch(addToCarrito({ ...item, producto_id, nombre, precio }));
+    dispatch(
+      addToCarrito({ ...item, producto_id, nombre, precio, imagen_principal })
+    );
 
     Toast.fire({
       icon: "success",
@@ -230,21 +232,25 @@ const ProductDetail = () => {
                   className="remove-arrow border-gray-200 border-2  focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
-                <label>Color:</label>
-                <div className="flex flex-row ">
-                  {color.map((color) => (
-                    <div
-                      key={color.value}
-                      className={`w-8 h-6  rounded-full  mx-1 my-2 cursor-pointer border ${
-                        selectedColor && selectedColor === color.value
-                          ? "border-sky-500 border-2"
-                          : "border-slate-300"
-                      }`}
-                      style={{ backgroundColor: color.value }}
-                      onClick={() => setSelectedColor(color.value)}
-                    ></div>
-                  ))}
-                </div>
+                {selectedTalle && (
+                  <>
+                    <label>Color:</label>
+                    <div className="flex flex-row ">
+                      {color.map((color) => (
+                        <div
+                          key={color.value}
+                          className={`w-8 h-6  rounded-full  mx-1 my-2 cursor-pointer border ${
+                            selectedColor && selectedColor === color.value
+                              ? "border-gray-700 border-4"
+                              : "border-slate-300"
+                          }`}
+                          style={{ backgroundColor: color.value }}
+                          onClick={() => setSelectedColor(color.value)}
+                        ></div>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {anchoPantalla > 1024 && (
                   <Button
                     variant="detail"
