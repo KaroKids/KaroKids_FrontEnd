@@ -5,7 +5,8 @@ import Login from "../Auth/Login";
 import UserModal from "../User/UserModal";
 import { useAuth } from "@/context/AuthContext";
 import { useSelector } from "react-redux";
-const NavbarMobile = () => {
+const NavBarMobileDB = () => {
+
   const auth = useAuth();
   const { displayName } = auth.user;
   const userName = displayName?.split(" ")[0];
@@ -109,10 +110,11 @@ const NavbarMobile = () => {
           <Link to="/">
             <li className="text-slate-600">Inicio</li>
           </Link>
-          <li>Recién Nacido</li>
-          <li>Bebé</li>
-          <li>Infantil</li>
-          <li>Junior</li>
+          <li>Dashboard</li>
+          <li>Usuarios</li>
+          <li>Productos</li>
+          <li>Registrar</li>
+          
           {user?.roles ? (
           <Link to="/admin">Admin</Link>
             ) : ''}
@@ -138,4 +140,4 @@ const NavbarMobile = () => {
   );
 };
 
-export default NavbarMobile;
+export default NavBarMobileDB;

@@ -144,22 +144,24 @@ function UsersView() {
 													onClick={() =>
 														handleLogicDelete(usuario.usuario_id, true)
 													}
-													className="text-white w-22 h-6 pl-2 pr-2 ring-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer">
-													Activar
+													className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 ring-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer">
+												
+															Activar
 												</button>
 											) : (
 												<button
 													onClick={() =>
 														handleLogicDelete(usuario.usuario_id, false)
 													}
-													className="text-white w-22 h-6 pl-2 pr-2 ring-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer">
+													className="text-white w-22 h-6 pl-2 pr-2 ring-1 w-[99px] py-x-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer">
+											
 													Desactivar
 												</button>
 											)}
 										</div>
 										<div className="table-cell px-6 py-4 whitespace-nowrap">
 											{/* Agrega aquí los botones de acciones, por ejemplo: */}
-											<button className="text-indigo-600 hover:text-indigo-900 mr-2">
+											<button className="text-indigo-600 rounded hover:bg-blue-500  ring-1 w-[90px] hover:text-white mr-2">
 												Editar
 											</button>
 										</div>

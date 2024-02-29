@@ -85,7 +85,7 @@ function App() {
 					/>
 				</Routes>
 				{pathname !== "/create" && <SideBarSocial />}
-				{pathname !== "/create" && pathname !== "/login" && <Footer />}
+				{pathname !== "/create" && pathname !== "/login" && pathname !== "/admin" && <Footer />}
 			</main>
 		</AuthProvider>
 	);

@@ -1,12 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../Auth/Login";
-import SearchBar from "../SearchBar/SearchBar";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import UserModal from "../User/UserModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import Stats from './Stats'
+import  ProductsView from './ProductsView';
+import UsersView from './UsersView';
+import CreateProduct from '../CreateProduct/CreateProduct';
 
-const NavbarDesktop = () => {
+const NavBarDesktopDB = ({updateMenuSelected}) => {
+    const [navigation, setNavigation] = useState([
+        { name: 'Admin', component: <Stats />, current: true },
+        { name: 'Usuarios', component: <UsersView />, current: false },
+        { name: 'Registrar', component: <CreateProduct />, current: false },
+        { name: 'Productos', component: <ProductsView />, current: false },
+     
+      ]);
+
+
+    
+    
+      const handleMenuSelect = (e,menuName) => {
+        const menu=menuName;
+       console.log('handle navig', menu)
+        // Actualizar la variable navigation
+       const updatedNavigation = navigation.map((item) => {
+         if (item.name === menu) {
+            updateMenuSelected({menu:menu, component:item.component});
+           return { ...item, current: true };
+         } else {
+           return { ...item, current: false };
+         }
+       });
+    
+       setNavigation(updatedNavigation);
+    
+       
+      };
+     // Este efecto se ejecutará cada vez que cambie la variable navigation
+//    useEffect(()=>{
+//      //console.log('menu selected useEffect:',menuSelected);
+//      onMenuSelected(menuSelected)
+//    },[menuSelected])
+
+     
   const auth = useAuth();
   const { displayName } = auth.user;
   const userName = displayName?.split(" ")[0];
@@ -32,22 +70,32 @@ const NavbarDesktop = () => {
 
   const user = useSelector((state) => state.users.user);
   
- 
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
   return (
     <nav className="hidden h-20 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 fixed z-10 top-0 w-full">
       <ul className="flex gap-x-5 items-center flex-wrap font-medium md:max-w-[35%]">
-        <Link to="/">
-          <li>Inicio</li>
-        </Link>
-        <li className="flex gap-1 items-center">
-        {user?.roles ? (
-          <Link to="/admin">Admin</Link>
-    ) : ''}
-          <img
-            src="/assets/navbar-icons/arrow-down.svg"
-            alt="Logo de busqueda"
-            className="pt-1"
-          />
+     
+        <li className="flex gap-3 items-center">
+           
+
+            {navigation?.map((item)=>(
+
+                <a
+                key={item.name}
+                className={classNames(
+                item.current ? 'bg-sky-700 text-white hover:cursor-pointer' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white',
+                'rounded-md px-3 py-2 text-sm font-medium'
+                )}
+                onClick={(e) => handleMenuSelect(e, item.name)}
+                href="#"
+                >
+                {item.name}
+                </a>
+            ))}
+            
+        
         </li>
       </ul>
       <figure className="mx-auto">
@@ -60,11 +108,7 @@ const NavbarDesktop = () => {
         </Link>
       </figure>
       <ul className="flex gap-5 items-center">
-        {pathname === "/productos" && (
-          <li>
-            <SearchBar />
-          </li>
-        )}
+        
         {userName ? (
           <li
             onClick={handleOpenUser}
@@ -118,4 +162,4 @@ const NavbarDesktop = () => {
   );
 };
 
-export default NavbarDesktop;
+export default NavBarDesktopDB;
