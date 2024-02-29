@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,7 +25,7 @@ const ProductCart = () => {
   const usuario = useSelector((state) => state.users.user);
 
   //* if (usuario === registrado) {
-  // dispatch(allCarrito());
+  dispatch(allCarrito());
   const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
@@ -114,7 +113,6 @@ const ProductCart = () => {
   };
 
   useEffect(() => {
-
     const manejarCambiosDeAncho = () => {
       setAnchoPantalla(window.innerWidth);
     };
@@ -123,8 +121,6 @@ const ProductCart = () => {
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
-
-    dispatch(allCarrito());
   }, []);
 
   return (
@@ -140,9 +136,10 @@ const ProductCart = () => {
 
       <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
         {productosCarrito.map((product) => {
+          console.log(product);
           return (
             <>
-              <div id="productMain" className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
+              <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
                 <img
                   src={product.imagen_principal}
                   alt={product.nombre}
@@ -150,8 +147,7 @@ const ProductCart = () => {
                 />
               </div>
 
-
-              <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">    
+              <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
                 <span
                   onClick={() =>
                     handleDelete(
@@ -218,8 +214,7 @@ const ProductCart = () => {
                   </Button>
                 </form>
               </div>
-              <div></div>
-        </>
+            </>
           );
         })}
       </div>
