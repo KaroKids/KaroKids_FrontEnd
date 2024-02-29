@@ -55,8 +55,6 @@ const ProductDetail = () => {
   const product = useSelector((state) => state.productos.detail);
   let stock = product.stock;
 
-  dispatch(modifyVolverFunc(1));
-
   const handleQuantityChange = ({ target }) => {
     setselectedQuantity(target.value);
   };
@@ -98,6 +96,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    dispatch(modifyVolverFunc(1));
     dispatch(getProductsById(id));
     dispatch(getUserByEmail(user.email));
     window.scroll(0, 0);
