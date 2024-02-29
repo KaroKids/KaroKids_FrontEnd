@@ -54,8 +54,6 @@ const ProductDetail = () => {
   const product = useSelector((state) => state.productos.detail);
   let stock = product.stock;
 
-  dispatch(modifyVolverFunc(1));
-
   const handleQuantityChange = ({ target }) => {
     setselectedQuantity(target.value);
   };
@@ -75,21 +73,19 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = (item) => {
-    
-    const { producto_id, precio, nombre} = product;
+    const { producto_id, precio, nombre, imagen_principal } = product;
     let complementado = {
-      usuario_id : item.usuario_id,
-      producto_id : producto_id,
-      compra_talla : item.compra_talla,
-      compra_cantidad : item.compra_cantidad,
-      compra_color : item.compra_color,
-      producto_precio : precio,
-      producto_nombre : nombre
-    }
+      usuario_id: item.usuario_id,
+      producto_id: producto_id,
+      producto_nombre: nombre,
+      producto_imagen: imagen_principal,
+      compra_talla: item.compra_talla,
+      compra_cantidad: item.compra_cantidad,
+      compra_color: item.compra_color,
+      producto_precio: precio,
+    };
     dispatch(addProducto(complementado));
-    dispatch(
-      addToCarrito({ ...item, producto_id, nombre, precio })
-    );
+    dispatch(addToCarrito({ ...item, producto_id, nombre, precio }));
 
     Toast.fire({
       icon: "success",
@@ -98,6 +94,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    dispatch(modifyVolverFunc(1));
     dispatch(getProductsById(id));
     dispatch(getUserByEmail(user.email));
     window.scroll(0, 0);
@@ -178,6 +175,7 @@ const ProductDetail = () => {
               <div className="flex justify-center xl:justify-start gap-4">
                 {Object.entries(stock).map(([key, values]) => (
                   <li
+                    key={key}
                     value={values}
                     className={`flex items-center justify-center border-2 w-20 h-8 ${
                       selectedTalle === key ? "border-slate-500" : ""
