@@ -209,7 +209,7 @@ const ProductCart = () => {
                       product.compra_color
                     )
                   }
-                  className="cursor-pointer ml-2"
+                  className="cursor-pointer"
                 >
                   ❌
                 </span>
