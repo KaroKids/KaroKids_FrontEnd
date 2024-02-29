@@ -1,27 +1,18 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Stats from './Stats'
 import  ProductsView from './ProductsView';
 import UsersView from './UsersView';
+import CreateProduct from '../CreateProduct/CreateProduct';
+import { useAuth } from "@/context/AuthContext";
+import DatosPersonales from '../User/DatosPersonales';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
-const user = {
-  name: 'Lisandro Cook',
-  email: 'lisandro@example.com',
-  imageUrl:
-    '/assets/images/avatar-lisandro.jpeg',
-}
-const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Usuarios', href: '#', current: false },
-  { name: 'Create', href: '/create', current: false },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Reports', href: '#', current: false },
-]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
+  { name: 'Ver Pefil', href: <DatosPersonales /> },
+  { name: 'Configuraciones', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
 
@@ -30,6 +21,75 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
+  const { pathname } = useLocation();
+  const navigate  = useNavigate()
+
+
+  const auth = useAuth();
+  const { displayName,photoURL, email } = auth.user;
+  const userName = displayName?.split(" ")[0];
+
+  const [user,setUser] = useState(  {
+    name: userName,
+    email,
+    imageUrl:photoURL
+     
+  })
+  console.log('user logged datos:',user);
+    
+
+  const [navigation, setNavigation] = useState([
+    { name: 'Dashboard', href: <Stats/>, current: true },
+    { name: 'Usuarios', href: <UsersView />, current: false },
+    { name: 'Registrar', href: <CreateProduct />, current: false },
+    { name: 'Productos', href: <ProductsView />, current: false },
+    { name: 'Reportes', href: '#', current: false },
+  ]);
+   const [menuSelected, setMenuSelected] = useState({
+    menu:'Dashboard',
+    component:<Stats />
+    
+   })
+  
+
+ 
+
+   const handleNavigation = (menuName) => {
+     const menu=menuName.target.name;
+  
+     // Actualizar la variable navigation
+    const updatedNavigation = navigation.map((item) => {
+      if (item.name === menu) {
+        setMenuSelected({menu:menu, component:item.href});
+        return { ...item, current: true };
+      } else {
+        return { ...item, current: false };
+      }
+    });
+
+    setNavigation(updatedNavigation);
+
+    
+   };
+
+  // Este efecto se ejecutará cada vez que cambie la variable navigation
+useEffect(()=>{
+  console.log('menu selected useEffect:',menuSelected);
+  
+},[menuSelected])
+
+useEffect(()=>{
+  if (user.name===undefined && pathname==="/admin" ) {
+    console.log('Reenviar a la ruta raiz')
+   navigate('/');
+  }
+})
+
+const handleLogout = (e) => {
+  e.preventDefault();
+  auth.logout();
+};
+  
   return (
     <>
       
@@ -50,9 +110,10 @@ export default function Dashboard() {
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (
-                          <a
+                          <button
                             key={item.name}
                             href={item.href}
+                            name={item.name}
                             className={classNames(
                               item.current
                                 ? 'bg-blue-900 text-white'
@@ -60,9 +121,11 @@ export default function Dashboard() {
                               'rounded-md px-3 py-2 text-sm font-medium'
                             )}
                             aria-current={item.current ? 'page' : undefined}
+                            onClick={handleNavigation}
                           >
                             {item.name}
-                          </a>
+                            
+                          </button>
                         ))}
                       </div>
                     </div>
@@ -100,15 +163,17 @@ export default function Dashboard() {
                             {userNavigation.map((item) => (
                               <Menu.Item key={item.name}>
                                 {({ active }) => (
-                                  <a
+                                  <button
+                                  name={item.name}
                                     href={item.href}
                                     className={classNames(
                                       active ? 'bg-gray-100' : '',
                                       'block px-4 py-2 text-sm text-gray-700'
                                     )}
+                                    onClick={(e) => handleLogout(e)}
                                   >
                                     {item.name}
-                                  </a>
+                                  </button>
                                 )}
                               </Menu.Item>
                             ))}
@@ -137,6 +202,7 @@ export default function Dashboard() {
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
+                      
                       as="a"
                       href={item.href}
                       className={classNames(
@@ -144,6 +210,7 @@ export default function Dashboard() {
                         'block rounded-md px-3 py-2 text-base font-medium'
                       )}
                       aria-current={item.current ? 'page' : undefined}
+                      
                     >
                       {item.name}
                     </Disclosure.Button>
@@ -174,7 +241,8 @@ export default function Dashboard() {
                         as="a"
                         href={item.href}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      >
+                       
+                     >
                         {item.name}
                       </Disclosure.Button>
                     ))}
@@ -192,8 +260,11 @@ export default function Dashboard() {
         </header>
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                        <UsersView />
-                        <ProductsView/>
+                        
+                        
+      {
+        menuSelected.component
+      }
 
           </div>
           

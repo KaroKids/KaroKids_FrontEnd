@@ -324,6 +324,7 @@ useEffect( ()=>{
           onGetImagenPrincipal={getImagenPrincipal}
           onGetImagSecundarias={getImagSecundarias}
           errors={errors}
+          data={data}
         />
       )}
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 sm:flow-col mt-5">

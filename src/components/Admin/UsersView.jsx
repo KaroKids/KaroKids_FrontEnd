@@ -51,7 +51,7 @@ function UsersView() {
       try {
         const response = await axios.get(`${URL_USERS}`);
         // Verificar si response.data es un array antes de asignarlo a users
-        console.log("usuarios:", response.data);
+       // console.log("usuarios:", response.data);
         if (Array.isArray(response.data)) {
           setUsers(response.data);
         } else {

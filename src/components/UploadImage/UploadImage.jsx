@@ -2,10 +2,11 @@ import  { useState, useEffect } from 'react';
 import { PhotoIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx';
  
-const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias, errors}) => {
+const UploadImage = ({onGetImagenPrincipal, onGetImagSecundarias, errors, data}) => {
   const [imagenPrincipal, setImagenPrincipal] = useState([]);
   const [imagSecundarias, setImagSecundarias] = useState([]);
-console.log(errors)
+console.log('errors',errors)
+console.log('data',data)
   const [loadingImage, setloadingImage] = useState(false);
 
   //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
