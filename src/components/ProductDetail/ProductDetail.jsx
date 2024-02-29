@@ -301,45 +301,47 @@ const ProductDetail = () => {
         </>
       ) : (
         <>
-          <div className="grid grid-cols-1  mb-10  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
-            <Carousel
-              orientation="horizontal"
-              className=" border-2 rounded-sm mb-6 w-auto   md:h-[624px] xl:w-[600px]"
-            >
-              <CarouselContent>
-                <CarouselItem>
-                  <Card className="flex bg-gray-100 w-72 md:w-96 justify-center border-none  h-[340px] xl:w-auto md:h-[620px]">
-                    <img className=" bg-gray-100 w-full" />
-                  </Card>
-                </CarouselItem>
-              </CarouselContent>
-            </Carousel>
+          <div className="animate-pulse">
+            <div className=" grid grid-cols-1  mb-10  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
+              <Carousel
+                orientation="horizontal"
+                className=" border-2 rounded-sm mb-6 w-auto   md:h-[624px] xl:w-[600px]"
+              >
+                <CarouselContent>
+                  <CarouselItem>
+                    <Card className="flex bg-gray-100 w-72 md:w-96 justify-center border-none  h-[340px] xl:w-auto md:h-[620px]">
+                      <img className=" bg-gray-100 w-full" />
+                    </Card>
+                  </CarouselItem>
+                </CarouselContent>
+              </Carousel>
 
-            <div className="flex bg-gray-100  flex-col items-center xl:items-start justify-evenly w-full xl:mx-4 xl:h-[600px] ">
-              <h2 className="bg-gray-300 h-6 w-full font-semibold text-2xl text-center sm:text-3xl"></h2>
-              <div className="m-0">
-                <span className=" bg-gray-300 w-96 h-8  "></span>
+              <div className="flex bg-gray-100  flex-col items-center xl:items-start justify-evenly w-full xl:mx-4 xl:h-[600px] ">
+                <h2 className="bg-gray-300 h-6 w-full font-semibold text-2xl text-center sm:text-3xl"></h2>
+                <div className="m-0">
+                  <span className=" bg-gray-300 w-96 h-8  "></span>
 
-                <span className=" bg-gray-300  w-96 h-8 "></span>
-              </div>
-              <p className="text-slate-500 font-semibold my-4 bg-gray-300 h-12 w-full  text-3xl text-center xl:my-0 xl:text-left xl:font-semibold"></p>
-              <div className=" w-full border-t-2 border-gray-100  py-4 xl:border-gray-200 xl:py-0 xl:pt-0">
-                <p className="text-sm md:text-base xl:text-lg xl:mt-4"></p>
-                <h2 className="mt-6 bg-gray-300 h-6 w-full  mb-2 xl:text-left"></h2>
-                <div className="flex justify-center xl:justify-start gap-4"></div>
-              </div>
-              <div className="grid grid-rows-1 place-items-center py-2  w-full border-t-2 border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
-                <label></label>
-                <input className="bg-gray-300 remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 " />
-                <label></label>
-                <div className="flex flex-row ">
-                  {color.map((color) => (
-                    <div style={{ backgroundColor: color.value }}></div>
-                  ))}
+                  <span className=" bg-gray-300  w-96 h-8 "></span>
                 </div>
-              </div>
+                <p className="text-slate-500 font-semibold my-4 bg-gray-300 h-12 w-full  text-3xl text-center xl:my-0 xl:text-left xl:font-semibold"></p>
+                <div className=" w-full border-t-2 border-gray-100  py-4 xl:border-gray-200 xl:py-0 xl:pt-0">
+                  <p className="text-sm md:text-base xl:text-lg xl:mt-4"></p>
+                  <h2 className="mt-6 bg-gray-300 h-6 w-full  mb-2 xl:text-left"></h2>
+                  <div className="flex justify-center xl:justify-start gap-4"></div>
+                </div>
+                <div className="grid grid-rows-1 place-items-center py-2  w-full border-t-2 border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
+                  <label></label>
+                  <input className="bg-gray-300 remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 " />
+                  <label></label>
+                  <div className="flex flex-row ">
+                    {color.map((color) => (
+                      <div style={{ backgroundColor: color.value }}></div>
+                    ))}
+                  </div>
+                </div>
 
-              <Button className="my-2 bg-gray-300 w-full xl:mt-0 "></Button>
+                <Button className="my-2 bg-gray-300 w-full xl:mt-0 "></Button>
+              </div>
             </div>
           </div>
         </>
