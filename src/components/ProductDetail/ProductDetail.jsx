@@ -129,14 +129,14 @@ const ProductDetail = () => {
     <div className="  py-24 px-10 text-center ">
       {product.nombre ? (
         <>
-          <div className="grid grid-cols-1 mb-10  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
+          <div className="grid grid-cols-1 mb-0  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
             <Carousel
               orientation="horizontal"
-              className=" border-2 rounded-sm mb-4 w-auto   md:h-[624px] xl:w-[530px]"
+              className="  rounded-sm mb-4 w-auto   md:h-[624px] xl:w-[530px]"
             >
               <CarouselContent>
                 <CarouselItem>
-                  <Card className="flex justify-center border-none w-auto h-[340px] md:h-[620px]">
+                  <Card className="flex justify-center border-2  shadow-none mb-4 w-fit mx-auto  sm:h-[550px] md:h-[620px]">
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
@@ -146,43 +146,43 @@ const ProductDetail = () => {
                 </CarouselItem>
                 {product.imagenes_secundarias.map((prod, i) => (
                   <CarouselItem key={i}>
-                    <Card className="flex border-none justify-center w-auto h-[340px] md:h-[620px]">
+                    <Card className="flex  border-2 justify-center  shadow-none w-fit mx-auto sm:h-[550px] md:h-[620px]">
                       <img
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto h-full "
+                        className="w-auto h-full  "
                       />
                     </Card>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              {anchoPantalla > 1024 ? (
+              {anchoPantalla > 767 ? (
                 <>
-                  <CarouselPrevious className=" mx-2 xl:mx-0" />
-                  <CarouselNext className="mx-2 xl:mx-0" />
+                  <CarouselPrevious className=" mx-20 xl:mx-0" />
+                  <CarouselNext className="mx-20 xl:mx-0" />
                 </>
               ) : (
-                <></>
+                <>
+                  <div className="flex flex-row justify-center gap-8 mx-auto mb-6">
+                    <CarouselPrevious className="left-0" />
+                    <img
+                      src={product.imagen_principal}
+                      alt={product.nombre}
+                      className=" w-auto h-10  "
+                    />
+                    {product.imagenes_secundarias.map((prod, i) => (
+                      <img
+                        src={prod}
+                        alt={product.nombre}
+                        className="w-auto h-10 "
+                      />
+                    ))}
+                    <CarouselNext className="right-0 " />{" "}
+                  </div>
+                </>
               )}
             </Carousel>
-            {anchoPantalla < 1024 ? (
-              <div className="flex flex-row gap-8 mb-6">
-                <img
-                  src={product.imagen_principal}
-                  alt={product.nombre}
-                  className=" w-auto h-10  "
-                />
-                {product.imagenes_secundarias.map((prod, i) => (
-                  <img
-                    src={prod}
-                    alt={product.nombre}
-                    className="w-auto h-10 "
-                  />
-                ))}
-              </div>
-            ) : (
-              <></>
-            )}
+
             <div className="flex flex-col items-center xl:items-start justify-evenly w-full xl:mx-4 h-full ">
               <h2 className="text-slate-500 font-semibold text-2xl text-center sm:text-3xl">
                 {product.nombre}
@@ -222,12 +222,12 @@ const ProductDetail = () => {
                   ))}
                 </div>
               </div>
-              <div className="grid grid-rows-1 place-items-center py-2  w-full border-t-2 border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
+              <div className="grid grid-rows-1 place-items-center py-2  w-full border-y-2  border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
                 <label>Cantidad:</label>
                 <input
                   value={selectedQuantity}
                   type="number"
-                  className="remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
+                  className="remove-arrow border-gray-200 border-2  focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
                 <label>Color:</label>
@@ -245,28 +245,52 @@ const ProductDetail = () => {
                     ></div>
                   ))}
                 </div>
+                {anchoPantalla > 1024 && (
+                  <Button
+                    variant="detail"
+                    className="w-full"
+                    onClick={() =>
+                      selectedColor && selectedTalle && selectedQuantity !== 0
+                        ? handleAddToCart({
+                            usuario_id: user2.usuario_id,
+                            compra_talla: selectedTalle,
+                            compra_color: selectedColor,
+                            compra_cantidad: Number(selectedQuantity),
+                          })
+                        : Toast.fire({
+                            icon: "error",
+                            title: "Falta seleccionar Talla, Color o Cantidad",
+                          })
+                    }
+                  >
+                    AGREGAR AL CARRITO
+                  </Button>
+                )}
               </div>
-
-              <Button
-                variant="detail"
-                className="my-2 w-full xl:mt-0 "
-                onClick={() =>
-                  selectedColor && selectedTalle && selectedQuantity != 0
-                    ? handleAddToCart({
-                        usuario_id: user2.usuario_id,
-                        compra_talla: selectedTalle,
-                        compra_color: selectedColor,
-                        compra_cantidad: Number(selectedQuantity),
-                      })
-                    : Toast.fire({
-                        icon: "error",
-                        title: "Falta seleccionar Talla, Color o Cantidad",
-                      })
-                }
-              >
-                AGREGAR AL CARRITO
-              </Button>
             </div>
+            {anchoPantalla < 1024 && (
+              <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-md z-50">
+                <Button
+                  variant="detail"
+                  className="w-full"
+                  onClick={() =>
+                    selectedColor && selectedTalle && selectedQuantity !== 0
+                      ? handleAddToCart({
+                          usuario_id: user2.usuario_id,
+                          compra_talla: selectedTalle,
+                          compra_color: selectedColor,
+                          compra_cantidad: Number(selectedQuantity),
+                        })
+                      : Toast.fire({
+                          icon: "error",
+                          title: "Falta seleccionar Talla, Color o Cantidad",
+                        })
+                  }
+                >
+                  AGREGAR AL CARRITO
+                </Button>
+              </div>
+            )}
           </div>
         </>
       ) : (
@@ -283,8 +307,6 @@ const ProductDetail = () => {
                   </Card>
                 </CarouselItem>
               </CarouselContent>
-              <CarouselPrevious className=" mx-2 xl:mx-0" />
-              <CarouselNext className="mx-2 xl:mx-0" />
             </Carousel>
 
             <div className="flex bg-gray-100  flex-col items-center xl:items-start justify-evenly w-full xl:mx-4 xl:h-[600px] ">
