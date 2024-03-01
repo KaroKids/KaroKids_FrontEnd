@@ -50,37 +50,6 @@ const Register = ({ isOpen, onClose, className }) => {
 		}
 	};
 
-	const handleGoogle = async (e) => {
-		e.preventDefault();
-		const google = await auth.registerWithGoogle();
-
-		const { user } = google;
-		const response = await dispatch(getUserByEmail(user.email));
-		const payload = response?.payload; // Verificar si response existe y luego obtener payload
-		if (payload && payload.email_usuario) {
-			Toast.fire({
-				icon: "error",
-				title: "El email ya existe en la BD",
-			});
-		} else {
-			const FirstName = user.displayName?.split(" ")[0];
-			const LastName =
-				user.displayName?.split(" ")[user.displayName?.split(" ").length - 1];
-			const body = {
-				nombre_usuario: FirstName,
-				apellido_usuario: LastName,
-				email_usuario: user.email,
-			};
-			await dispatch(postUser(body));
-			await auth.logout();
-			Toast.fire({
-				icon: "success",
-				title: "Registro finalizado!",
-			});
-			onClose();
-		}
-	};
-
 	return (
 		<>
 			<div
@@ -180,21 +149,6 @@ const Register = ({ isOpen, onClose, className }) => {
 									type="submit"
 									className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm   ">
 									Registrarse
-								</Button>
-								<Button
-									variant="outline"
-									onClick={(e) => handleGoogle(e)}
-									className="flex w-full text-black justify-center my-4 px-3 py-1.5 text-sm font-semibold leading-6  shadow-sm ">
-									{" "}
-									<img
-										src="/assets/navbar-icons/google.svg"
-										width="30px"
-										height="50px"
-										alt="logo de google"
-									/>
-									<label className="mx-4 cursor-pointer">
-										Registrarse con Google
-									</label>
 								</Button>
 							</div>
 						</form>

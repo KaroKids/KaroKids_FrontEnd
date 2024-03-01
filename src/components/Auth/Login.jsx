@@ -3,10 +3,24 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Register from "./Register";
 import Swal from "sweetalert2";
-import { getUserByEmail } from "@/redux/userAction";
+import { getUserByEmail, postUser } from "@/redux/userAction";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Login({ isOpen, onClose, className }) {
+	const Toast = Swal.mixin({
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 2000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.onmouseenter = Swal.stopTimer;
+			toast.onmouseleave = Swal.resumeTimer;
+		},
+		customClass: {
+			popup: "my-toast",
+		},
+	});
 	const auth = useAuth();
 	const { user } = auth;
 
@@ -14,7 +28,6 @@ export default function Login({ isOpen, onClose, className }) {
 	const [mail, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const userGlobal = useSelector((state) => state.users.user);
 	const handleOpenModal = () => {
 		setIsModalOpen(true);
 	};
@@ -30,8 +43,35 @@ export default function Login({ isOpen, onClose, className }) {
 
 	const handleGoogle = async (e) => {
 		e.preventDefault();
-		auth.loginWithGoogle(userGlobal);
-		onClose();
+		try {
+			const google = await auth.registerWithGoogle();
+			const { user } = google;
+			const response = await dispatch(getUserByEmail(user.email));
+			const payload = response?.payload;
+			if (payload && payload.email_usuario) {
+				Toast.fire({
+					icon: "success",
+					title: "Sesión iniciada con éxito.",
+				});
+			} else {
+				const FirstName = user.displayName?.split(" ")[0];
+				const LastName =
+					user.displayName?.split(" ")[user.displayName?.split(" ").length - 1];
+				const body = {
+					nombre_usuario: FirstName,
+					apellido_usuario: LastName,
+					email_usuario: user.email,
+				};
+				await dispatch(postUser(body));
+				Toast.fire({
+					icon: "success",
+					title: "Registro finalizado!",
+				});
+			}
+			onClose();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleReset = async () => {
