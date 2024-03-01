@@ -4,7 +4,40 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useState } from "react";
+
 const Cart = () => {
+  const [preferenceId, setPreferenceId] = useState(null);
+
+  initMercadoPago("TEST-a5443a90-a45a-4830-a2c4-a2709cbae6ee", {
+    locale: "es-AR",
+  });
+
+  const createPreference = async () => {
+    const carritoLocal = JSON.parse(localStorage.getItem("cart"));
+    console.log(carritoLocal);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/payment/create-order",
+        { user_id: "3c178ea3-99d9-4a9f-986f-e16b03ebe84a", carritoLocal }
+      );
+
+      const { id } = response.data;
+      return id;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMp = async () => {
+    const id = await createPreference();
+    if (id) {
+      setPreferenceId(id);
+    }
+  };
+
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
       <header className="flex justify-between text-4xl font-semibold mb-2">
@@ -47,7 +80,7 @@ const Cart = () => {
             </div>
           </RadioGroup>
         </div>
-        <div
+        {/* <div
           id="billing"
           className="w-80 h-40 p-4 rounded-xl bg-sky-400 grid grid-cols-2 gap-y-4 gap-x-8 text-white"
         >
@@ -57,7 +90,12 @@ const Cart = () => {
           <span>Free</span>
           <h4 className="border-t-2 border-t-slate-300">TOTAL</h4>
           <span className="border-t-2 border-t-slate-300">$ 9000</span>
-        </div>
+        </div> */}
+        <Button onClick={handleMp}>Pagar con Mercado Pago</Button>
+
+        {preferenceId && (
+          <Wallet initialization={{ preferenceId: preferenceId }} />
+        )}
       </footer>
     </article>
   );

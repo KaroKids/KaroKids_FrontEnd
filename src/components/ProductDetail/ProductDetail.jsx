@@ -75,22 +75,20 @@ const ProductDetail = () => {
   };
 
   const handleAddToCart = (item) => {
-    
     console.log(item);
-    const { producto_id, precio, nombre} = product;
+    const { producto_id, precio, nombre } = product;
     let complementado = {
-      usuario_id : item.usuario_id,
-      producto_id : producto_id,
-      compra_talla : item.compra_talla,
-      compra_cantidad : item.compra_cantidad,
-      compra_color : item.compra_color,
-      producto_precio : precio,
-      producto_nombre : nombre
-    }
+      usuario_id: item.usuario_id,
+      producto_id: producto_id,
+      compra_talla: item.compra_talla,
+      quantity: item.compra_cantidad,
+      compra_color: item.compra_color,
+      unit_price: precio,
+      title: nombre,
+    };
+    console.log(complementado);
     dispatch(addProducto(complementado));
-    dispatch(
-      addToCarrito({ ...item, producto_id, nombre, precio })
-    );
+    dispatch(addToCarrito(complementado));
 
     Toast.fire({
       icon: "success",
