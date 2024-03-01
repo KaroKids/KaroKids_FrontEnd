@@ -79,6 +79,8 @@ const ProductDetail = () => {
     let complementado = {
       usuario_id: item.usuario_id,
       producto_id: producto_id,
+      producto_nombre: nombre,
+      producto_imagen: imagen_principal,
       compra_talla: item.compra_talla,
       quantity: item.compra_cantidad,
       compra_color: item.compra_color,

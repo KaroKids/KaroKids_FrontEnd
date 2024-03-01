@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -25,7 +26,7 @@ const ProductCart = () => {
   const usuario = useSelector((state) => state.users.user);
 
   //* if (usuario === registrado) {
-  dispatch(allCarrito());
+  // dispatch(allCarrito());
   const miCarrito = useSelector((state) => state.carrito.productos_compra);
   //* }
 
@@ -118,6 +119,8 @@ const ProductCart = () => {
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
 
+    dispatch(allCarrito());
+
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
@@ -136,9 +139,8 @@ const ProductCart = () => {
 
       <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
         {productosCarrito.map((product) => {
-          console.log(product);
           return (
-            <>
+            <React.Fragment key={product.producto_id}>
               <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
                 <img
                   src={product.imagen_principal}
@@ -163,14 +165,14 @@ const ProductCart = () => {
                 </span>
                 <p className=" my-2 flex flex-col  gap-1 text-xl">
                   <strong className="text-base">{product.nombre}</strong>
-                  <p className="flex flex-col text-sm">
+                  <small className="flex flex-col text-sm">
                     <span>
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
                       <strong>Talle:</strong> {product.compra_talla}
                     </span>
-                  </p>
+                  </small>
                 </p>
                 $ {product.precio * product.compra_cantidad}{" "}
                 <form
@@ -214,7 +216,7 @@ const ProductCart = () => {
                   </Button>
                 </form>
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
