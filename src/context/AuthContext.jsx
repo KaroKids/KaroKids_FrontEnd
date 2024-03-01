@@ -190,19 +190,6 @@ export function AuthProvider({ children }) {
 		}
 	};
 
-	const loginWithGoogle = async () => {
-		try {
-			const responseGoogle = new GoogleAuthProvider();
-			const response = await signInWithPopup(auth, responseGoogle);
-			Toast.fire({
-				icon: "success",
-				title: "Sesión iniciada con éxito.",
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	const registerWithGoogle = async () => {
 		try {
 			const responseGoogle = new GoogleAuthProvider();
@@ -247,7 +234,6 @@ export function AuthProvider({ children }) {
 			value={{
 				register,
 				login,
-				loginWithGoogle,
 				registerWithGoogle,
 				logout,
 				user,
