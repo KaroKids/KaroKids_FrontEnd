@@ -78,20 +78,18 @@ const ProductDetail = () => {
 
     let complementado = {
       usuario_id: item.usuario_id,
-      producto_id: producto_id,
-      producto_nombre: nombre,
-      producto_imagen: imagen_principal,
-      compra_talla: item.compra_talla,
-      quantity: item.compra_cantidad,
-      compra_color: item.compra_color,
-      unit_price: precio,
+      id: producto_id,
       title: nombre,
-      imagen_principal: imagen_principal
+      picture_url: imagen_principal,
+      compra_talla: item.compra_talla,
+      compra_color: item.compra_color,
+      quantity: item.compra_cantidad,
+      unit_price: precio,
     };
+
     console.log(complementado);
     dispatch(addProducto(complementado));
     dispatch(addToCarrito(complementado));
-
 
     Toast.fire({
       icon: "success",

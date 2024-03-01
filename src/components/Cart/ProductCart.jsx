@@ -11,11 +11,13 @@ import {
   actualizarProducto,
   borrarCarrito,
 } from "@/redux/carritoSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { deleteProducto } from "@/redux/carritoActions";
 import { Link } from "react-router-dom";
+import { authContext } from "@/context/AuthContext";
 
 const ProductCart = () => {
+  const { user } = useContext(authContext);
   const dispatch = useDispatch();
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
@@ -119,7 +121,15 @@ const ProductCart = () => {
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
 
-    dispatch(allCarrito());
+    if (user.accessToken) {
+      console.log("Registrado: ", user.email);
+      dispatch(allCarrito(usuario.usuario_id));
+
+      console.log(usuario.usuario_id);
+      console.log(miCarrito);
+    } else {
+      console.log("No registrado!!");
+    }
 
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
@@ -170,7 +180,7 @@ const ProductCart = () => {
                       <strong>Color:</strong> {product.compra_color}
                     </span>
                     <span>
-                      <strong>Talle:</strong> {product.compra_talla}
+                      <strong>Talla:</strong> {product.compra_talla}
                     </span>
                   </small>
                 </p>
