@@ -2,7 +2,8 @@ import { Button } from "../ui/button";
 import ProductCart from "./ProductCart";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Carrousel from "../Home/Carrousel";
 
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
@@ -38,65 +39,61 @@ const Cart = () => {
     }
   };
 
+  const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const manejarCambiosDeAncho = () => {
+      setAnchoPantalla(window.innerWidth);
+    };
+    window.addEventListener("resize", manejarCambiosDeAncho);
+
+    return () => {
+      window.removeEventListener("resize", manejarCambiosDeAncho);
+    };
+  }, []);
+
+
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
-      <header className="flex justify-between text-4xl font-semibold mb-2">
-        <h2>Mi carrito</h2>
-        <Link to="/productos">
-          <Button variant="detail" className="text-base ">
-            <img
-              src="/public/assets/navbar-icons/back-black.svg"
-              alt=""
-              className="w-6 mr-2"
-            />
-            Volver a la tienda
-          </Button>
-        </Link>
+      <header className="flex justify-between text-4xl font-semibold">
+        <h2 className="text-2xl mx-2 xl:text-3xl">Mi carrito</h2>
       </header>
-      <main className="mt-6 border-t-2 border-t-slate-300">
+      <main className="flex flex-col items-center xl:flex-row md:items-center  xl:items-start">
         <ProductCart />
-      </main>
-      <footer className="h-auto py-4 mb-6 flex flex-col sm:flex-row items-center justify-around gap-3 rounded-2xl border-2 border-slate-300">
-        <div
-          id="shipping"
-          className="w-80 h-40 p-4 rounded-xl bg-sky-400 flex flex-col gap-4 text-white"
-        >
-          <h3 className="font-bold text-2xl">Elige tu envio:</h3>
-          <RadioGroup
-            defaultValue="comfortable"
-            className="flex flex-col gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="local" id="r1" className="border-white" />
-              <Label htmlFor="r1">Retiro por el local</Label>
+        <div className="flex flex-col bg-slate-100  h-56 mb-0   items-start xl:mt-20  my-4 py-4 gap-y-6 w-80 md:w-[600px] xl:justify-start xl:mx-4 xl:w-[900px] xl:h-[400px]">
+          <h1 className="text-xl ml-2 font-semibold text-slate-700 text-left">
+            Resumen de compra
+          </h1>
+          <div className="w-full ">
+            <h2 className="border-t-2 h-10 mx-2 my-2 py-2 border-t-slate-500">
+              Subtotal:
+            </h2>
+            <h2 className="border-t-2 h-10 mx-2 py-2 border-t-slate-300">
+              Total
+            </h2>
+          </div>
+          {anchoPantalla < 1024 ? (
+            <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-xl z-50">
+              <Button variant="detail" className="w-full" onClick={handleMp}>
+                Completar compra
+              </Button>
+              {preferenceId && (
+                <Wallet initialization={{ preferenceId: preferenceId }} />
+               )}
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                value="domicilio"
-                id="r2"
-                className="border-white"
-              />
-              <Label htmlFor="r2">Envio a domicilio</Label>
-            </div>
-          </RadioGroup>
+          ) : (
+            <>
+              <Button variant="detail" className="w-full xl:my-40" onClick={handleMp}>
+                Completar compra
+              </Button>
+              {preferenceId && (
+                <Wallet initialization={{ preferenceId: preferenceId }} />
+               )}
+            </>
+          )}
         </div>
-        {/* <div
-          id="billing"
-          className="w-80 h-40 p-4 rounded-xl bg-sky-400 grid grid-cols-2 gap-y-4 gap-x-8 text-white"
-        >
-          <h4>SUBTOTAL</h4>
-          <span>$ 9000</span>
-          <h4>SHIPPING</h4>
-          <span>Free</span>
-          <h4 className="border-t-2 border-t-slate-300">TOTAL</h4>
-          <span className="border-t-2 border-t-slate-300">$ 9000</span>
-        </div> */}
-        <Button onClick={handleMp}>Pagar con Mercado Pago</Button>
-
-        {preferenceId && (
-          <Wallet initialization={{ preferenceId: preferenceId }} />
-        )}
-      </footer>
+      </main>
+      <Carrousel />
     </article>
   );
 };
