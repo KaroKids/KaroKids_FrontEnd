@@ -38,9 +38,11 @@ const NavbarDesktop = () => {
 				<Link to="/">
 					<li>Inicio</li>
 				</Link>
-				<li className="flex gap-1 items-center">
-					{user?.roles ? <Link to="/admin">Admin</Link> : ""}
-				</li>
+				{user?.roles === "admin" && (
+					<Link to="/admin">
+						<li>Administración</li>
+					</Link>
+				)}
 				<Link to="/productos">
 					<li>Productos</li>
 				</Link>
