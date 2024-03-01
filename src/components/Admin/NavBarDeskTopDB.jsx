@@ -23,7 +23,7 @@ const NavBarDesktopDB = ({updateMenuSelected}) => {
     
       const handleMenuSelect = (e,menuName) => {
         const menu=menuName;
-       console.log('handle navig', menu)
+       //console.log('handle navig', menu)
         // Actualizar la variable navigation
        const updatedNavigation = navigation.map((item) => {
          if (item.name === menu) {
@@ -43,10 +43,10 @@ const NavBarDesktopDB = ({updateMenuSelected}) => {
 //      //console.log('menu selected useEffect:',menuSelected);
 //      onMenuSelected(menuSelected)
 //    },[menuSelected])
-
+ 
      
   const auth = useAuth();
-  const { displayName } = auth.user;
+  const { displayName,photoURL } = auth.user;
   const userName = displayName?.split(" ")[0];
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,12 +112,12 @@ const NavBarDesktopDB = ({updateMenuSelected}) => {
         {userName ? (
           <li
             onClick={handleOpenUser}
-            className="flex flex-row gap-x-2 items-end cursor-pointer"
+            className="flex flex-row gap-x-3 items-end cursor-pointer"
           >
             <img
-              src="/assets/navbar-icons/user.svg"
+              src={photoURL}
               alt="Logo usuarios"
-              className="w-6 h-6"
+              className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
             />
             <p className="text-sm">Hola, {userName}</p>
           </li>

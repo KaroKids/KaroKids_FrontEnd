@@ -6,6 +6,8 @@ import axios from "axios";
 import SearchBar from "../SearchBar/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import destacado from "/assets/images/destacado.svg";
+import noDestacado from "/assets/images/noDestacado.svg";
 import {
   getAllProducts,
   getProductsByFilters,
@@ -131,7 +133,7 @@ export default function ProductList() {
   
 const handleLogicDelete = (producto_id, inactivo) => {
   // Mostrar confirmación antes de activar/desactivar usuario
-  console.log("es inactivo? "+inactivo)
+   
 
   Swal.fire({
     title: inactivo ? "Activar Producto" : "Desactivar Producto",
@@ -188,14 +190,14 @@ const toggleProductStatus = async (producto_id) => {
     const body = {
       producto_id: producto_id.toString() ,
     };
-    console.log('pid',producto_id)
+     
     const response = await dispatch(productStatusChange(body));
   // const response = await axios.put(`${URL_PRODUCT}`, body);
     // console.log(result)
-    console.log('response',response.payload)
+    //console.log('response',response.payload)
 
     if (response.payload) {
-      console.log('registrado con exito!', response.payload)
+      //console.log('registrado con exito!', response.payload)
      // Swal.close();
       // Actualiza el estado isLoading y muestra una notificación de éxito
       
@@ -295,17 +297,17 @@ useEffect(()=>{
             </Button>
           </div>
 
- <div className="table w-full border-collapse">
+ <div className="table w-full border-collapse sm:flex-col">
   <div className="table-header-group bg-gray-50">
     <div className="table-row">
-      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</div>
-      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</div>
-      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Género</div>
-      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</div>
-      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Imagen</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Nombre</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Género</div>
+      <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Precio</div>
+      <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Acciones</div>
     </div>
   </div>
-  <div className="table-row-group">
+  <div className="table-row-group  rounded border">
     {productos &&
       productos.productos.map((product) => (
         <div key={product.producto_id} className="table-row">
@@ -315,34 +317,48 @@ useEffect(()=>{
           <div className="table-cell px-6 py-4 whitespace-nowrap">{product.nombre}</div>
           <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">{product.genero}</div>
           <div className="table-cell px-6 py-4 whitespace-nowrap">$ {numberMaskUnit(product.precio)}</div>
-          <div className="table-cell px-8 py-4 whitespace-nowrap">
-            <Link to={`/producto/${product.producto_id}`}>
-              <button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">Visualizar</button>
-            </Link>
-            <button  className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">Editar</button>
-             {product.inactivo ? (
-                        <button
-                          onClick={() =>
-                            handleLogicDelete(product.producto_id, true)
-                          }
-                          className="text-white w-22 h-6 pl-2 pr-2 ring-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer"
-      
-                                      >
-                          Inactivo  
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            handleLogicDelete(product.producto_id, false)
-                          }
-                          className="text-white w-22 h-6 pl-2 pr-2 ring-1 w-[78px] rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
-                          >
-           
-                          Activo
-                        </button>
-                      )}
-          </div>
-        </div>
+          <div className="table-cell px-12 py-4 whitespace-nowrap items-center relative ">
+        <button> 
+
+          {product.destacado ? (
+      <img
+        className="h-6 w-6 ring-1 rounded-full hover:cursor-pointer mr-2 inline-block " 
+        src={noDestacado}
+        alt=""
+      />
+    ) : (
+      <img 
+        className="h-6 w-6 border-red-400 rounded-full  hover:cursor-pointer mr-2 inline-block "
+        src={destacado}
+        alt={''}
+      />
+    )}
+        </button>
+ 
+  <Link to={`/producto/${product.producto_id}`}>
+    <button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">Ver</button>
+  </Link>
+  <button className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">Editar</button>
+  {product.inactivo ? (
+    <button
+      onClick={() => handleLogicDelete(product.producto_id, true)}
+      className="text-white w-22 h-6 pl-2 pr-2 ring-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer"
+    >
+      Inactivo  
+    </button>
+  ) : (
+    <button
+      onClick={() => handleLogicDelete(product.producto_id, false)}
+      className="text-white w-22 h-6 pl-2 pr-2 ring-1 w-[78px] rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
+    >
+      Activo
+    </button>
+  )}
+ 
+   
+  
+</div>
+</div>
       ))}
   </div>
 </div>
