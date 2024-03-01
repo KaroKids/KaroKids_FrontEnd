@@ -42,6 +42,44 @@ function UsersView() {
 		}
 	};
 
+	const toggleUserRol = async (usuario_id, roles) => {
+		try {
+			const body = {
+				usuario_id: usuario_id.toString(),
+				roles: roles,
+			};
+
+			const result = await axios.put(`${URL_USERS}/rol`, body);
+
+			setUsers(
+				users.map((usuario) => {
+					if (usuario.usuario_id === usuario_id) {
+						if (usuario.roles === "admin") {
+							return { ...usuario, roles: "client" };
+						} else {
+							return { ...usuario, roles: "admin" };
+						}
+					}
+					return usuario;
+				})
+			);
+			Toast.fire({
+				icon: "success",
+				title:
+					roles === "admin"
+						? `Usuario ${usuario_id} ahora es Administrador`
+						: `Usuario ${usuario_id} ahora es Cliente`,
+			});
+		} catch (error) {
+			console.log("Error al modificar el rol del usuario:", error);
+			// Mostrar notificación de error
+			Toast.fire({
+				icon: "error",
+				title: `Error al modificar el rol del usuario. Por favor, inténtalo de nuevo.`,
+			});
+		}
+	};
+
 	// Función para cargar la lista de usuarios al montar el componente
 	useEffect(() => {
 		const fetchUsuarios = async () => {
@@ -96,6 +134,27 @@ function UsersView() {
 			}
 		});
 	};
+
+	const handleUserRol = (usuarioId, roles) => {
+		Swal.fire({
+			title:
+				roles === "admin"
+					? "Convertir en Administrador"
+					: "Convertir en cliente",
+			text: "¿Estás seguro de cambiar el rol de este usuario?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#6c757d",
+			confirmButtonText: "Confirmar",
+			cancelButtonText: "Cancelar",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				toggleUserRol(usuarioId, roles);
+			}
+		});
+	};
+
 	return (
 		<div className="bg-white mt-20 sm:mt-0">
 			{Array.isArray(users) && users.length > 0 && (
@@ -112,13 +171,13 @@ function UsersView() {
 									<div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
 										Email
 									</div>
-									<div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+									<div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
 										Rol
 									</div>
-									<div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+									<div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
 										Estado
 									</div>
-									<div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+									<div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
 										Acciones
 									</div>
 								</div>
@@ -134,8 +193,28 @@ function UsersView() {
 										<div className="table-cell px-6 py-4 whitespace-nowrap">
 											{usuario.email_usuario}
 										</div>
-										<div className="table-cell px-6 py-4 whitespace-nowrap">
-											{usuario.roles}
+										<div className="table-cell text-center px-6 py-4 whitespace-nowrap">
+											{usuario.roles === "admin" ? (
+												<button
+													onClick={() =>
+														handleUserRol(usuario.usuario_id, "client", true)
+													}
+													className="text-black w-22 h-6 pl-2 pr-2 w-[99px]
+													py-x-1 rounded bg-yellow-500 hover:bg-white
+													hover:text-yellow-500 hover:cursor-pointer">
+													Admin
+												</button>
+											) : (
+												<button
+													onClick={() =>
+														handleUserRol(usuario.usuario_id, "admin", true)
+													}
+													className="text-white w-22 h-6 pl-2 pr-2 w-[99px]
+													py-x-1 rounded bg-blue-500 hover:bg-white
+													hover:text-blue-500 hover:cursor-pointer">
+													Cliente
+												</button>
+											)}
 										</div>
 										<div className="table-cell px-6 py-4 whitespace-nowrap">
 											{" "}
@@ -144,17 +223,15 @@ function UsersView() {
 													onClick={() =>
 														handleLogicDelete(usuario.usuario_id, true)
 													}
-													className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 ring-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer">
-												
-															Activar
+													className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer">
+													Activar
 												</button>
 											) : (
 												<button
 													onClick={() =>
 														handleLogicDelete(usuario.usuario_id, false)
 													}
-													className="text-white w-22 h-6 pl-2 pr-2 ring-1 w-[99px] py-x-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer">
-											
+													className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer">
 													Desactivar
 												</button>
 											)}
