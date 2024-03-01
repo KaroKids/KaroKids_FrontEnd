@@ -6,21 +6,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import HeaderDashBoard from './HeaderDashBoard';
 import clsx from 'clsx';
 import Stats from './Stats';
-
-
-
-// const userNavigation = [
-//   { name: 'Ver Pefil', component: <DatosPersonales /> },
-//   { name: 'Configuraciones', component: '#' },
-//   { name: 'Salir', component: '#' },
-// ]
-
+import { useSelector } from 'react-redux';
  
+
 
 export default function Dashboard() {
   const { pathname } = useLocation();
   const navigate  = useNavigate()
-
+  const userLocal = useSelector((state) => state.users.user);
 
   const auth = useAuth();
   const { displayName,photoURL, email } = auth.user;
@@ -42,18 +35,19 @@ export default function Dashboard() {
    })
 
 useEffect(()=>{
-  console.log('select menu',menuSelected);
+ // console.log('select menu',menuSelected);
 },[menuSelected])
      
  
-
+//Verifica si el usuario loggeado es tien role admin.
 useEffect(()=>{
-  if (user.name===undefined && pathname==="/admin" ) {
+  if (userLocal?.roles!=="admin" ) {
     //Reenvia a la ruta raiz
    navigate('/');
   }
-})
+},[userLocal])
 
+//console.log('user admin', userLocal.roles)
 const handleLogout = (e) => {
   e.preventDefault();
   auth.logout();
@@ -66,8 +60,7 @@ const handleLogout = (e) => {
       <div className="min-h-full">
      
            <HeaderDashBoard updateMenuSelected={setMenuSelected} />
-     
-
+    
        
         <main>
           <div className="mx-auto max-w-7xl mt-auto py-6 sm:px-6 min-h-full lg:px-8">

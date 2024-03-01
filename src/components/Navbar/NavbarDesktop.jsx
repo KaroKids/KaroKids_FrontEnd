@@ -31,7 +31,6 @@ const NavbarDesktop = () => {
   };
 
   const user = useSelector((state) => state.users.user);
-  
  
   return (
     <nav className="hidden h-20 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 fixed z-10 top-0 w-full">
@@ -39,10 +38,12 @@ const NavbarDesktop = () => {
         <Link to="/">
           <li>Inicio</li>
         </Link>
+
         <li className="flex gap-1 items-center">
-        {user?.roles ? (
+        {user?.roles==='admin' ? (
           <Link to="/admin">Admin</Link>
-    ) : ''}
+           ) : ''}
+
           <img
             src="/assets/navbar-icons/arrow-down.svg"
             alt="Logo de busqueda"
