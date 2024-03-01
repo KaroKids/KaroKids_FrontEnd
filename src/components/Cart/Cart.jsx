@@ -5,7 +5,40 @@ import { Label } from "../ui/label";
 import { useEffect, useState } from "react";
 import Carrousel from "../Home/Carrousel";
 
+import axios from "axios";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useState } from "react";
+
 const Cart = () => {
+  const [preferenceId, setPreferenceId] = useState(null);
+
+  initMercadoPago("TEST-a5443a90-a45a-4830-a2c4-a2709cbae6ee", {
+    locale: "es-AR",
+  });
+
+  const createPreference = async () => {
+    const carritoLocal = JSON.parse(localStorage.getItem("cart"));
+    console.log(carritoLocal);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/payment/create-order",
+        { user_id: "3c178ea3-99d9-4a9f-986f-e16b03ebe84a", carritoLocal }
+      );
+
+      const { id } = response.data;
+      return id;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleMp = async () => {
+    const id = await createPreference();
+    if (id) {
+      setPreferenceId(id);
+    }
+  };
+
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -18,6 +51,7 @@ const Cart = () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
   }, []);
+
 
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
@@ -40,20 +74,25 @@ const Cart = () => {
           </div>
           {anchoPantalla < 1024 ? (
             <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-xl z-50">
-              <Button variant="detail" className="w-full">
+              <Button variant="detail" className="w-full" onClick={handleMp}>
                 Completar compra
               </Button>
+              {preferenceId && (
+                <Wallet initialization={{ preferenceId: preferenceId }} />
+               )}
             </div>
           ) : (
             <>
-              <Button variant="detail" className="w-full xl:my-40">
+              <Button variant="detail" className="w-full xl:my-40" onClick={handleMp}>
                 Completar compra
               </Button>
+              {preferenceId && (
+                <Wallet initialization={{ preferenceId: preferenceId }} />
+               )}
             </>
           )}
         </div>
       </main>
-
       <Carrousel />
     </article>
   );

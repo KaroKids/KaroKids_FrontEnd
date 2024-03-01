@@ -75,19 +75,21 @@ const ProductDetail = () => {
 
   const handleAddToCart = (item) => {
     const { producto_id, precio, nombre, imagen_principal } = product;
+
     let complementado = {
       usuario_id: item.usuario_id,
       producto_id: producto_id,
       compra_talla: item.compra_talla,
-      compra_cantidad: item.compra_cantidad,
+      quantity: item.compra_cantidad,
       compra_color: item.compra_color,
-      producto_precio: precio,
-      producto_nombre: nombre,
+      unit_price: precio,
+      title: nombre,
+      imagen_principal: imagen_principal
     };
+    console.log(complementado);
     dispatch(addProducto(complementado));
-    dispatch(
-      addToCarrito({ ...item, producto_id, nombre, precio, imagen_principal })
-    );
+    dispatch(addToCarrito(complementado));
+
 
     Toast.fire({
       icon: "success",
