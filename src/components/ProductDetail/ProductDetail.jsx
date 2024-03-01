@@ -78,11 +78,12 @@ const ProductDetail = () => {
     let complementado = {
       usuario_id: item.usuario_id,
       producto_id: producto_id,
-      compra_talla: item.compra_talla,
-      compra_cantidad: item.compra_cantidad,
-      compra_color: item.compra_color,
-      producto_precio: precio,
       producto_nombre: nombre,
+      producto_imagen: imagen_principal,
+      compra_talla: item.compra_talla,
+      compra_color: item.compra_color,
+      compra_cantidad: item.compra_cantidad,
+      producto_precio: precio,
     };
     dispatch(addProducto(complementado));
     dispatch(
