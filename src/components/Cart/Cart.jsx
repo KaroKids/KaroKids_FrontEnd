@@ -4,10 +4,8 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
 import { useEffect, useState } from "react";
 import Carrousel from "../Home/Carrousel";
-
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import { useState } from "react";
 
 const Cart = () => {
   const [preferenceId, setPreferenceId] = useState(null);
@@ -52,7 +50,6 @@ const Cart = () => {
     };
   }, []);
 
-
   return (
     <article className="max-w-[1400px] w-full pt-28 md:pt-40 mx-auto">
       <header className="flex justify-between text-4xl font-semibold">
@@ -79,16 +76,20 @@ const Cart = () => {
               </Button>
               {preferenceId && (
                 <Wallet initialization={{ preferenceId: preferenceId }} />
-               )}
+              )}
             </div>
           ) : (
             <>
-              <Button variant="detail" className="w-full xl:my-40" onClick={handleMp}>
+              <Button
+                variant="detail"
+                className="w-full xl:my-40"
+                onClick={handleMp}
+              >
                 Completar compra
               </Button>
               {preferenceId && (
                 <Wallet initialization={{ preferenceId: preferenceId }} />
-               )}
+              )}
             </>
           )}
         </div>
