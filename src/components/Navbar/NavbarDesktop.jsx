@@ -30,7 +30,8 @@ const NavbarDesktop = () => {
 		setUserModalOpen(false);
 	};
 
-	const user = useSelector((state) => state.users.user);
+
+  const user = useSelector((state) => state.users.user);
 
 	return (
 		<nav className="hidden h-20 max-w-screen bg-white px-10 xl:px-40 md:flex items-center gap-2 shadow-md shadow-gray-300 fixed z-10 top-0 w-full">
