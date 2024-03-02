@@ -1,7 +1,5 @@
 import { Button } from "../ui/button";
 import ProductCart from "./ProductCart";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { Label } from "../ui/label";
 import { useEffect, useState } from "react";
 import Carrousel from "../Home/Carrousel";
 import axios from "axios";
