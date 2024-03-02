@@ -33,7 +33,7 @@ export const getProductsByName = (nombre) => {
 		try {
 			const { data } = await axios.get(`${URL_PRODUCT}?nombre=${nombre}`);
 			const { elementosPaginados, totalPaginas, paginaActual } = data;
-            console.log('data by name:', data)
+			console.log("data by name:", data);
 			return dispatch(
 				productsByName({
 					productos: elementosPaginados,
@@ -98,13 +98,26 @@ export const productStatusChange = (body) => {
 	// Activa o desactiva un producto.
 	return async (dispatch) => {
 		try {
-			const response  = await axios.put(`${URL_PRODUCT}`, body);
+			const response = await axios.put(`${URL_PRODUCT}`, body);
 			return dispatch(getProdById(response.data.producto_id));
 		} catch (error) {
 			console.error(error);
 		}
 	};
 };
+
+export const productStandOutChange = (body) => {
+	// Activa o desactiva el status destacado.
+	return async (dispatch) => {
+		try {
+			const response = await axios.put(`${URL_PRODUCT}/destacado`, body);
+			return dispatch(getProdById(response.data.producto_id));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+};
+
 export const modifyVolverFunc = (valor) => (dispatch) => {
 	dispatch(modifyVolver(valor));
 };
