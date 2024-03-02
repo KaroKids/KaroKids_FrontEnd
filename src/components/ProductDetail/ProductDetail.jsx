@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { authContext } from "@/context/AuthContext";
+
 import { Button } from "../ui/button";
 import {
   Carousel,
@@ -8,17 +10,19 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card } from "@/components/ui/card";
+
 import ServicesDetail from "../Services/ServicesDetail";
-import Swal from "sweetalert2";
 import Carrousel from "../Home/Carrousel";
+
+import Swal from "sweetalert2";
+
 import { Link, useParams } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
-import { addToCarrito } from "@/redux/carritoSlice";
 import { getUserByEmail } from "@/redux/userAction";
-import { useContext } from "react";
-import { authContext } from "@/context/AuthContext";
-import { addProducto } from "@/redux/carritoActions";
+import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
+import { addProductLS } from "@/redux/carritoSlice";
+import { addProductInDB } from "@/redux/carritoActions";
 
 const ProductDetail = () => {
   const { user } = useContext(authContext);
@@ -40,7 +44,7 @@ const ProductDetail = () => {
 
   const [selectedColor, setSelectedColor] = useState(false);
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
-  const user2 = useSelector((state) => state.users.user);
+  const userGlobalState = useSelector((state) => state.users.user);
 
   const [color, setColor] = useState([
     {
@@ -88,8 +92,10 @@ const ProductDetail = () => {
     };
 
     console.log(complementado);
-    dispatch(addProducto(complementado));
-    dispatch(addToCarrito(complementado));
+
+    user.accessToken
+      ? dispatch(addProductInDB(complementado))
+      : dispatch(addProductLS(complementado));
 
     Toast.fire({
       icon: "success",
@@ -259,7 +265,7 @@ const ProductDetail = () => {
                     onClick={() =>
                       selectedColor && selectedTalle && selectedQuantity !== 0
                         ? handleAddToCart({
-                            usuario_id: user2.usuario_id,
+                            usuario_id: userGlobalState.usuario_id,
                             compra_talla: selectedTalle,
                             compra_color: selectedColor,
                             compra_cantidad: Number(selectedQuantity),
@@ -283,7 +289,7 @@ const ProductDetail = () => {
                   onClick={() =>
                     selectedColor && selectedTalle && selectedQuantity !== 0
                       ? handleAddToCart({
-                          usuario_id: user2.usuario_id,
+                          usuario_id: userGlobalState.usuario_id,
                           compra_talla: selectedTalle,
                           compra_color: selectedColor,
                           compra_cantidad: Number(selectedQuantity),
