@@ -49,7 +49,7 @@ export const getProductsByName = (nombre) => {
 export const getProductsById = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`${URL_PRODUCT}/${id}`);
+      const { data } = await axios.get(`${URL_PRODUCT}/detalle/${id}`);
       return dispatch(getProdById(data));
     } catch (error) {
       console.error(error);
