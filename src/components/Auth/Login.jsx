@@ -53,7 +53,7 @@ export default function Login({ isOpen, onClose, className }) {
         })
       );
       localStorage.removeItem("cart");
-      window.location.reload();
+      //window.location.reload();
     }
   };
 
