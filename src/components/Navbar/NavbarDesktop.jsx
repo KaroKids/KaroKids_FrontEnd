@@ -89,11 +89,13 @@ const NavbarDesktop = () => {
 
         {auth.user ? (
           <li className="cursor-pointer">
-            <img
-              src="/assets/navbar-icons/fav-blue.svg"
-              alt="Logo de Favoritos"
-              className="w-6 h-6"
-            />
+            <Link to="/favorites">
+              <img
+                src="/assets/navbar-icons/fav-blue.svg"
+                alt="Logo de Favoritos"
+                className="w-6 h-6"
+              />
+            </Link>
           </li>
         ) : (
           ""

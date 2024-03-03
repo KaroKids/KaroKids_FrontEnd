@@ -67,11 +67,13 @@ const NavbarMobile = () => {
           )}
           {auth.user ? (
             <li className="cursor-pointer">
-              <img
-                src="/assets/navbar-icons/favourite-black.svg"
-                alt="Logo de Favoritos"
-                className="w-6 h-6"
-              />
+              <Link to="/favorites">
+                <img
+                  src="/assets/navbar-icons/favourite-black.svg"
+                  alt="Logo de Favoritos"
+                  className="w-6 h-6"
+                />
+              </Link>
             </li>
           ) : (
             <li className="w-6 h-6"></li>
