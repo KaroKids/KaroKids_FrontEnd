@@ -4,10 +4,12 @@ export const productosSlice = createSlice({
   name: "productos",
   initialState: {
     productos: [],
+    destacados: [],
     detail: {},
     volver: 0,
     paginaActual: 1,
     totalPaginas: 0,
+    isFilteringActive: false,
   },
   reducers: {
     allProducts: (state, action) => {
@@ -15,6 +17,12 @@ export const productosSlice = createSlice({
       state.paginaActual = action.payload.paginaActual;
       state.totalPaginas = action.payload.totalPaginas;
       state.loading = true;
+    },
+    allDestacados: (state, action) => {
+      state.destacados = action.payload;
+    },
+    FilteringActive: (state, action) => {
+      state.isFilteringActive = action.payload;
     },
     getProdById: (state, action) => {
       state.detail = { ...action.payload };
@@ -48,5 +56,7 @@ export const {
   modifyVolver,
   getProdById,
   resetStateProduct,
+  allDestacados,
+  FilteringActive,
 } = productosSlice.actions;
 export default productosSlice.reducer;
