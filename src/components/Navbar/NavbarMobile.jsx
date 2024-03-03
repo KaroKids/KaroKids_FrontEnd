@@ -12,8 +12,8 @@ const NavbarMobile = () => {
   const userName = displayName?.split(" ")[0];
   const [openHamMenu, setOpenHamMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [userModalOpen, setUserModalOpen] = useState(false);
+
   const showMenu = () => {
     setOpenHamMenu(!openHamMenu);
   };
@@ -66,8 +66,8 @@ const NavbarMobile = () => {
             </li>
           )}
           {auth.user ? (
-            <li className="cursor-pointer">
-              <Link to="/favorites">
+            <li>
+              <Link to="/favoritos">
                 <img
                   src="/assets/navbar-icons/favourite-black.svg"
                   alt="Logo de Favoritos"
@@ -76,7 +76,13 @@ const NavbarMobile = () => {
               </Link>
             </li>
           ) : (
-            <li className="w-6 h-6"></li>
+            <li onClick={handleOpenModal}>
+              <img
+                src="/assets/navbar-icons/favourite-black.svg"
+                alt="Logo de Favoritos"
+                className="w-6 h-6"
+              />
+            </li>
           )}
           <li className="mx-auto">
             <Link to="/">
