@@ -4,7 +4,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import UserModal from "../User/UserModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const NavbarDesktop = () => {
   const auth = useAuth();
@@ -13,6 +13,7 @@ const NavbarDesktop = () => {
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -89,7 +90,7 @@ const NavbarDesktop = () => {
 
         {auth.user ? (
           <li className="cursor-pointer">
-            <Link to="/favorites">
+            <Link to="/favoritos">
               <img
                 src="/assets/navbar-icons/fav-blue.svg"
                 alt="Logo de Favoritos"
@@ -98,7 +99,13 @@ const NavbarDesktop = () => {
             </Link>
           </li>
         ) : (
-          ""
+          <li className="cursor-pointer" onClick={handleOpenModal}>
+            <img
+              src="/assets/navbar-icons/fav-blue.svg"
+              alt="Logo de Favoritos"
+              className="w-6 h-6"
+            />
+          </li>
         )}
 
         <Link to="/carrito">
