@@ -30,7 +30,7 @@ export const addFavorite = (body) => {
 export const deleteFavorite = (body) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.delete(`${URL_FAVORITOS}`, body);
+      const { data } = await axios.put(`${URL_FAVORITOS}`, body);
 
       return dispatch(putFavorite(data));
     } catch (error) {
