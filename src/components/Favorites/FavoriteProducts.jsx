@@ -1,134 +1,16 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteProductLS,
-  increaseQuantityLS,
-  decreaseQuantityLS,
-} from "@/redux/carritoSlice";
 import { getUserByEmail } from "@/redux/userAction";
-import {
-  getCartFromDB,
-  deleteProductFromDB,
-  updateProductInDB,
-} from "@/redux/carritoActions";
-
 import { authContext } from "@/context/AuthContext";
-
 import { Link } from "react-router-dom";
-
 import { Button } from "../ui/button";
-// import {
-//   decrementarCantidad,
-//   incrementarCantidad,
-//   removeCarrito,
-//   allCarrito,
-//   agregarProducto,
-//   eliminarProducto,
-//   actualizarProducto,
-//   borrarCarrito,
-// } from "@/redux/carritoSlice";
-// import { deleteProducto } from "@/redux/carritoActions";
 
-const ProductCart = () => {
-  const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
+const FavoriteProducts = () => {
   const { user } = useContext(authContext);
   const dispatch = useDispatch();
 
-  // if (usuario === no_registrado) {
-  const cart = user.accessToken
-    ? useSelector((state) => state.carrito.cartDB)
-    : useSelector((state) => state.carrito.cartLS);
   const loginUser = useSelector((state) => state.users.user);
-
-  //* if (usuario === registrado) {
-  // dispatch(allCarrito());
-  // const miCarrito = useSelector((state) => state.carrito.productos_compra);
-  //* }
-
-  // const handleAdd = (id, talla, color) => {
-  //   //if (usuario === no registrado) {}
-  //   //* if (usuario === registrado) {
-  //   dispatch(
-  //     agregarProducto(
-  //       usuario_id,
-  //       producto_id,
-  //       compra_talla,
-  //       compra_color,
-  //       compra_cantidad,
-  //       producto_precio
-  //     )
-  //   );
-  //   //* }
-  // };
-
-  // const handleBuy = (id, talla, color) => {
-  //   //if (usuario === no registrado) {}
-  //   //* if (usuario === registrado) {
-  //   const compraFinalizada = useSelector(
-  //     (state) => state.carrito.productos_compra
-  //   );
-  //   dispatch(borrarCarrito(usuario_id));
-  //   //* }
-  // };
-
-  // const handleDelete = (
-  //   usuario_id,
-  //   producto_id,
-  //   compra_talla,
-  //   compra_color
-  // ) => {
-  //   //if (usuario === no registrado) {
-  //   dispatch(
-  //     removeCarrito({ usuario_id, producto_id, compra_talla, compra_color })
-  //   );
-  //   // }
-
-  //   //* if (usuario === registrado) {
-  //   dispatch(
-  //     deleteProducto({ usuario_id, producto_id, compra_talla, compra_color })
-  //   );
-  //   //* }
-  // };
-
-  // const handleIncrementar = (e, id, talla, color) => {
-  //   //if (usuario === no registrado) {
-  //   e.preventDefault();
-  //   dispatch(incrementarCantidad({ id, talla, color }));
-  //   // }
-
-  //   //* if (usuario === registrado) {
-  //   dispatch(
-  //     actualizarProducto(
-  //       usuario_id,
-  //       producto_id,
-  //       compra_talla,
-  //       compra_color,
-  //       compra_cantidad
-  //     )
-  //   );
-  //   //* }
-  // };
-
-  // const handleDecrementar = (e, id, talla, color) => {
-  //   //if (usuario === no registrado) {
-  //   e.preventDefault();
-  //   dispatch(decrementarCantidad({ id, talla, color }));
-  //   // }
-
-  //   //* if (usuario === registrado) {
-  //   dispatch(
-  //     actualizarProducto(
-  //       usuario_id,
-  //       producto_id,
-  //       compra_talla,
-  //       compra_color,
-  //       compra_cantidad
-  //     )
-  //   );
-  //   //* }
-  // };
 
   const handleDeleteLS = (id, talla, color) => {
     if (user.accessToken) {
@@ -144,38 +26,6 @@ const ProductCart = () => {
       dispatch(deleteProductLS({ id, talla, color }));
     }
     console.log("click");
-  };
-  const handleIncrementarLS = (e, id, talla, color, cantidad) => {
-    e.preventDefault();
-    if (user.accessToken) {
-      dispatch(
-        updateProductInDB({
-          usuario_id: loginUser.usuario_id,
-          producto_id: id,
-          compra_talla: talla,
-          compra_color: color,
-          compra_cantidad: cantidad + 1,
-        })
-      );
-    } else {
-      dispatch(increaseQuantityLS({ id, talla, color }));
-    }
-  };
-  const handleDecrementarLS = (e, id, talla, color, cantidad) => {
-    e.preventDefault();
-    if (user.accessToken) {
-      dispatch(
-        updateProductInDB({
-          usuario_id: loginUser.usuario_id,
-          producto_id: id,
-          compra_talla: talla,
-          compra_color: color,
-          compra_cantidad: cantidad - 1,
-        })
-      );
-    } else {
-      dispatch(decreaseQuantityLS({ id, talla, color }));
-    }
   };
 
   useEffect(() => {
@@ -217,7 +67,7 @@ const ProductCart = () => {
             cart?.map((product, i) => {
               return (
                 <React.Fragment key={i}>
-                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
+                  <Link key={i} to={`/producto/${product.producto_id}`}>
                     <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
                       <img
                         src={product.producto_imagen}
@@ -242,10 +92,7 @@ const ProductCart = () => {
                     </span>
                     <p className=" my-2 flex flex-col  gap-1 text-xl">
                       <strong className="text-base">
-                        <Link
-                          key={i}
-                          to={`/producto/detalle/${product.producto_id}`}
-                        >
+                        <Link key={i} to={`/producto/${product.producto_id}`}>
                           {product.producto_nombre}
                         </Link>
                       </strong>
@@ -402,4 +249,4 @@ const ProductCart = () => {
   );
 };
 
-export default ProductCart;
+export default FavoriteProducts;
