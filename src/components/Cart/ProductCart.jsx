@@ -88,7 +88,6 @@ const ProductCart = () => {
         firstRender.current = false;
       }
     };
-    if (cart.length > 0) setDataCharged(true);
 
     const manejarCambiosDeAncho = () => {
       setAnchoPantalla(window.innerWidth);
@@ -96,6 +95,7 @@ const ProductCart = () => {
     window.addEventListener("resize", manejarCambiosDeAncho);
 
     renderCart();
+    if (cart.length > 0) setDataCharged(true);
 
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
