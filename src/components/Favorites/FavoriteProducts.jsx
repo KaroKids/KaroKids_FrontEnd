@@ -3,20 +3,9 @@ import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authContext } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
 import { getUserByEmail } from "@/redux/userAction";
 
-import {
-  allFavorites,
-  postFavorite,
-  putFavorite,
-} from "@/redux/favoritosSlice";
-
-import {
-  getFavorites,
-  addFavorite,
-  deleteFavorite,
-} from "@/redux/favoritosActions";
+import { getFavorites, deleteFavorite } from "@/redux/favoritosActions";
 
 const FavoriteProducts = () => {
   const { user } = useContext(authContext);
@@ -24,7 +13,6 @@ const FavoriteProducts = () => {
   const dispatch = useDispatch();
 
   const loginUser = useSelector((state) => state.users.user);
-
   const favorites = useSelector((state) => state.favorites.favoritesDB);
 
   const [dataCharged, setDataCharged] = useState(false);
@@ -120,7 +108,9 @@ const FavoriteProducts = () => {
             <p>Agrega productos a tu carrito</p>
           )
         ) : (
-          <p>Usuario no registrado</p>
+          <p>
+            Debes iniciar sesión para poder visualizar tus productos favoritos
+          </p>
         )}
       </div>
       <Link to="/productos">
