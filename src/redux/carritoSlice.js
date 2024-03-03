@@ -83,6 +83,9 @@ const carritoSlice = createSlice({
       });
       localStorage.setItem("cart", JSON.stringify(state.cartLS));
     },
+    deleteCartLS: (state, action) => {
+      state.cartLS = [];
+    },
     //*Destinados a usuarios registrados.
     userCartDB: (state, action) => {
       state.cartDB = action.payload;

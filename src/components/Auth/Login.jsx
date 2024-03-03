@@ -5,7 +5,7 @@ import Register from "./Register";
 import Swal from "sweetalert2";
 import { getUserByEmail, postUser } from "@/redux/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { addProductInDB } from "@/redux/carritoActions";
+import { addProductInDB, getCartFromDB } from "@/redux/carritoActions";
 
 export default function Login({ isOpen, onClose, className }) {
   const Toast = Swal.mixin({
@@ -38,22 +38,26 @@ export default function Login({ isOpen, onClose, className }) {
   };
 
   const detectedLS = async (mail) => {
-    console.log(mail);
-    const { payload } = await dispatch(getUserByEmail(mail));
-    const storedProducts = JSON.parse(localStorage.getItem("cart"));
-
-    const usuario_id = payload.usuario_id;
-    console.log(usuario_id);
-
-    if (storedProducts && storedProducts.length > 0) {
-      dispatch(
-        addProductInDB({
-          usuario_id: usuario_id,
-          products: storedProducts,
-        })
-      );
-      localStorage.removeItem("cart");
-      window.location.reload();
+    try {
+      console.log(mail);
+      const { payload } = await dispatch(getUserByEmail(mail));
+      const storedProducts = JSON.parse(localStorage.getItem("cart"));
+      const usuario_id = payload.usuario_id;
+      console.log(usuario_id);
+      if (storedProducts && storedProducts.length > 0) {
+        await dispatch(
+          addProductInDB({
+            usuario_id: usuario_id,
+            products: storedProducts,
+          })
+        );
+        localStorage.removeItem("cart");
+        // Espera a que la operación addProductInDB se complete antes de continuar
+        await dispatch(getCartFromDB(usuario_id));
+        console.log("Operaciones completadas");
+      }
+    } catch (error) {
+      console.error("Error en detectedLS:", error);
     }
   };
 
