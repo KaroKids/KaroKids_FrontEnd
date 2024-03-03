@@ -30,11 +30,7 @@ export const deleteCartFromDB = (id) => {
 
       const { productos_compra } = carritoUsuario;
 
-      return dispatch(
-        deleteCartDB({
-          productos_compra: productos_compra,
-        })
-      );
+      return dispatch(deleteCartDB(productos_compra));
     } catch (error) {
       console.error(error);
     }
@@ -44,6 +40,7 @@ export const deleteCartFromDB = (id) => {
 export const addProductInDB = (body) => {
   return async (dispatch) => {
     try {
+      console.log(body);
       const { data } = await axios.put(`${URL_CARRITO}/agregar`, body);
 
       const { productos_compra } = data;
@@ -62,11 +59,7 @@ export const updateProductInDB = (body) => {
 
       const { productos_compra } = data;
 
-      return dispatch(
-        updateProductDB({
-          productos_compra: productos_compra,
-        })
-      );
+      return dispatch(updateProductDB(productos_compra));
     } catch (error) {
       console.error(error);
     }
