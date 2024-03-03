@@ -16,6 +16,7 @@ import PanelUsuario from "./components/User/PanelUsuario";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
 import { ProtectedAdmin } from "./components/ProtectedRoute/ProtectedAdmin";
 import UsersView from "./components/Admin/UsersView";
+import FavoriteProducts from "./components/Favorites/FavoriteProducts";
 
 function App() {
   const { pathname } = useLocation();
@@ -39,6 +40,7 @@ function App() {
               </ProtectedAdmin>
             }
           />
+          <Route path="/favoritos" element={<FavoriteProducts />} />
           <Route
             path="/admin"
             element={

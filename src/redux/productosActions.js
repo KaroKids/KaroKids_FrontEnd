@@ -33,7 +33,6 @@ export const getProductsByName = (nombre) => {
     try {
       const { data } = await axios.get(`${URL_PRODUCT}?nombre=${nombre}`);
       const { elementosPaginados, totalPaginas, paginaActual } = data;
-      console.log("data by name:", data);
       return dispatch(
         productsByName({
           productos: elementosPaginados,

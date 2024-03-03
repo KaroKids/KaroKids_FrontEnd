@@ -1,34 +1,15 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-
+import React from "react";
+import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteProductLS,
-  increaseQuantityLS,
-  decreaseQuantityLS,
-} from "@/redux/carritoSlice";
 import { getUserByEmail } from "@/redux/userAction";
-import {
-  getCartFromDB,
-  deleteProductFromDB,
-  updateProductInDB,
-} from "@/redux/carritoActions";
-
 import { authContext } from "@/context/AuthContext";
-
 import { Link } from "react-router-dom";
-
 import { Button } from "../ui/button";
 
-const ProductCart = () => {
-  const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
-  const [dataCharged, setDataCharged] = useState(false);
-  const firstRender = useRef(true);
+const FavoriteProducts = () => {
   const { user } = useContext(authContext);
   const dispatch = useDispatch();
 
-  const cart = user.accessToken
-    ? useSelector((state) => state.carrito.cartDB)
-    : useSelector((state) => state.carrito.cartLS);
   const loginUser = useSelector((state) => state.users.user);
 
   const handleDeleteLS = (id, talla, color) => {
@@ -46,49 +27,14 @@ const ProductCart = () => {
     }
     console.log("click");
   };
-  const handleIncrementarLS = (e, id, talla, color, cantidad) => {
-    e.preventDefault();
-    if (user.accessToken) {
-      dispatch(
-        updateProductInDB({
-          usuario_id: loginUser.usuario_id,
-          producto_id: id,
-          compra_talla: talla,
-          compra_color: color,
-          compra_cantidad: cantidad + 1,
-        })
-      );
-    } else {
-      dispatch(increaseQuantityLS({ id, talla, color }));
-    }
-  };
-  const handleDecrementarLS = (e, id, talla, color, cantidad) => {
-    e.preventDefault();
-    if (user.accessToken) {
-      dispatch(
-        updateProductInDB({
-          usuario_id: loginUser.usuario_id,
-          producto_id: id,
-          compra_talla: talla,
-          compra_color: color,
-          compra_cantidad: cantidad - 1,
-        })
-      );
-    } else {
-      dispatch(decreaseQuantityLS({ id, talla, color }));
-    }
-  };
 
   useEffect(() => {
     const renderCart = async () => {
-      if (!dataCharged && loginUser.usuario_id !== undefined) {
+      if (loginUser.usuario_id !== undefined) {
         const { payload } = await dispatch(getUserByEmail(user.email));
-        await dispatch(getCartFromDB(payload.usuario_id));
-        setDataCharged(true);
-        firstRender.current = false;
+        dispatch(getCartFromDB(payload.usuario_id));
       }
     };
-    if (cart.length > 0) setDataCharged(true);
 
     const manejarCambiosDeAncho = () => {
       setAnchoPantalla(window.innerWidth);
@@ -100,16 +46,10 @@ const ProductCart = () => {
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
-  }, [user, loginUser.usuario_id, dataCharged]);
+  }, []);
 
   useEffect(() => {}, [cart]);
-
   console.log(cart);
-
-  if (!dataCharged) {
-    return <p>Cargando...</p>;
-  }
-
   return (
     <article
       id="table"
@@ -127,7 +67,7 @@ const ProductCart = () => {
             cart?.map((product, i) => {
               return (
                 <React.Fragment key={i}>
-                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
+                  <Link key={i} to={`/producto/${product.producto_id}`}>
                     <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
                       <img
                         src={product.producto_imagen}
@@ -152,10 +92,7 @@ const ProductCart = () => {
                     </span>
                     <p className=" my-2 flex flex-col  gap-1 text-xl">
                       <strong className="text-base">
-                        <Link
-                          key={i}
-                          to={`/producto/detalle/${product.producto_id}`}
-                        >
+                        <Link key={i} to={`/producto/${product.producto_id}`}>
                           {product.producto_nombre}
                         </Link>
                       </strong>
@@ -222,15 +159,13 @@ const ProductCart = () => {
           cart?.map((product, i) => {
             return (
               <React.Fragment key={i}>
-                <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
-                  <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
-                    <img
-                      src={product.picture_url}
-                      alt={product.title}
-                      className="w-28 h-28 xl:w-30 xl:h-40"
-                    />
-                  </div>
-                </Link>
+                <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
+                  <img
+                    src={product.picture_url}
+                    alt={product.title}
+                    className="w-28 h-28 xl:w-30 xl:h-40"
+                  />
+                </div>
 
                 <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
                   <span
@@ -314,4 +249,4 @@ const ProductCart = () => {
   );
 };
 
-export default ProductCart;
+export default FavoriteProducts;
