@@ -217,7 +217,7 @@ const ProductCart = () => {
             cart?.map((product, i) => {
               return (
                 <React.Fragment key={i}>
-                  <Link key={i} to={`/producto/${product.producto_id}`}>
+                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
                     <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
                       <img
                         src={product.producto_imagen}
@@ -242,7 +242,10 @@ const ProductCart = () => {
                     </span>
                     <p className=" my-2 flex flex-col  gap-1 text-xl">
                       <strong className="text-base">
-                        <Link key={i} to={`/producto/${product.producto_id}`}>
+                        <Link
+                          key={i}
+                          to={`/producto/detalle/${product.producto_id}`}
+                        >
                           {product.producto_nombre}
                         </Link>
                       </strong>
