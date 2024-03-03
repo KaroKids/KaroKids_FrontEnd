@@ -20,7 +20,19 @@ const carritoSlice = createSlice({
   reducers: {
     //Destinadas a usuarios no registrados:
     addProductLS: (state, action) => {
-      state.cartLS = [...state.cartLS, action.payload];
+      const { id, compra_color, compra_talla, quantity } = action.payload;
+      const existingProductIndex = state.cartLS.findIndex(
+        (product) =>
+          product.id === id &&
+          product.compra_color === compra_color &&
+          product.compra_talla === compra_talla
+      );
+
+      if (existingProductIndex !== -1) {
+        state.cartLS[existingProductIndex].quantity += quantity;
+      } else {
+        state.cartLS = [...state.cartLS, action.payload];
+      }
       localStorage.setItem("cart", JSON.stringify(state.cartLS));
     },
     deleteProductLS: (state, action) => {

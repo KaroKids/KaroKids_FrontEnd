@@ -91,7 +91,7 @@ const ProductDetail = () => {
       unit_price: precio,
     };
 
-    console.log(complementado);
+    // console.log(complementado);
 
     user.accessToken
       ? dispatch(addProductInDB(complementado))

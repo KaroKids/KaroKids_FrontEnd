@@ -124,7 +124,7 @@ export default function ProductList() {
                   </div>
                 ))
               : productos?.productos.map((product, i) => (
-                  <Link key={i} to={`/producto/${product.producto_id}`}>
+                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
                     <ProductCard
                       id={product.producto_id}
                       imageSrc={product.imagen_principal}
