@@ -55,7 +55,7 @@ const FavoriteProducts = () => {
   useEffect(() => {}, [favorites]);
 
   const handleDeleteFavorite = (producto_id) => {
-    if (user.accessToken) {
+    if (loginUser.usuario_id !== undefined) {
       dispatch(
         deleteFavorite({
           usuario_id: loginUser.usuario_id,
@@ -63,8 +63,6 @@ const FavoriteProducts = () => {
         })
       );
     }
-
-    console.log("eliminado!");
   };
 
   return (
