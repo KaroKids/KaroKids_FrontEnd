@@ -6,15 +6,14 @@ import {
   getProductsByFilters,
   modifyVolverFunc,
 } from "@/redux/productosActions";
-
+import { getFavorites } from "@/redux/favoritosActions";
 import { Button } from "../ui/button";
 import filterIcon from "/assets/images/filterIcon.svg";
 
 import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
-import { Link } from "react-router-dom";
-import { productsByFilters, resetStateProduct } from "@/redux/productosSlice";
+import { resetStateProduct } from "@/redux/productosSlice";
 
 const relevancias = [
   {
@@ -47,6 +46,8 @@ export default function ProductList({ valor }) {
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
+  const usuario = useSelector((state) => state.users.user);
+  const favorites = useSelector((state) => state.favorites.favoritesDB);
   const loading = useSelector((state) => state.productos.loading);
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
@@ -75,6 +76,7 @@ export default function ProductList({ valor }) {
 
   useEffect(() => {
     dispatch(resetStateProduct());
+    dispatch(getFavorites(usuario.usuario_id));
     productos.volver === 0 && !isFilteringActive
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
@@ -127,15 +129,14 @@ export default function ProductList({ valor }) {
                   </div>
                 ))
               : productos?.productos.map((product, i) => (
-                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
-                    <ProductCard
-                      id={product.producto_id}
-                      imageSrc={product.imagen_principal}
-                      imageAlt={product.nombre}
-                      name={product.nombre}
-                      price={product.precio}
-                    />
-                  </Link>
+                  <ProductCard
+                    id={product.producto_id}
+                    imageSrc={product.imagen_principal}
+                    imageAlt={product.nombre}
+                    name={product.nombre}
+                    price={product.precio}
+                    myFavorites={favorites}
+                  />
                 ))}
           </div>
           <PaginationControls filtros={filtrosAplicados} />
