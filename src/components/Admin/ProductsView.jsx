@@ -245,7 +245,6 @@ const handleInput = (value) => {
 useEffect(()=>{
   const identifier = setTimeout(()=>{
   if(query.length>0){
-    console.log(query)
     dispatch(getProductsByName(query));
   } else {
     dispatch(getAllProducts())
@@ -297,7 +296,7 @@ useEffect(()=>{
             </Button>
           </div>
 
- <div className="table w-full border-collapse sm:flex-col">
+ <div className="w-full border-collapse sm:flex-col">
   <div className="table-header-group bg-gray-50">
     <div className="table-row">
       <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">Imagen</div>
