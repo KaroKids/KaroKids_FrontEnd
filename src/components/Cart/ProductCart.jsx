@@ -104,8 +104,6 @@ const ProductCart = () => {
 
   useEffect(() => {}, [cart]);
 
-  console.log(cart);
-
   if (!dataCharged) {
     return <p>Cargando...</p>;
   }

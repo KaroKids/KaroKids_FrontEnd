@@ -1,9 +1,5 @@
 import { useAuth } from "@/context/AuthContext";
-import {
-  addFavorite,
-  deleteFavorite,
-  getFavorites,
-} from "@/redux/favoritosActions";
+import { addFavorite, deleteFavorite } from "@/redux/favoritosActions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -32,13 +28,14 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth.user) {
-      myFavorites &&
-        myFavorites?.map((fav) => {
-          if (fav.producto_id === id) {
-            setIsFav(true);
-          }
-        });
+    if (auth.user && Array.isArray(myFavorites)) {
+      // Verificar si myFavorites es un array
+      myFavorites.forEach((fav) => {
+        // Utilizar forEach en lugar de map
+        if (fav.producto_id === id) {
+          setIsFav(true);
+        }
+      });
     }
   }, [myFavorites]);
 

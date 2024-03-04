@@ -22,7 +22,6 @@ const Carrousel = () => {
     window.location.reload();
   };
 
-  console.log("aca", destacados);
   useEffect(() => {
     if (destacados.length === 0) {
       dispatch(getDestacados());
