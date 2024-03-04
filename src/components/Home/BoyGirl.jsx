@@ -2,7 +2,10 @@ import boysImg from "/assets/images/chicos_k.png";
 import girlsImg from "/assets/images/chicas_k.png";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
-import { getProductsByFilters } from "@/redux/productosActions";
+import {
+  getProductsByFilters,
+  setFilteringActive,
+} from "@/redux/productosActions";
 import { Link } from "react-router-dom";
 const BoyGirl = () => {
   const dispatch = useDispatch();
@@ -31,6 +34,7 @@ const BoyGirl = () => {
 
   const handleClick = (e) => {
     let value = e.target.name;
+    dispatch(setFilteringActive(true));
     dispatch(getProductsByFilters({ genero: value }));
   };
 

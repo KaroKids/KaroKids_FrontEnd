@@ -14,7 +14,7 @@ import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { Link } from "react-router-dom";
-import { resetStateProduct } from "@/redux/productosSlice";
+import { productsByFilters, resetStateProduct } from "@/redux/productosSlice";
 
 const relevancias = [
   {
@@ -39,7 +39,7 @@ const relevancias = [
   },
 ];
 
-export default function ProductList() {
+export default function ProductList({ valor }) {
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,6 +48,9 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
   const loading = useSelector((state) => state.productos.loading);
+  const isFilteringActive = useSelector(
+    (state) => state.productos.isFilteringActive
+  );
 
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);
@@ -72,11 +75,11 @@ export default function ProductList() {
 
   useEffect(() => {
     dispatch(resetStateProduct());
-    productos.volver === 0
+    productos.volver === 0 && !isFilteringActive
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
-  }, []);
+  }, [isFilteringActive]);
 
   useEffect(() => {
     if (ordernarPor !== 0) {
@@ -124,7 +127,7 @@ export default function ProductList() {
                   </div>
                 ))
               : productos?.productos.map((product, i) => (
-                  <Link key={i} to={`/producto/${product.producto_id}`}>
+                  <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
                     <ProductCard
                       id={product.producto_id}
                       imageSrc={product.imagen_principal}
