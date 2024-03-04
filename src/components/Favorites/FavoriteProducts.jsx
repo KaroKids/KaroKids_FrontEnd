@@ -54,7 +54,7 @@ const FavoriteProducts = () => {
   };
 
   return (
-    <article className="max-w-[1400px] w-full pt-28 mx-auto">
+    <article className="max-w-[1400px] min-h-screen w-full pt-28 mx-auto">
       <header className="flex justify-between text-4xl font-semibold">
         <h2 className="text-2xl mx-6 xl:text-3xl">Mis Favoritos</h2>
       </header>
@@ -62,6 +62,7 @@ const FavoriteProducts = () => {
       <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
         {user.accessToken ? (
           favorites && favorites.length ? (
+            favorites &&
             favorites?.map((producto, i) => {
               return (
                 <React.Fragment key={i}>
