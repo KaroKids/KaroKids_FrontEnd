@@ -4,7 +4,7 @@ import NavBarMobileDB from "./NavBarMobileDB";
 const HeaderDashBoard = ({updateMenuSelected}) => {
   return (
     <header className="mb-2">
-      <NavBarMobileDB />
+      <NavBarMobileDB updateMenuSelected={updateMenuSelected} />
       <NavBarDesktopDB updateMenuSelected={updateMenuSelected}  />
     </header>
   );
