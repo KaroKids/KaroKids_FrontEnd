@@ -6,6 +6,8 @@ import {
   productsByFilters,
   modifyVolver,
   getProdById,
+  allDestacados,
+  FilteringActive,
 } from "./productosSlice";
 
 const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
@@ -28,6 +30,18 @@ export const getAllProducts = () => {
     }
   };
 };
+
+export const getDestacados = (limite) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`${URL_PRODUCT}/destacados`, limite);
+      return dispatch(allDestacados(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 export const getProductsByName = (nombre) => {
   return async (dispatch) => {
     try {
@@ -55,6 +69,17 @@ export const getProductsById = (id) => {
     }
   };
 };
+
+export const setFilteringActive = (active) => {
+  return async (dispatch) => {
+    try {
+      return dispatch(FilteringActive(active));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const getProductsByFilters = (filters) => {
   return async (dispatch) => {
     try {

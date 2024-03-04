@@ -67,7 +67,6 @@ export default function ProductList() {
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
-  console.log(productos);
 
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);
