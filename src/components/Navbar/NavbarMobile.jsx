@@ -1,18 +1,30 @@
 import { useState } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Login from "../Auth/Login";
 import UserModal from "../User/UserModal";
 import { useAuth } from "@/context/AuthContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProductsByFilters,
+  setFilteringActive,
+} from "@/redux/productosActions";
 
 const NavbarMobile = () => {
   const auth = useAuth();
   const { displayName } = auth.user;
   const userName = displayName?.split(" ")[0];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openHamMenu, setOpenHamMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
+  const handleClick = (filtro) => {
+    dispatch(setFilteringActive(true));
+    dispatch(getProductsByFilters({ edad: filtro }));
+    navigate("/productos");
+    showMenu();
+  };
 
   const showMenu = () => {
     setOpenHamMenu(!openHamMenu);
@@ -128,17 +140,25 @@ const NavbarMobile = () => {
           }}
         >
           <Link to="/">
-            <li className="text-slate-600">Inicio</li>
+            <li onClick={() => showMenu()}>Inicio</li>
           </Link>
           {user?.roles === "admin" && (
             <Link to="/admin">
               <li className="text-slate-600">Administración</li>
             </Link>
           )}
-          <li>Recién Nacido</li>
-          <li>Bebé</li>
-          <li>Infantil</li>
-          <li>Junior</li>
+          <li onClick={() => handleClick("recien_nacido")}>
+            Recién Nacido <p className="text-center">(0-3 meses)</p>
+          </li>
+          <li className="text-center" onClick={() => handleClick("bebe")}>
+            Bebé <p className="text-center">(3-48 meses)</p>
+          </li>
+          <li className="text-center" onClick={() => handleClick("infantil")}>
+            Infantil <p className="text-center">(4-8 años)</p>
+          </li>
+          <li className="text-center" onClick={() => handleClick("junior")}>
+            Junior <p className="text-center">(9-14 años)</p>
+          </li>
         </ul>
         <Login
           isOpen={isModalOpen}
