@@ -21,7 +21,7 @@ const Cart = () => {
     try {
       console.log(cart);
       const response = await axios.post(
-        "http://localhost:3001/payment/create-order",
+        "https://karokids.onrender.com/payment/create-order",
         { user_id: userLogued.usuario_id, cart }
       );
 
@@ -76,7 +76,7 @@ const Cart = () => {
               <Button variant="detail" className="w-full" onClick={handleMp}>
                 Completar compra
               </Button>
-              {preferenceId && (
+              {preferenceId && userLogued.usuario_id && (
                 <Wallet initialization={{ preferenceId: preferenceId }} />
               )}
             </div>
