@@ -86,12 +86,12 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
           onClick={() => handleClick(id)}
           className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center group-hover:opacity-75"
         />
-        <button
+        {/* <button
           onClick={handleFavorite}
           className="absolute top-0 right-0  p-2 "
         >
           {isFav && auth.user ? "❤️" : "🤍"}
-        </button>
+        </button> */}
       </div>
       <h3 className="mt-4 text-xs font-semibold md:text-sm text-gray-700">
         {name}
