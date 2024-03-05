@@ -76,7 +76,7 @@ const Cart = () => {
               <Button variant="detail" className="w-full" onClick={handleMp}>
                 Completar compra
               </Button>
-              {preferenceId && (
+              {preferenceId && userLogued.usuario_id && (
                 <Wallet initialization={{ preferenceId: preferenceId }} />
               )}
             </div>
