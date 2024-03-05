@@ -105,7 +105,7 @@ const NavbarDesktop = () => {
           </li>
         )}
 
-        {/* {auth.user ? (
+        {auth.user ? (
           <li className="cursor-pointer">
             <Link to="/favoritos">
               <img
@@ -123,7 +123,7 @@ const NavbarDesktop = () => {
               className="w-6 h-6"
             />
           </li>
-        )} */}
+        )}
 
         <Link to="/carrito">
           <li className="cursor-pointer">
