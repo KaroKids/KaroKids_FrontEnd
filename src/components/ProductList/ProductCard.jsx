@@ -84,7 +84,7 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
           src={imageSrc}
           alt={imageAlt}
           onClick={() => handleClick(id)}
-          className="h-auto aspect-square rounded-lg object-cover object-center group-hover:opacity-75"
+          className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center group-hover:opacity-75"
         />
         <button
           onClick={handleFavorite}
