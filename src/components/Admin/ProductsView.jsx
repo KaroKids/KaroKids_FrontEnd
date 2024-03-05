@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import destacado from "/assets/images/destacado.svg";
 import noDestacado from "/assets/images/noDestacado.svg";
+import saldoStock from "@/utils/saldoStock";
 import {
   getAllProducts,
   getProductsByFilters,
@@ -352,6 +353,9 @@ export default function ProductList() {
                   Género
                 </div>
                 <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                  Stock
+                </div>
+                <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Precio
                 </div>
                 <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
@@ -375,6 +379,9 @@ export default function ProductList() {
                     </div>
                     <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">
                       {product.genero}
+                    </div>
+                    <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">
+                      {saldoStock(product.stock)}
                     </div>
                     <div className="table-cell px-6 py-4 whitespace-nowrap">
                       $ {numberMaskUnit(product.precio)}
