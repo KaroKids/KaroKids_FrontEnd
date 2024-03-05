@@ -4,21 +4,25 @@ import { useEffect, useState } from "react";
 import Carrousel from "../Home/Carrousel";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const [preferenceId, setPreferenceId] = useState(null);
+  const userLogued = useSelector((state) => state.users.user);
+  const cart = userLogued.usuario_id
+    ? useSelector((state) => state.carrito.cartDB)
+    : useSelector((state) => state.carrito.cartLS);
 
   initMercadoPago("TEST-a5443a90-a45a-4830-a2c4-a2709cbae6ee", {
     locale: "es-AR",
   });
 
   const createPreference = async () => {
-    const carritoLocal = JSON.parse(localStorage.getItem("cart"));
-    console.log(carritoLocal);
     try {
+      console.log(cart);
       const response = await axios.post(
         "http://localhost:3001/payment/create-order",
-        { user_id: "3c178ea3-99d9-4a9f-986f-e16b03ebe84a", carritoLocal }
+        { user_id: userLogued.usuario_id, cart }
       );
 
       const { id } = response.data;
