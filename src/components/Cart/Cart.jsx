@@ -21,7 +21,7 @@ const Cart = () => {
     try {
       console.log(cart);
       const response = await axios.post(
-        "http://localhost:3001/payment/create-order",
+        "https://karokids.onrender.com/payment/create-order",
         { user_id: userLogued.usuario_id, cart }
       );
 
