@@ -77,7 +77,7 @@ const NavbarMobile = () => {
               />
             </li>
           )}
-          {auth.user ? (
+          {/* {auth.user ? (
             <li>
               <Link to="/favoritos">
                 <img
@@ -95,7 +95,7 @@ const NavbarMobile = () => {
                 className="w-6 h-6"
               />
             </li>
-          )}
+          )} */}
           <li className="mx-auto">
             <Link to="/">
               <img
