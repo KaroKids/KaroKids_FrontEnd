@@ -112,7 +112,7 @@ export const {
   addTallaLS,
   decreaseQuantityLS,
   increaseQuantityLS,
-
+  deleteCartLS,
   //* Destinado a usuarios registrados
   userCartDB,
   deleteCartDB,
