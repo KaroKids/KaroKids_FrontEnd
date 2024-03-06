@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import UserModal from "../User/UserModal";
 import { useSelector } from "react-redux";
+import NavbarModal from "./NavbarModal";
 
 const NavbarDesktop = () => {
   const auth = useAuth();
@@ -13,6 +14,7 @@ const NavbarDesktop = () => {
   const { pathname } = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userModalOpen, setUserModalOpen] = useState(false);
+  const [CategoriasModalOpen, setCategoriasModalOpen] = useState(false);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -30,6 +32,13 @@ const NavbarDesktop = () => {
   const handleCloseUser = () => {
     setUserModalOpen(false);
   };
+  const handleOpenCategorias = () => {
+    setCategoriasModalOpen(true);
+  };
+
+  const handleCloseCategorias = () => {
+    setCategoriasModalOpen(false);
+  };
 
   const user = useSelector((state) => state.users.user);
 
@@ -44,9 +53,17 @@ const NavbarDesktop = () => {
             <li>Administración</li>
           </Link>
         )}
-        <Link to="/productos">
-          <li>Productos</li>
-        </Link>
+        <li
+          className="flex flex-row gap-x-2 items-center cursor-pointer"
+          onMouseOver={handleOpenCategorias}
+        >
+          Productos
+          <img
+            src="/assets/navbar-icons/arrow-down.svg"
+            alt="Logo usuarios"
+            className="w-2 h-2"
+          />
+        </li>
       </ul>
       <figure className="mx-auto">
         <Link to="/">
@@ -125,6 +142,13 @@ const NavbarDesktop = () => {
         className={`transition-opacity duration-300 ease-in-out ${isModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       />
       <UserModal isOpen={userModalOpen} onClose={handleCloseUser} />
+      <div className="relative">
+        <NavbarModal
+          isOpen={CategoriasModalOpen}
+          onClose={handleCloseCategorias}
+          className={`transition-opacity duration-300 ease-in-out ${CategoriasModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        />
+      </div>
     </nav>
   );
 };
