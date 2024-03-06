@@ -46,6 +46,12 @@ export const productosSlice = createSlice({
         detail: {},
       };
     },
+    resetFiltering: (state) => {
+      return {
+        ...state,
+        isFilteringActive: false,
+      };
+    },
   },
 });
 
@@ -58,5 +64,6 @@ export const {
   resetStateProduct,
   allDestacados,
   FilteringActive,
+  resetFiltering,
 } = productosSlice.actions;
 export default productosSlice.reducer;

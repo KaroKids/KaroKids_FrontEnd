@@ -39,11 +39,9 @@ export default function Login({ isOpen, onClose, className }) {
 
   const detectedLS = async (mail) => {
     try {
-      console.log(mail);
       const { payload } = await dispatch(getUserByEmail(mail));
       const storedProducts = JSON.parse(localStorage.getItem("cart"));
       const usuario_id = payload.usuario_id;
-      console.log(usuario_id);
       if (storedProducts && storedProducts.length > 0) {
         await dispatch(
           addProductInDB({
@@ -94,6 +92,7 @@ export default function Login({ isOpen, onClose, className }) {
           title: "Registro finalizado!",
         });
       }
+      await detectedLS(user.email);
       onClose();
     } catch (error) {
       console.log(error);

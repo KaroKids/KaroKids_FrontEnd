@@ -3,7 +3,7 @@ import { addFavorite, deleteFavorite } from "@/redux/favoritosActions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   const Toast = Swal.mixin({
@@ -26,6 +26,7 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   const [isFav, setIsFav] = useState(false);
   const usuario = useSelector((state) => state.users.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (auth.user && Array.isArray(myFavorites)) {
@@ -38,6 +39,10 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
       });
     }
   }, [myFavorites]);
+
+  function handleClick(id) {
+    navigate(`/producto/detalle/${id}`);
+  }
 
   function handleFavorite() {
     let usuario_id = usuario.usuario_id;
@@ -73,24 +78,24 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   let fixedPrice = priceArray.join("");
 
   return (
-    <div key={id} className="group">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-        <div className="flex justify-end bg-white ">
-          {isFav && auth.user ? (
-            <button onClick={handleFavorite}>❤️</button>
-          ) : (
-            <button onClick={handleFavorite}>🤍</button>
-          )}
-        </div>
-        <Link to={`/producto/detalle/${id}`}>
-          <img
-            src={imageSrc}
-            alt={imageAlt}
-            className="h-80 w-full object-cover object-center group-hover:opacity-75"
-          />
-        </Link>
+    <div key={id} className="group relative">
+      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7">
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          onClick={() => handleClick(id)}
+          className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center group-hover:opacity-75"
+        />
+        <button
+          onClick={handleFavorite}
+          className="absolute top-0 right-0  p-2 "
+        >
+          {isFav && auth.user ? "❤️" : "🤍"}
+        </button>
       </div>
-      <h3 className="mt-4 text-sm text-gray-700">{name}</h3>
+      <h3 className="mt-4 text-xs font-semibold md:text-sm text-gray-700">
+        {name}
+      </h3>
       <p className="mt-1 text-lg font-medium text-gray-900">${fixedPrice}</p>
     </div>
   );

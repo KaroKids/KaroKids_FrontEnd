@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     users: [],
     user: {},
+    ordenes: [],
   },
   reducers: {
     allUsers: (state, { payload }) => {
@@ -22,8 +23,12 @@ export const userSlice = createSlice({
         user: {},
       };
     },
+    allOrders: (state, action) => {
+      state.ordenes = action.payload;
+    },
   },
 });
 
-export const { allUsers, UserByEmail, UserPut, resetState } = userSlice.actions;
+export const { allUsers, UserByEmail, UserPut, resetState, allOrders } =
+  userSlice.actions;
 export default userSlice.reducer;

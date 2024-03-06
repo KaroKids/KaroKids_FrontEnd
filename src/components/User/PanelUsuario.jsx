@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import DatosPersonales from "./DatosPersonales";
@@ -6,11 +6,28 @@ import ControlView from "./ControlView";
 import UserPedidos from "./UserPedidos";
 import { useLocation } from "react-router-dom";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrders } from "@/redux/userAction";
+
 const PanelUsuario = () => {
   let { pathname } = useLocation();
   const auth = useAuth();
   const { displayName } = auth.user;
   const userName = displayName?.split(" ")[0];
+  const userLogued = useSelector((state) => state.users.user);
+  const dispatch = useDispatch();
+  const [dataCharged, setDataCharged] = useState(false);
+
+  const handleOrders = async () => {
+    await dispatch(getAllOrders(userLogued.usuario_id));
+    setDataCharged(true);
+  };
+
+  useEffect(() => {
+    if (userLogued.usuario_id !== undefined) {
+      handleOrders();
+    }
+  }, [userLogued]);
 
   return (
     <div className="container flex flex-col justify-start my-40 items-start  min-h-screen xl:mx-auto ">
@@ -64,7 +81,7 @@ const PanelUsuario = () => {
         </div>
         {pathname === "/usuario/panel-control" && <ControlView />}
         {pathname === "/usuario/datos-personales" && <DatosPersonales />}
-        {pathname === "/usuario/pedidos" && <UserPedidos />}
+        {pathname === "/usuario/pedidos" && <UserPedidos data={dataCharged} />}
       </div>
     </div>
   );
