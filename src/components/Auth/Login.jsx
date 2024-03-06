@@ -94,6 +94,7 @@ export default function Login({ isOpen, onClose, className }) {
           title: "Registro finalizado!",
         });
       }
+      await detectedLS(user.email);
       onClose();
     } catch (error) {
       console.log(error);
