@@ -5,6 +5,7 @@ import {
   getAllProducts,
   getProductsByFilters,
   getProductsByName,
+  setFilteringActive,
 } from "@/redux/productosActions";
 
 import { useLocation } from "react-router-dom";

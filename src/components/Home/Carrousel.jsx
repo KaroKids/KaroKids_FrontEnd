@@ -14,7 +14,7 @@ import { resetFiltering } from "@/redux/productosSlice";
 
 const Carrousel = () => {
   const destacados = useSelector((state) => state.productos.destacados);
-
+ // console.log(destacados);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,35 +39,38 @@ const Carrousel = () => {
         <div className="flex justify-center items-center mt-6">
           <Carousel orientation="horizontal" className="rounded-sm mt-2">
             <CarouselContent className="mx-auto">
-              {destacados.map((prod) => (
-                <CarouselItem
-                  key={prod.producto_id}
-                  className="pl-1 w-[45px]  md:w-auto md:basis-1/2 lg:basis-1/4 "
-                >
-                  <div className="p-1">
-                    <Card
-                      className="mx-2 border-none shadow-none "
-                      onClick={() => {
-                        handleNavigate(prod.producto_id);
-                      }}
+              {destacados.map(
+                (prod) =>
+                  !prod.inactivo && (
+                    <CarouselItem
+                      key={prod.producto_id}
+                      className="pl-1 w-[30px] md:w-[45px] lg:w-[70px] xl:w-auto md:basis-1/2 lg:basis-1/4 "
                     >
-                      <CardContent className="flex   flex-col pt-4 aspect-square items-center justify-center">
-                        <img
-                          src={prod.imagen_principal}
-                          alt={prod.nombre}
-                          className="w-auto h-full object-cover"
-                        />
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <h1 className="text-center mx-2 mt-2 font-semibold text-slate-500">
-                    {prod.nombre}
-                  </h1>
-                </CarouselItem>
-              ))}
+                      <div className="p-1">
+                        <Card
+                          className="mx-2 border-none shadow-none cursor-pointer"
+                          onClick={() => {
+                            handleNavigate(prod.producto_id);
+                          }}
+                        >
+                          <CardContent className="flex   flex-col pt-4 aspect-square items-center justify-center">
+                            <img
+                              src={prod.imagen_principal}
+                              alt={prod.nombre}
+                              className="w-auto h-full object-cover rounded-md"
+                            />
+                          </CardContent>
+                        </Card>
+                      </div>
+                      <h1 className="text-center mx-2 mt-2 font-semibold text-slate-500">
+                        {prod.nombre}
+                      </h1>
+                    </CarouselItem>
+                  )
+              )}
             </CarouselContent>
-            <CarouselPrevious className="left-0 mx-4 md:mx-10 md:mt-56 xl:mt-0 xl:mx-0" />
-            <CarouselNext className="right-0 mx-4 md:mx-10 md:mt-56 xl:mt-0 xl:mx-0" />
+            <CarouselPrevious className="left-0 mx-4 md:mx-10 md:mt-44 xl:mt-0 xl:mx-0" />
+            <CarouselNext className="right-0 mx-4 md:mx-10 md:mt-44 xl:mt-0 xl:mx-0" />
           </Carousel>
         </div>
       </div>

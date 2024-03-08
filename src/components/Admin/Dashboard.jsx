@@ -28,14 +28,11 @@ export default function Dashboard() {
    
 
  
-   const [menuSelected, setMenuSelected] = useState({
-    menu:'Dashboard',
-    component:<Stats />
-    
-   })
+   const [menuSelected, setMenuSelected] = useState({})
 
 useEffect(()=>{
  // console.log('select menu',menuSelected);
+ 
 },[menuSelected])
      
  
@@ -64,9 +61,10 @@ const handleLogout = (e) => {
        
         <main>
           <div className="mx-auto max-w-7xl mt-auto py-6 sm:px-6 min-h-full lg:px-8">
-                        
+                      
                         
             {//Aqui renderiza el componente cuando selecciona en el menu.
+             
               menuSelected.component
             }
 

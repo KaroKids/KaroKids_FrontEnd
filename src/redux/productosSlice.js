@@ -9,7 +9,8 @@ export const productosSlice = createSlice({
     volver: 0,
     paginaActual: 1,
     totalPaginas: 0,
-    isFilteringActive: false,
+    isFilteringActive: true,
+    filtros: {},
   },
   reducers: {
     allProducts: (state, action) => {
@@ -36,6 +37,7 @@ export const productosSlice = createSlice({
       state.productos = action.payload.productos;
       state.paginaActual = action.payload.paginaActual;
       state.totalPaginas = action.payload.totalPaginas;
+      state.filtros = action.payload.filtros;
     },
     modifyVolver: (state, action) => {
       (state.volver = action.payload), (state.loading = true);

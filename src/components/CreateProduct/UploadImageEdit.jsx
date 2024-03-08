@@ -5,17 +5,38 @@ import clsx from "clsx";
 const UploadImage = ({
 	onGetImagenPrincipal,
 	onGetImagSecundarias,
-	errors
+	errors,
+	data
 }) => {
 	const [imagenPrincipal, setImagenPrincipal] = useState([]);
 	const [imagSecundarias, setImagSecundarias] = useState([]);
 	const [loadingImage, setloadingImage] = useState(false);
 
+  //Carga la imagen primaria
+	useEffect(() => {
+		if (data.imagen_principal) {
+			setImagenPrincipal([data.imagen_principal]);
+		}
+	}, [data.imagen_principal]);
+
+	//Carga las imagenes secundarias
+	useEffect(() => {
+		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {
+			setImagSecundarias(data.imagenes_secundarias);
+		}
+		console.log('imag secundarias',imagSecundarias)
+	}, [data.imagenes_secundarias]);
+	
+	
+
 	//Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
 	useEffect(() => {
+
 		if (imagenPrincipal[0] !== undefined) {
 			onGetImagenPrincipal(imagenPrincipal[0]);
 		}
+		
+		//setImagenPrincipal([data.imagen_principal])
 	}, [imagenPrincipal]);
 
 	useEffect(() => {
@@ -24,6 +45,7 @@ const UploadImage = ({
 			let i = imagSecundarias.length - 1;
 			onGetImagSecundarias(imagSecundarias[i]);
 		}
+		console.log('imagSec',imagSecundarias);
 	}, [imagSecundarias]);
 
 	//Funciones almacenan los valores de previsualización de los archivos cargados por el usuario.

@@ -111,31 +111,31 @@ const ProductCart = () => {
   return (
     <article
       id="table"
-      className="py-4  w-full grid place-items-start md:place-items-center  xl:flex xl:flex-col xl:items-start text-slate-400 text-xl font-medium"
+      className="py-4 w-full grid place-items-center lg:w-[600px] xl:w-[1400px] xl:flex xl:flex-col xl:items-start text-slate-400 text-xl font-medium"
     >
       <nav className="w-full   text-base  ">
-        <h4 className=" text-left pb-4 mx-4 border-b-2 border-b-slate-400 md:border-0 xl:border-b-2 ">
+        <h4 className=" text-left pb-4 mx-4 border-b-2 border-b-slate-400  xl:border-b-2 ">
           Producto/s
         </h4>
       </nav>
 
-      <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
+      <div className="h-auto  overflow-y-auto w-full md:w-auto grid grid-cols-1 place-items-center md:grid-cols-2  gap-y-4 py-4">
         {user.accessToken ? (
           cart && cart.length ? (
             cart?.map((product, i) => {
               return (
                 <React.Fragment key={i}>
                   <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
-                    <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
+                    <div className="flex  justify-center  items-center h-full w-full">
                       <img
                         src={product.producto_imagen}
                         alt={product.producto_nombre}
-                        className="w-28 h-28 xl:w-30 xl:h-40"
+                        className=" w-56 md:w-52 mx-10 rounded-sm mt-2 h-auto xl:w-52 "
                       />
                     </div>
                   </Link>
 
-                  <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
+                  <div className="flex flex-col px-2 gap-x-4 items-center md:flex-col border-b-2 md:border-none w-full border-slate-200 xl:w-full  xl:h-full">
                     <span
                       onClick={() =>
                         handleDeleteLS(
@@ -144,12 +144,16 @@ const ProductCart = () => {
                           product.compra_color
                         )
                       }
-                      className="border w-6 ml-auto mr-4 text-center border-slate-300 mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
+                      className="border w-6 ml-auto mr-4 text-center  mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
                     >
-                      🗑
+                      <img
+                        src="/assets/navbar-icons/trash.svg"
+                        alt="Logo basura"
+                        className="w-8 h-8"
+                      />
                     </span>
-                    <p className=" my-2 flex flex-col  gap-1 text-xl">
-                      <strong className="text-base">
+                    <p className=" my-2 flex flex-col items-center w-full md:justify-start md:items-start gap-1 text-xl">
+                      <strong className=" text-sm">
                         <Link
                           key={i}
                           to={`/producto/detalle/${product.producto_id}`}
@@ -166,10 +170,13 @@ const ProductCart = () => {
                         </span>
                       </small>
                     </p>
-                    $ {product.producto_precio * product.compra_cantidad}{" "}
+                    <span className="text-lg md:text-xl md:w-full">
+                      Precio: $
+                      {product.producto_precio * product.compra_cantidad}{" "}
+                    </span>
                     <form
                       id="counter"
-                      className=" mt-2 md:justify-center flex gap-x-0 sm:gap-x-4"
+                      className=" mt-2 md:justify-center  flex gap-x-0 sm:gap-x-4"
                     >
                       <Button
                         onClick={(e) =>
@@ -182,14 +189,14 @@ const ProductCart = () => {
                           )
                         }
                         variant="detail"
-                        className="w-1 h-8 sm:w-10 sm:h-10 cursor-pointer"
+                        className="w-1 h-8 my-2 sm:w-10 sm:h-10 cursor-pointer"
                         disabled={product.compra_cantidad === 1}
                       >
                         -
                       </Button>
 
                       <input
-                        className="remove-arrow border-2 mx-2 rounded-md max-w-10 w-auto md:h-10 text-center"
+                        className="remove-arrow border-2 mx-2 my-2 rounded-md max-w-10 w-auto md:h-10 text-center"
                         type="number"
                         value={product.compra_cantidad}
                       />
@@ -204,7 +211,7 @@ const ProductCart = () => {
                           )
                         }
                         variant="detail"
-                        className="w-1 h-8 sm:w-10 sm:h-10  cursor-pointer"
+                        className="w-1 h-8 my-2 sm:w-10 sm:h-10  cursor-pointer"
                       >
                         +
                       </Button>
@@ -221,16 +228,16 @@ const ProductCart = () => {
             return (
               <React.Fragment key={i}>
                 <Link key={i} to={`/producto/detalle/${product.producto_id}`}>
-                  <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
+                  <div className="flex   justify-center   border-slate-200 items-center h-full w-full  xl:w-52">
                     <img
                       src={product.picture_url}
                       alt={product.title}
-                      className="w-28 h-28 xl:w-30 xl:h-40"
+                      className=" w-56 md:w-52 mx-10 rounded-sm mt-2 h-auto xl:w-52 "
                     />
                   </div>
                 </Link>
 
-                <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
+                <div className="flex flex-col px-2 gap-x-4 items-center md:flex-col border-b-2 md:border-none w-full border-slate-200 xl:w-full  xl:h-full">
                   <span
                     onClick={() =>
                       handleDeleteLS(
@@ -239,12 +246,23 @@ const ProductCart = () => {
                         product.compra_color
                       )
                     }
-                    className="border w-6 ml-auto mr-4 text-center border-slate-300 mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
+                    className=" w-8 ml-auto mr-4 text-center  mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
                   >
-                    🗑
+                    <img
+                      src="/assets/navbar-icons/trash.svg"
+                      alt="Logo basura"
+                      className="w-8 h-8"
+                    />
                   </span>
-                  <p className=" my-2 flex flex-col  gap-1 text-xl">
-                    <strong className="text-base">{product.title}</strong>
+                  <p className=" my-2 flex flex-col items-center w-full md:justify-start md:items-start gap-1 text-xl">
+                    <strong className=" text-sm">
+                      <Link
+                        key={i}
+                        to={`/producto/detalle/${product.producto_id}`}
+                      >
+                        {product.title}
+                      </Link>
+                    </strong>
                     <small className="flex flex-col text-sm">
                       <span>
                         <strong>Color:</strong> {product.compra_color}
@@ -254,10 +272,12 @@ const ProductCart = () => {
                       </span>
                     </small>
                   </p>
-                  $ {product.unit_price * product.quantity}{" "}
+                  <span className="text-lg md:text-xl md:w-full">
+                    Precio: ${product.unit_price * product.quantity}{" "}
+                  </span>
                   <form
                     id="counter"
-                    className=" mt-2 md:justify-center flex gap-x-0 sm:gap-x-4"
+                    className=" mt-2 md:justify-center  flex gap-x-0 sm:gap-x-4"
                   >
                     <Button
                       onClick={(e) =>
@@ -270,14 +290,14 @@ const ProductCart = () => {
                         )
                       }
                       variant="detail"
-                      className="w-1 h-8 sm:w-10 sm:h-10 cursor-pointer"
+                      className="w-1 h-8  my-2 sm:w-10 sm:h-10 cursor-pointer"
                       disabled={product.quantity === 1}
                     >
                       -
                     </Button>
 
                     <input
-                      className="remove-arrow border-2 mx-2 rounded-md max-w-10 w-auto md:h-10 text-center"
+                      className="remove-arrow border-2  my-2 mx-2 rounded-md max-w-10 w-auto md:h-10 text-center"
                       type="number"
                       value={product.quantity}
                     />
@@ -292,7 +312,7 @@ const ProductCart = () => {
                         )
                       }
                       variant="detail"
-                      className="w-1 h-8 sm:w-10 sm:h-10  cursor-pointer"
+                      className="w-1 h-8  my-2 sm:w-10 sm:h-10  cursor-pointer"
                     >
                       +
                     </Button>
