@@ -128,16 +128,19 @@ export default function ProductList({ valor }) {
                     </div>
                   </div>
                 ))
-              : productos?.productos.map((product, i) => (
-                  <ProductCard
-                    id={product.producto_id}
-                    imageSrc={product.imagen_principal}
-                    imageAlt={product.nombre}
-                    name={product.nombre}
-                    price={product.precio}
-                    myFavorites={favorites}
-                  />
-                ))}
+              : productos?.productos.map(
+                  (product, i) =>
+                    !product.inactivo && (
+                      <ProductCard
+                        id={product.producto_id}
+                        imageSrc={product.imagen_principal}
+                        imageAlt={product.nombre}
+                        name={product.nombre}
+                        price={product.precio}
+                        myFavorites={favorites}
+                      />
+                    )
+                )}
           </div>
           <PaginationControls filtros={filtrosAplicados} />
         </div>
