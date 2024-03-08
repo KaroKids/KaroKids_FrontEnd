@@ -146,7 +146,11 @@ const ProductCart = () => {
                       }
                       className="border w-6 ml-auto mr-4 text-center  mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
                     >
-                      🗑
+                      <img
+                        src="/assets/navbar-icons/trash.svg"
+                        alt="Logo basura"
+                        className="w-8 h-8"
+                      />
                     </span>
                     <p className=" my-2 flex flex-col items-center w-full md:justify-start md:items-start gap-1 text-xl">
                       <strong className=" text-sm">
