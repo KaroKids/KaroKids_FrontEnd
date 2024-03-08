@@ -51,10 +51,14 @@ const ProductDetail = () => {
       value: "",
     },
   ]);
+  const [cantidadStock, setCantidadStock] = useState([
+    {
+      value: "",
+    },
+  ]);
   const [selectedTalle, setSelectedTalle] = useState(false);
   const [selectedQuantity, setselectedQuantity] = useState(1);
   const { id } = useParams();
-
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
   let stock = product.stock;
@@ -62,7 +66,6 @@ const ProductDetail = () => {
   const handleQuantityChange = ({ target }) => {
     setselectedQuantity(target.value);
   };
-
   const handleTalleyColor = (key, values) => {
     setSelectedTalle(key);
     const newColors = values.map((info) => {
@@ -71,7 +74,14 @@ const ProductDetail = () => {
       }
     });
 
+    const newCantidades = values.map((info) => {
+      if (info.cantidad) {
+        return { value: info.cantidad };
+      }
+    });
+
     setColor(newColors);
+    setCantidadStock(newCantidades);
     if (!newColors.some((color) => color.value === selectedColor)) {
       setSelectedColor(null);
     }
@@ -80,27 +90,34 @@ const ProductDetail = () => {
   const handleAddToCart = (item) => {
     const { producto_id, precio, nombre, imagen_principal } = product;
 
-    let complementado = {
-      usuario_id: item.usuario_id,
-      id: producto_id,
-      title: nombre,
-      picture_url: imagen_principal,
-      compra_talla: item.compra_talla,
-      compra_color: item.compra_color,
-      quantity: item.compra_cantidad,
-      unit_price: precio,
-    };
+    if (item.compra_cantidad > cantidadStock[0].value) {
+      Toast.fire({
+        icon: "error",
+        title: "La cantidad excede el stock.",
+      });
+    } else {
+      let complementado = {
+        usuario_id: item.usuario_id,
+        id: producto_id,
+        title: nombre,
+        picture_url: imagen_principal,
+        compra_talla: item.compra_talla,
+        compra_color: item.compra_color,
+        quantity: item.compra_cantidad,
+        unit_price: precio,
+      };
 
-    // console.log(complementado);
+      // console.log(complementado);
 
-    user.accessToken
-      ? dispatch(addProductInDB(complementado))
-      : dispatch(addProductLS(complementado));
+      user.accessToken
+        ? dispatch(addProductInDB(complementado))
+        : dispatch(addProductLS(complementado));
 
-    Toast.fire({
-      icon: "success",
-      title: "Producto agregado al carrito",
-    });
+      Toast.fire({
+        icon: "success",
+        title: "Producto agregado al carrito",
+      });
+    }
   };
 
   useEffect(() => {
@@ -236,6 +253,7 @@ const ProductDetail = () => {
                 <input
                   value={selectedQuantity}
                   type="number"
+                  max={cantidadStock[0].value}
                   className="remove-arrow border-gray-200 border-2  focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
