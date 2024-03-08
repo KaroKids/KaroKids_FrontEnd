@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { getUserByEmail, postUser } from "@/redux/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { addProductInDB, getCartFromDB } from "@/redux/carritoActions";
+import { signOut } from "firebase/auth";
 
 export default function Login({ isOpen, onClose, className }) {
   const Toast = Swal.mixin({
@@ -61,8 +62,17 @@ export default function Login({ isOpen, onClose, className }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await auth.login(mail, password, onClose);
-    await detectedLS(mail);
+    const response = await dispatch(getUserByEmail(mail));
+    const payload = response?.payload;
+    if (!payload.inactivo) {
+      await auth.login(mail, password, onClose);
+      await detectedLS(mail);
+    } else {
+      Toast.fire({
+        icon: "warning",
+        title: "Su usuario se encuentra inactivo.",
+      });
+    }
   };
 
   const handleGoogle = async (e) => {
@@ -72,11 +82,17 @@ export default function Login({ isOpen, onClose, className }) {
       const { user } = google;
       const response = await dispatch(getUserByEmail(user.email));
       const payload = response?.payload;
-      if (payload && payload.email_usuario) {
+      if (payload && payload.email_usuario && !payload.inactivo) {
         Toast.fire({
           icon: "success",
           title: "Sesión iniciada con éxito.",
         });
+      } else if (payload.inactivo) {
+        Toast.fire({
+          icon: "warning",
+          title: "Su usaurio se encuentra inactivo.",
+        });
+        auth.signout(onClose);
       } else {
         const FirstName = user.displayName?.split(" ")[0];
         const LastName =
