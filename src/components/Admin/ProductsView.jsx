@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import destacado from "/assets/images/destacado.svg";
 import noDestacado from "/assets/images/noDestacado.svg";
 import saldoStock from "@/utils/saldoStock";
+import EditProduct from "@/components/CreateProduct/EditProduct"
 import {
   getAllProducts,
   getProductsByFilters,
@@ -59,7 +60,8 @@ const relevancias = [
   },
 ];
 
-export default function ProductList() {
+export default function ProductList({updateMenuSelected}) {
+   
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -375,7 +377,7 @@ export default function ProductList() {
                       />
                     </div>
                     <div className="table-cell px-6 py-4 whitespace-nowrap">
-                      {product.nombre}
+                      {product.nombre}  
                     </div>
                     <div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">
                       {product.genero}
@@ -414,9 +416,11 @@ export default function ProductList() {
                           Ver
                         </button>
                       </Link>
-                      <button className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
+                     
+                      <button onClick={(e)=>{  updateMenuSelected({menu:'Editar', component:<EditProduct producto_id={product.producto_id}/>});}} className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
                         Editar
                       </button>
+
                       {product.inactivo ? (
                         <button
                           onClick={() =>

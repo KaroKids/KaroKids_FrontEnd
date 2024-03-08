@@ -8,41 +8,48 @@ import Stats from './Stats'
 import  ProductsView from './ProductsView';
 import UsersView from './UsersView';
 import CreateProduct from '../CreateProduct/CreateProduct';
+import EditProduct from '@/components/CreateProduct/EditProduct';
 
 const NavBarDesktopDB = ({updateMenuSelected}) => {
-    const [navigation, setNavigation] = useState([
-        { name: 'Admin', component: <Stats />, current: true },
-        { name: 'Usuarios', component: <UsersView />, current: false },
-        { name: 'Registrar', component: <CreateProduct />, current: false },
-        { name: 'Productos', component: <ProductsView />, current: false },
-     
-      ]);
 
 
+  const handleMenuSelect = (e,menuName) => {
+    const menu=menuName;
+   //console.log('handle navig', menu)
+    // Actualizar la variable navigation
+   const updatedNavigation = navigation.map((item) => {
+     if (item.name === menu) {
+        updateMenuSelected({menu:menu, component:item.component});
+       return { ...item, current: true };
+     } else {
+       return { ...item, current: false };
+     }
+   });
+
+   setNavigation(updatedNavigation);
+
+   
+  };
+
+ 
+
+ 
+
+const [navigation, setNavigation] = useState([
+    { name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true },
+    { name: 'Usuarios', component: <UsersView />, current: false },
+    { name: 'Registrar', component: <CreateProduct />, current: false },
+    { name: 'Productos', component: <ProductsView updateMenuSelected={updateMenuSelected} />, current: false },
+    { name: '', component: <EditProduct/>, current: false },
+]);
     
+
+useEffect(()=>{
+  updateMenuSelected({name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true});
+},[])
     
-      const handleMenuSelect = (e,menuName) => {
-        const menu=menuName;
-       //console.log('handle navig', menu)
-        // Actualizar la variable navigation
-       const updatedNavigation = navigation.map((item) => {
-         if (item.name === menu) {
-            updateMenuSelected({menu:menu, component:item.component});
-           return { ...item, current: true };
-         } else {
-           return { ...item, current: false };
-         }
-       });
+      
     
-       setNavigation(updatedNavigation);
-    
-       
-      };
-     // Este efecto se ejecutará cada vez que cambie la variable navigation
-//    useEffect(()=>{
-//      //console.log('menu selected useEffect:',menuSelected);
-//      onMenuSelected(menuSelected)
-//    },[menuSelected])
  
      
   const auth = useAuth();

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "../SearchBar/SearchBar";
 import { Link, useLocation } from "react-router-dom";
 import Login from "../Auth/Login";
@@ -9,33 +9,47 @@ import Stats from './Stats'
 import  ProductsView from './ProductsView';
 import UsersView from './UsersView';
 import CreateProduct from '../CreateProduct/CreateProduct';
+import EditProduct from '@/components/CreateProduct/EditProduct';
+import Orders from "./Orders";
 
-const NavbarMobile = ({updateMenuSelected}) => {
-  const [navigation, setNavigation] = useState([
-    { name: 'Administracion', component: <Stats />, current: true },
-    { name: 'Usuarios', component: <UsersView />, current: false },
-    { name: 'Registrar', component: <CreateProduct />, current: false },
-    { name: 'Productos', component: <ProductsView />, current: false },
- 
-  ]);
-
-  const handleMenuSelect = (e,menuName) => {
-    const menu=menuName;
-   //console.log('handle navig', menu)
-    // Actualizar la variable navigation
-   const updatedNavigation = navigation.map((item) => {
-     if (item.name === menu) {
-        updateMenuSelected({menu:menu, component:item.component});
-       return { ...item, current: true };
-     } else {
-       return { ...item, current: false };
-     }
-   });
-
-   setNavigation(updatedNavigation);
-   setOpenHamMenu(false);
-   
-  };
+const NavBarMobile = ({updateMenuSelected}) => {
+	const handleMenuSelect = (e,menuName) => {
+		const menu=menuName;
+	   //console.log('handle navig', menu)
+		// Actualizar la variable navigation
+	   const updatedNavigation = navigation.map((item) => {
+		 if (item.name === menu) {
+			updateMenuSelected({menu:menu, component:item.component});
+		   return { ...item, current: true };
+		 } else {
+		   return { ...item, current: false };
+		 }
+	   });
+	   //setOpenHamMenu(false)
+	   setNavigation(updatedNavigation);
+	  
+	   
+	  };
+	
+	 
+	
+	 
+	
+	const [navigation, setNavigation] = useState([
+		{ name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true },
+		{ name: 'Usuarios', component: <UsersView />, current: false },
+		{ name: 'Registrar', component: <CreateProduct />, current: false },
+		{ name: 'Productos', component: <ProductsView updateMenuSelected={updateMenuSelected} />, current: false },
+		{ name: '', component: <EditProduct/>, current: false },
+		{ name: '', component: <Orders/>, current: false },
+	]);
+		
+	
+	useEffect(()=>{
+	  updateMenuSelected({name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true});
+	},[])
+		
+		  
 
 	const auth = useAuth();
 	const { displayName } = auth.user;
@@ -145,10 +159,10 @@ const NavbarMobile = ({updateMenuSelected}) => {
 					style={{
 						transform: openHamMenu ? "translateX(0)" : "translateX(-100%)",
 					}}>
-				  {navigation?.map((item)=>(
+				  {navigation?.map((item, index)=>(
 
                 <a
-                key={item.name}
+                key={index}
                 className={classNames(
                 item.current ? 'bg-sky-700 text-white hover:cursor-pointer' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white',
                 'rounded-md px-3 py-2 text-sm font-medium'
@@ -178,4 +192,4 @@ const NavbarMobile = ({updateMenuSelected}) => {
 	);
 };
 
-export default NavbarMobile;
+export default NavBarMobile;

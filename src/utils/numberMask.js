@@ -1,8 +1,9 @@
 export function numberMask (number) {
   
-    return new Intl.NumberFormat("ES-MX",{
+    return new Intl.NumberFormat("en-MX",{
       style:'currency',
-      currency: 'MXN',
+      currency: 'USD',
+      minimumFractionDigits: 0,
     }).format(number)
   
   }

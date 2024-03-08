@@ -118,6 +118,18 @@ export const postProduct = (body) => {
   };
 };
 
+export const editProduct = (body) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(`${URL_PRODUCT}/modificar`, body);
+      console.log('respone en editProduct actions',response)
+      return dispatch(getProdById(response.data.producto_id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const productStatusChange = (body) => {
   // Activa o desactiva un producto.
   return async (dispatch) => {
