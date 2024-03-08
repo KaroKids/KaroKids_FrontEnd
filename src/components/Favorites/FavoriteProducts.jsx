@@ -3,11 +3,26 @@ import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authContext } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import { getUserByEmail } from "@/redux/userAction";
 
 import { getFavorites, deleteFavorite } from "@/redux/favoritosActions";
 
 const FavoriteProducts = () => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
   const { user } = useContext(authContext);
 
   const dispatch = useDispatch();
@@ -51,62 +66,65 @@ const FavoriteProducts = () => {
         })
       );
     }
+    Toast.fire({
+      icon: "success",
+      title: "Producto eliminado de favoritos.",
+    });
   };
 
   return (
-    <article className="max-w-[1400px] min-h-screen w-full pt-28 mx-auto">
+    <article className="container  flex flex-col items-center mb-4 min-h-screen w-full pt-28 mx-auto">
       <header className="flex justify-between text-4xl font-semibold">
         <h2 className="text-2xl mx-6 xl:text-3xl">Mis Favoritos</h2>
       </header>
 
-      <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
+      <div className="h-full overflow-y-auto grid grid-cols-1 md:grid-cols-4  lg:grid-cols-6 md:pl-10  lg:place-items-center gap-y-4 py-4">
         {user.accessToken ? (
           favorites && favorites.length ? (
             favorites &&
             favorites?.map((producto, i) => {
               return (
                 <React.Fragment key={i}>
-                  <Link
-                    key={i}
-                    to={`/producto/detalle/${producto.producto_id}`}
-                  >
-                    <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
-                      <img
-                        src={producto.imagen_principal}
-                        alt={producto.nombre}
-                        className="w-28 h-28 xl:w-30 xl:h-40"
-                      />
+                  <div className="flex flex-col border-2 relative rounded-md bg-slate-100 justify-center items-center h-auto w-72 ">
+                    <div className="relative">
+                      <Link
+                        key={i}
+                        to={`/producto/detalle/${producto.producto_id}`}
+                      >
+                        <img
+                          src={producto.imagen_principal}
+                          alt={producto.nombre}
+                          className=" aspect-square h-auto"
+                        />
+                      </Link>
+                      <span
+                        onClick={() =>
+                          handleDeleteFavorite(producto.producto_id)
+                        }
+                        className="absolute top-0 right-0 cursor-pointer"
+                      >
+                        <img
+                          src="/assets/navbar-icons/trash.svg"
+                          alt="Logo basura"
+                          className="w-8 h-8"
+                        />
+                      </span>
                     </div>
-                  </Link>
-
-                  <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
-                    <span
-                      onClick={() => handleDeleteFavorite(producto.producto_id)}
-                      className="border w-6 ml-auto mr-4 text-center border-slate-300 mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
-                    >
-                      🗑
+                    <span className=" my-2 text-xl font-semibold">
+                      Precio: ${producto.precio}
                     </span>
-                    <p className=" my-2 flex flex-col  gap-1 text-xl">
-                      <strong className="text-base">
-                        <Link
-                          key={i}
-                          to={`/producto/detalle/${producto.producto_id}`}
-                        >
-                          {producto.nombre}
-                        </Link>
-                      </strong>
-                    </p>
-                    $ {producto.precio}{" "}
-                    <form
-                      id="counter"
-                      className=" mt-2 md:justify-center flex gap-x-0 sm:gap-x-4"
-                    ></form>
+
+                    <h1 className=" my-2 flex flex-row font-semibold   text-xs">
+                      {producto.nombre}
+                    </h1>
                   </div>
+
+                  <div className="mx-0 "></div>
                 </React.Fragment>
               );
             })
           ) : (
-            <p>Agrega productos a tus favoritos</p>
+            <p className="">Agrega productos a tus favoritos</p>
           )
         ) : (
           <p>
