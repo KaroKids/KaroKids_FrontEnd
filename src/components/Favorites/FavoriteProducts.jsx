@@ -106,7 +106,7 @@ const FavoriteProducts = () => {
               );
             })
           ) : (
-            <p>Agrega productos a tu carrito</p>
+            <p>Agrega productos a tus favoritos</p>
           )
         ) : (
           <p>

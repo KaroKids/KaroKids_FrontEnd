@@ -52,6 +52,7 @@ export default function ProductList({ valor }) {
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
   );
+  const filtros = useSelector((state) => state.productos.filtros);
 
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);

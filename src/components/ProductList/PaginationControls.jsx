@@ -2,37 +2,15 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getProductsByFilters } from "@/redux/productosActions";
-import { useState, useEffect } from "react";
 
-// esto es para tener una copia de los filtros
-
-// const [filtrosAplicados, setFiltrosAplicados] = useState([]);
-//esto es para que se copien los filtros del filteroption
-// const handleApplyFilters = (filtrosSeleccionados) => {
-//   setFiltrosAplicados(filtrosSeleccionados);
-// };
-// const [nuevaPagina, setNuevaPagina] = useState(1);
-// al hacer click en un boton de pagina se actualiza el contenedor de los filtros
-// const handlePagina = (event) =>{
-//   setNuevaPagina(event.target.value);
-//   setFiltrosAplicados((prevFiltrosAplicados) => ({
-//     ...prevFiltrosAplicados,
-//     pagicaActual: nuevaPagina
-//   }));
-// }
-//al modificarse el estado de la pagina se llama al filtrar con todos los filtros mas el de la pagina actual
-// useEffect(() => {
-//   dispatch(getProductsByFilters(filtrosAplicados));
-// }, [nuevaPagina]);
-
-//al hacer click en una pagina se llama al filtrar con el valor de la pagina, va al handler, actualiza y al actualizar se dispachea el filtrar con todos los filtros es practicamente como el ordenar.
-//en el paginationcontrol de producttlis habria que pasar esto por parametro onApplyFilters={handleApplyFilters}
-
-///////////////////////////
-
-export default function PaginationControls({ filtros }) {
+export default function PaginationControls({ rol }) {
+  let admin = rol;
   const paginaActual = useSelector((state) => state.productos.paginaActual);
   const totalPaginas = useSelector((state) => state.productos.totalPaginas);
+  const isFiltering = useSelector((state) => state.productos.isFilteringActive);
+  const filtros = isFiltering
+    ? useSelector((state) => state.productos.filtros)
+    : {};
   const dispatch = useDispatch();
 
   const renderPaginationsButtons = () => {
@@ -54,32 +32,42 @@ export default function PaginationControls({ filtros }) {
     return buttons;
   };
   const handlePagination = ({ target }) => {
-    dispatch(getProductsByFilters({ ...filtros, paginaActual: target.value }));
+    dispatch(
+      getProductsByFilters({ ...filtros, paginaActual: target.value }, admin)
+    );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleAtras = () => {
     dispatch(
-      getProductsByFilters({
-        ...filtros,
-        paginaActual:
-          Number(paginaActual) === 1
-            ? Number(paginaActual)
-            : Number(paginaActual) - 1,
-      })
+      getProductsByFilters(
+        {
+          ...filtros,
+          paginaActual:
+            Number(paginaActual) === 1
+              ? Number(paginaActual)
+              : Number(paginaActual) - 1,
+        },
+        admin
+      )
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
+    console.log(filtros);
   };
   const handleAdelante = () => {
     dispatch(
-      getProductsByFilters({
-        ...filtros,
-        paginaActual:
-          Number(paginaActual) < totalPaginas
-            ? Number(paginaActual) + 1
-            : Number(paginaActual),
-      })
+      getProductsByFilters(
+        {
+          ...filtros,
+          paginaActual:
+            Number(paginaActual) < totalPaginas
+              ? Number(paginaActual) + 1
+              : Number(paginaActual),
+        },
+        admin
+      )
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
+    console.log(filtros);
   };
 
   return (

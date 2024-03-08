@@ -56,6 +56,9 @@ const NavbarDesktop = () => {
         <li
           className="flex flex-row gap-x-2 items-center cursor-pointer"
           onMouseOver={handleOpenCategorias}
+          onClick={
+            CategoriasModalOpen ? handleCloseCategorias : handleOpenCategorias
+          }
         >
           Productos
           <img
@@ -94,7 +97,9 @@ const NavbarDesktop = () => {
           </li>
         ) : (
           <li
-            onClick={handleOpenModal}
+            onClick={
+              CategoriasModalOpen ? handleCloseCategorias : handleOpenCategorias
+            }
             className="flex flex-row gap-x-2 items-end cursor-pointer"
           >
             <img
