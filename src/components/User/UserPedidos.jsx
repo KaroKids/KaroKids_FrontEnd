@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UserPedidos = (data) => {
   const ordersDB = useSelector((state) => state.users.ordenes);
@@ -9,7 +10,7 @@ const UserPedidos = (data) => {
 
   return (
     <div className="w-full flex flex-col gap-y-4">
-      {data &&
+      {data && ordersDB.length > 0 ? (
         ordersDB?.map((order, i) => {
           return (
             <article
@@ -35,7 +36,17 @@ const UserPedidos = (data) => {
               </p>
             </article>
           );
-        })}
+        })
+      ) : (
+        <>
+          <div className="flex flex-col gap-y-4 my-4 h-32 w-auto">
+            <h1>Actualmente no tiene pedidos</h1>
+            <Link to="/productos">
+              <span>⬅ Ir a comprar</span>
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 };

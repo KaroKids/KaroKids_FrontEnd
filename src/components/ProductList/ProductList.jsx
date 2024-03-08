@@ -78,11 +78,13 @@ export default function ProductList({ valor }) {
   useEffect(() => {
     dispatch(resetStateProduct());
     dispatch(getFavorites(usuario.usuario_id));
+    console.log(productos.volver);
+    console.log(isFilteringActive);
     productos.volver === 0 && !isFilteringActive
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
-  }, [isFilteringActive]);
+  }, []);
 
   useEffect(() => {
     if (ordernarPor !== 0) {
