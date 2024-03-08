@@ -9,18 +9,15 @@ const FooterBody = () => {
 					<nav>
 						<ul className="flex flex-col">
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a href="/" className="text-gray-700 hover:text-gray-900">
 									Inicio
 								</a>
 							</li>
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a
+									href="/productos"
+									className="text-gray-700 hover:text-gray-900">
 									Productos
-								</a>
-							</li>
-							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
-									Promociones
 								</a>
 							</li>
 						</ul>
@@ -31,8 +28,17 @@ const FooterBody = () => {
 					<nav>
 						<ul className="flex flex-col">
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a
+									href="/nosotros"
+									className="text-gray-700 hover:text-gray-900">
 									Sobre Nosotros
+								</a>
+							</li>
+							<li className="mr-4 mb-2">
+								<a
+									href="/legales"
+									className="text-gray-700 hover:text-gray-900">
+									Avisos Legales
 								</a>
 							</li>
 						</ul>
@@ -51,7 +57,7 @@ const FooterBody = () => {
 							</li>
 							<li className="mr-4 mb-2">
 								Centro comercial Unión Plaza local 219 (www.unionplaza.com.co)
-								Medellín -Colombiagi
+								Medellín -Colombia
 							</li>
 						</ul>
 					</nav>
@@ -65,18 +71,15 @@ const FooterBody = () => {
 					<nav>
 						<ul className="flex flex-col">
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a href="/" className="text-gray-700 hover:text-gray-900">
 									Inicio
 								</a>
 							</li>
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a
+									href="/productos"
+									className="text-gray-700 hover:text-gray-900">
 									Productos
-								</a>
-							</li>
-							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
-									Promociones
 								</a>
 							</li>
 						</ul>
@@ -87,8 +90,17 @@ const FooterBody = () => {
 					<nav>
 						<ul className="flex flex-col">
 							<li className="mr-4 mb-2">
-								<a href="#" className="text-gray-700 hover:text-gray-900">
+								<a
+									href="/nosotros"
+									className="text-gray-700 hover:text-gray-900">
 									Sobre Nosotros
+								</a>
+							</li>
+							<li className="mr-4 mb-2">
+								<a
+									href="/legales"
+									className="text-gray-700 hover:text-gray-900">
+									Avisos Legales
 								</a>
 							</li>
 						</ul>
@@ -107,7 +119,7 @@ const FooterBody = () => {
 							</li>
 							<li className="mr-4 mb-2">
 								Centro comercial Unión Plaza local 219 (www.unionplaza.com.co)
-								Medellín -Colombiagi
+								Medellín -Colombia
 							</li>
 						</ul>
 					</nav>
