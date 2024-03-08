@@ -18,7 +18,7 @@ const NavbarModal = ({ isOpen, onClose, className }) => {
 
   return (
     <div
-      className={`fixed mt-[81px] transition-opacity duration-300 ease-in-out  bg-gray-800 bg-opacity-50 top-0 right-0 bottom-0 left-0 flex z-0 ${className}`}
+      className={`fixed  mt-[81px] transition-opacity duration-300 ease-in-out  bg-gray-800 bg-opacity-50 top-0 right-0 bottom-0 left-0 flex z-0 ${className}`}
     >
       <div
         onMouseLeave={onClose}
