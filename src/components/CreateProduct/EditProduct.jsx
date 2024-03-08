@@ -1,16 +1,148 @@
 import { useEffect, useState } from "react";
-import validation from "../../utils/validation";
+import validation from "@/utils/validation";
 import { Link } from "react-router-dom";
-import { postProduct } from "@/redux/productosActions";
-import { useDispatch } from "react-redux";
-import UploadImage from "../UploadImage/UploadImage";
+import { editProduct } from "@/redux/productosActions";
+import { useDispatch, useSelector } from "react-redux";
+import UploadImageEdit from "./UploadImageEdit";
 import Swal from "sweetalert2";
 import spinner from "/assets/images/spinner.svg";
 import { numeroEnPalabras } from "@/utils/numerosEnPalabras";
-
 import { numberMask, numberMaskUnit } from "@/utils/numberMask";
+import axios from "axios";
+ 
 
-const CreateProduct = () => {
+const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
+
+const EditProduct = ({producto_id}) => {
+    let initData = {
+		nombre: "",
+		descripcion: "",
+		imagen_principal: "",
+		imagenes_secundarias: [],
+		precio: 0,
+		edad: "",
+		genero: "",
+		destacado: false,
+		inactivo: false,
+		stock: {},
+	};
+    const dispatch = useDispatch();
+
+    const [isLoading, setIsloading] = useState(false);
+   
+    const [limpiar, setLimpiar] = useState(false);
+    const [limpio, setLimpio] = useState(true);
+    const [errors, setErrors] = useState({
+        nombre: "",
+        descripcion: "",
+        imagen_principal: "",
+        imagenes_secundarias: [],
+        precio: "",
+        edad: "",
+        genero: "",
+        destacado: false,
+        inactivo: false,
+        stock: {},
+        msgData: "",
+    });
+    
+    const [newStock, setNewStock] = useState({
+        size: "",
+        color: "",
+        cantidad: 1,
+        total: 0,
+    });
+    const getProductDetailById = async (producto_id) => {
+        try {
+            // Enviar una solicitud DELETE al servidor con el usuarioId en la URL
+			// await axios.delete(`${URL_USERS}/usuarios/${usuarioId}`);
+			const body = {
+                producto_id: producto_id.toString(),
+			};
+            
+			//const bodyJSON = JSON.stringify(body);
+			const producto = await axios.get(`${URL_PRODUCT}/detalle/${producto_id}`);
+           // let i = producto.data.imagenes_secundarias.length - 1;
+            //console.log('producto data imagSecundarias',producto.data.imagenes_secundarias)
+			const imagenes_sec = producto.data.imagenes_secundarias.reduce((acc, imagen) => {
+				// Verificar si la imagen ya está presente en el array
+				const existe = acc.find(img => img.index === imagen);
+				if (!existe) {
+					acc.push({ index: imagen });
+				}
+				return acc;
+			}, []);
+			
+			
+			
+			
+            
+           // console.log('ims',imagenes_sec)
+			//console.log('producto imagenes sec imagenes_sec',imagenes_sec)
+            //console.log('imagenes secundarias trycatch', imagenes_secundarias)
+            //console.log('producto trycat',producto.data)
+
+                initData = {
+                nombre: producto.data.nombre,
+                descripcion:producto.data.descripcion ,
+                imagen_principal: producto.data.imagen_principal,
+                imagenes_secundarias: producto.data.imagenes_secundarias,
+                precio: producto.data.precio,
+                edad: producto.data.edad,
+                genero:producto.data.genero,
+                destacado: producto.data.destacado,
+                inactivo: producto.data.inactivo,
+                stock: producto.data.stock,
+            };
+            
+        setData(initData);
+         
+                 // Actualizar el estado newStock con el stock del producto
+                 // Inicializar el estado newStock con el stock del producto
+            // Object.keys(producto.data.stock).forEach((size) => {
+            //     producto.data.stock[size].forEach(({ color, cantidad }) => {
+            //         setNewStock((prevStock) => ({
+            //             ...prevStock,
+            //             [size]: [...(prevStock[size] || []), { color, cantidad }],
+            //         }));
+            //     });
+            // });
+
+          //  console.log('data cargado', data)
+           // console.log('newStock',newStock)
+        
+        
+			// Actualizar la lista de usuarios después de la eliminación
+			// setData(
+                // 	users.map((usuario) => {
+                    // 		if (usuario.usuario_id === usuario_id) {
+                        // 			// Invertir el estado de inactivo del usuario
+                        // 			return { ...usuario, inactivo: !usuario.inactivo };
+                        // 		}
+                        // 		return usuario;
+                        // 	})
+                        // );
+                        // Mostrar notificación de éxito
+                        //setData(resultProduct.data)
+                        Toast.fire({
+                            icon: "success",
+                            title: `Producto ${producto.data.nombre} encontrado exitosamente.`,
+                        });
+                     
+                    } catch (error) {
+                        console.log("Error, no fue posible cargar los detalles del producto:", error);
+                        // Mostrar notificación de error
+                        Toast.fire({
+                            icon: "error",
+                            title: `Error, no fue pasible cargar los detalles del producto. Por favor, inténtalo de nuevo.`,
+                        });
+                    }
+                };
+                
+             // console.log('init data',initData)
+              const [data, setData] = useState(initData);  
+             // console.log('data', data) 
+   // const product = useSelector((state) => state.productos.detail);
 	const Toast = Swal.mixin({
 		toast: true,
 		position: "top-end",
@@ -25,44 +157,8 @@ const CreateProduct = () => {
 			popup: "my-toast",
 		},
 	});
-	const initData = {
-		nombre: "",
-		descripcion: "",
-		imagen_principal: "",
-		imagenes_secundarias: [],
-		precio: 0,
-		edad: "",
-		genero: "",
-		destacado: false,
-		inactivo: false,
-		stock: {},
-	};
-	const dispatch = useDispatch();
-	const [isLoading, setIsloading] = useState(false);
 
-	const [limpiar, setLimpiar] = useState(false);
-	const [limpio, setLimpio] = useState(true);
-	const [data, setData] = useState(initData);
-	const [errors, setErrors] = useState({
-		nombre: "",
-		descripcion: "",
-		imagen_principal: "",
-		imagenes_secundarias: [],
-		precio: "",
-		edad: "",
-		genero: "",
-		destacado: false,
-		inactivo: false,
-		stock: {},
-		msgData: "",
-	});
-
-	const [newStock, setNewStock] = useState({
-		size: "",
-		color: "",
-		cantidad: 1,
-		total: 0,
-	});
+	 
 
 	const handleChange = (e) => {
 		const property = e.target.name;
@@ -104,13 +200,13 @@ const CreateProduct = () => {
 		if (!validationErrors.msgData) {
 			try {
 				setIsloading(true);
-				const response = await dispatch(postProduct(data));
-
+				const response = await dispatch(editProduct(data));
+				console.log('editProduct',response)
 				if (response.payload) {
 					setIsloading(false);
 					Toast.fire({
 						icon: "success",
-						title: "Producto registrado con éxito!",
+						title: "Producto modificado exitosamente!",
 					});
 					setData(initData);
 					setErrors(validation(data));
@@ -120,14 +216,14 @@ const CreateProduct = () => {
 					setIsloading(false);
 					Toast.fire({
 						icon: "error",
-						title: "No fue posible registrar el producto!",
+						title: "No fue posible modificar el producto!",
 					});
 				}
 			} catch (error) {
 				setIsloading(false);
 				Toast.fire({
 					icon: "error",
-					title: "No fue posible registrar el producto!",
+					title: "No fue posible modificar el producto!",
 				});
 			}
 		} else {
@@ -184,13 +280,22 @@ const CreateProduct = () => {
 
 	//Esta función realiza una copia del estado de la propiedad "imagenes_secundarias" de "data" y actualiza su valor agregándole el último archivo recibido desde el componente UploadImage.
 	const getImagSecundarias = (imagSecundarias) => {
-		let copia = data.imagenes_secundarias;
-		copia.push(imagSecundarias);
-		setData({ ...data, imagenes_secundarias: copia });
-		setErrors(validation(data, newStock));
+		// Verificar si la imagen ya está presente en el array de imágenes secundarias
+		const existe = data.imagenes_secundarias.some(img => img.index === imagSecundarias.index);
+		
+		if (!existe) {
+			// Si la imagen no existe, agregarla al array
+			setData(prevData => ({ ...prevData, imagenes_secundarias: [...prevData.imagenes_secundarias, imagSecundarias] }));
+			setErrors(validation(data, newStock));
+		} else {
+			// Si la imagen ya existe, puedes mostrar un mensaje o realizar otra acción según sea necesario
+			console.log("La imagen ya existe en el array de imágenes secundarias.");
+		}
 	};
+	
 
 	useEffect(() => {
+     
 		setErrors(validation(data, newStock));
 	}, [data]);
 
@@ -211,7 +316,33 @@ const CreateProduct = () => {
 		if (Object.keys(errors).length === 0) {
 			setErrors(validation(data, newStock));
 		}
+           
 	}, [data]);
+
+    useEffect(() => {
+        getProductDetailById(producto_id);
+        //setNewStock(data.stock)
+   
+    }, [producto_id]); // solo se ejecuta cuando cambia producto_idx
+
+    useEffect(() => {
+        let total = 0; // Variable para calcular el total
+        // Inicializar el estado newStock con el stock del producto desde data
+        Object.keys(data.stock).forEach((size) => {
+            data.stock[size].forEach(({ color, cantidad }) => {
+                total += Number(cantidad); // Sumar la cantidad al total
+                setNewStock((prevStock) => ({
+                    ...prevStock,
+                    [size]: [...(prevStock[size] || []), { color, cantidad }],
+                    total: Number(total), // Actualizar el total en el estado newStock
+                }));
+            });
+        });
+    }, [data]);
+    
+    
+    
+    
 	return (
 		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8  ">
 			<div
@@ -227,8 +358,9 @@ const CreateProduct = () => {
 			</div>
 			<div className="mx-auto max-w-2xl -mt-12 text-center">
 				<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-					Registrar Producto
+					Editar Producto  
 				</h2>
+                <h3 className="font-bold pt-3">{data.nombre}</h3>
 			</div>
 			<form
 				encType="multipart/form-data"
@@ -287,10 +419,13 @@ const CreateProduct = () => {
 					</div>
 				</div>
 				{limpio && (
-					<UploadImage
+					<UploadImageEdit
 						onGetImagenPrincipal={getImagenPrincipal}
 						onGetImagSecundarias={getImagSecundarias}
 						errors={errors}
+                        data={data}
+                     
+                        
 					/>
 				)}
 				<div className="grid grid-cols-1 gap-x-8 gap-y-6 lg:grid-cols-3 sm:flow-col mt-5">
@@ -566,7 +701,7 @@ const CreateProduct = () => {
 				{/* Mostrar el total */}
 				<div className="mt-3 border pr-2 pl-2">
 					<span className="font-semibold">Total items:</span>{" "}
-					<span className="font-bold">{numberMask(newStock.total)} </span>
+					<span className="font-bold">{numberMaskUnit(newStock.total)} </span>
 					<span className="font-thin font-italic">
 						{" "}
 						-{" "}
@@ -591,7 +726,7 @@ const CreateProduct = () => {
 								<span className="ml-2">Enviando...</span>
 							</div>
 						) : (
-							"CREAR"
+							"GUARDAR"
 						)}
 					</button>
 
@@ -606,4 +741,4 @@ const CreateProduct = () => {
 	);
 };
 
-export default CreateProduct;
+export default EditProduct;

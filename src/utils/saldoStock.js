@@ -6,6 +6,5 @@ export default function saldoStock(stock) {
             sumatoria += Number(stock[talla][i].cantidad);
         }
     }
-    console.log(sumatoria)
     return sumatoria;
 }
