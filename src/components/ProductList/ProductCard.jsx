@@ -31,12 +31,6 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
 	const isFav =
 		Array.isArray(favorites) && favorites.some((fav) => fav.producto_id === id);
 
-	useEffect(() => {
-		if (!auth.user) {
-			setIsFav(false);
-		}
-	}, [auth.user]);
-
 	function handleClick(id) {
 		navigate(`/producto/detalle/${id}`);
 	}
