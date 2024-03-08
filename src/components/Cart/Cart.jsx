@@ -82,16 +82,18 @@ const Cart = () => {
             </div>
           ) : (
             <>
-              <Button
-                variant="detail"
-                className="w-full xl:my-40"
-                onClick={handleMp}
-              >
-                Completar compra
-              </Button>
-              {preferenceId && (
-                <Wallet initialization={{ preferenceId: preferenceId }} />
-              )}
+              <div className="my-4 w-full">
+                <Button
+                  variant="detail"
+                  className="w-full xl:mt-40"
+                  onClick={handleMp}
+                >
+                  Completar compra
+                </Button>
+                {preferenceId && (
+                  <Wallet initialization={{ preferenceId: preferenceId }} />
+                )}
+              </div>
             </>
           )}
         </div>
