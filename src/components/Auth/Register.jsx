@@ -28,6 +28,11 @@ const Register = ({ isOpen, onClose, className }) => {
 	const [passwordRegister, setPasswordRegister] = useState("");
 	const [nameRegister, setNameRegister] = useState("");
 	const [lastNameRegister, setLastNameRegister] = useState("");
+	const [isChecked, setIsChecked] = useState(false);
+
+	const handleOnChange = () => {
+		setIsChecked(!isChecked);
+	};
 
 	const handleRegister = async (e) => {
 		e.preventDefault();
@@ -122,7 +127,6 @@ const Register = ({ isOpen, onClose, className }) => {
 									/>
 								</div>
 							</div>
-
 							<div>
 								<div className="flex items-center justify-between">
 									<label
@@ -142,11 +146,27 @@ const Register = ({ isOpen, onClose, className }) => {
 									/>
 								</div>
 							</div>
+							<div className="flex flex-row">
+								<input
+									type="checkbox"
+									name="registerCheck"
+									checked={isChecked}
+									onChange={handleOnChange}
+								/>
+								<p className="pl-2">
+									Acepto los
+									<a href="/legales" className="underline pl-2">
+										Términos y Condiciones
+									</a>
+								</p>
+							</div>
+
 							<div>
 								<Button
 									variant="detail"
 									onClick={(e) => handleRegister(e)}
 									type="submit"
+									disabled={!isChecked}
 									className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm   ">
 									Registrarse
 								</Button>
