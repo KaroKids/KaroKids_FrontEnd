@@ -8,9 +8,9 @@ const UserPedidos = (data) => {
   }, [data]);
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-y-4">
       {data &&
-        ordersDB.map((order, i) => {
+        ordersDB?.map((order, i) => {
           return (
             <article
               key={i}
@@ -19,7 +19,7 @@ const UserPedidos = (data) => {
               <figure className="w-1/4 h-full flex justify-center py-2">
                 <img src={order.productos_compra[0].picture_url} alt="" />
               </figure>
-              <div className="flex ">
+              <div className="flex">
                 <p>
                   <strong>Metodo de pago:</strong> {order.metodo_pago}
                 </p>

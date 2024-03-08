@@ -64,11 +64,8 @@ const Cart = () => {
             Resumen de compra
           </h1>
           <div className="w-full ">
-            <h2 className="border-t-2 h-10 mx-2 my-2 py-2 border-t-slate-500">
-              Subtotal:
-            </h2>
-            <h2 className="border-t-2 h-10 mx-2 py-2 border-t-slate-300">
-              Total
+            <h2 className="text-2xl text-center border-t-2 h-20 mx-2 py-2 border-t-slate-300">
+              Total:
             </h2>
           </div>
           {anchoPantalla < 1024 ? (
@@ -82,16 +79,18 @@ const Cart = () => {
             </div>
           ) : (
             <>
-              <Button
-                variant="detail"
-                className="w-full xl:my-40"
-                onClick={handleMp}
-              >
-                Completar compra
-              </Button>
-              {preferenceId && (
-                <Wallet initialization={{ preferenceId: preferenceId }} />
-              )}
+              <div className="my-4 w-full">
+                <Button
+                  variant="detail"
+                  className="w-full xl:mt-40"
+                  onClick={handleMp}
+                >
+                  Completar compra
+                </Button>
+                {preferenceId && (
+                  <Wallet initialization={{ preferenceId: preferenceId }} />
+                )}
+              </div>
             </>
           )}
         </div>
