@@ -4,23 +4,21 @@ const PostReviews = () => {
   return (
     <div>
       {/* puntuacion/estrellitas*/}
-      <div>
+      <form>
         <label htmlFor="comentario">Su comentario: </label>
         <div>
           <textarea
-            //id={styles.description_input}
-            key="comentario"
+            id="comentario"
             name="comentario"
-            //value={userInput.description}
             onChange={handleChange}
             rows={15}
             cols={40}
             placeholder="Escriba su comentario aquí..."
           />
         </div>
-      </div>
+      </form>
       <button type="submit" onSubmit={handleSubmit}>
-        Publicar
+        Enviar
       </button>
     </div>
   );
