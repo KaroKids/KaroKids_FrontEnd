@@ -3,7 +3,7 @@ import { addFavorite, deleteFavorite } from "@/redux/favoritosActions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   const Toast = Swal.mixin({
