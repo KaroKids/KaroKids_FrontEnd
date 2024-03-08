@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import destacado from "/assets/images/destacado.svg";
 import noDestacado from "/assets/images/noDestacado.svg";
 import saldoStock from "@/utils/saldoStock";
-import EditProduct from "@/components/CreateProduct/EditProduct"
+import EditProduct from "@/components/CreateProduct/EditProduct";
+ 
 import {
   getAllProducts,
   getProductsByFilters,
@@ -22,6 +23,7 @@ import Swal from "sweetalert2";
 import PaginationControls from "../ProductList/PaginationControls";
 import FilterOptions from "../ProductList/FilterOptions";
 import { Link } from "react-router-dom";
+import LoadingView from "../ui/Loading";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -61,16 +63,19 @@ const relevancias = [
 ];
 
 export default function ProductList({updateMenuSelected}) {
-   
+  
+  
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [filtrosAplicados, setFiltrosAplicados] = useState([]);
   const [query, setQuery] = useState("");
+  const [pageLoading, setPageLoading] = useState(true);
+  const [toastShown, setToastShown] = useState(false);  
 
   const dispatch = useDispatch();
   const productos = useSelector((state) => state.productos);
-
+  
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);
   };
@@ -308,10 +313,32 @@ export default function ProductList({updateMenuSelected}) {
       clearTimeout(identifier);
     };
   }, [query]);
+    
+  useEffect(() => {
+    if (!productos) {
+      // Los productos aún no se han cargado, establece el estado de carga en true
+      setPageLoading(true);
+    } else {
+      // Los productos se han cargado, establece el estado de carga en false
+      setPageLoading(false);
+      if (!toastShown) {
+        // Muestra la notificación solo si aún no se ha mostrado
+        Toast.fire({
+          icon: "info",
+          title: "Productos cargados con éxito.",
+        });
+        // Marca la notificación como mostrada
+        setToastShown(true);
+      }
+    }
+  }, [productos, toastShown]);
+  
 
   return (
     <div className="bg-white mt-3 sm:mt-0">
-      {productos && (
+    {pageLoading && <LoadingView />}
+      
+      {!pageLoading && productos && (
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
           <h2 className=" text-xl  font-semibold mb-4">Lista de Productos</h2>
 
@@ -370,6 +397,9 @@ export default function ProductList({updateMenuSelected}) {
               </div>
             </div>
             <div className="table-row-group  rounded border">
+              
+             
+
               {productos &&
                 productos.productos.map((product) => (
                   <div key={product.producto_id} className="table-row">
@@ -446,7 +476,7 @@ export default function ProductList({updateMenuSelected}) {
                       )}
                     </div>
                   </div>
-                ))}
+                )) }
             </div>
           </div>
 

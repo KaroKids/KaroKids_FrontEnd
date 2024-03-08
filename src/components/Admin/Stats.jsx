@@ -5,18 +5,23 @@
   import { useState, useEffect } from 'react';
   import { useDispatch, useSelector } from "react-redux";
   import clsx from 'clsx';
-import UsersView from './UsersView';
+  import UsersView from './UsersView';
+  import orderImg from '/assets/e-commerce/orders.svg'
+  import spinner from '/assets/images/spinner.svg';
+ 
   
   const URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
   const URL_USERS = import.meta.env.VITE_URL_USERS;
   const URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCT;
 
   export default function Stats({updateMenuSelected,handleMenuSelect}) {
-  const dispatch = useDispatch();
+ 
 
   const [totalOrdenes, setTotalOrdenes] = useState('');
   const [users, setUsers] = useState([]);
   const [productos,setProductos] = useState({})
+  const [loading, setLoading] = useState(true);
+  
 
 
   
@@ -28,6 +33,7 @@ import UsersView from './UsersView';
         
         if(response.data){
           setTotalOrdenes(response.data.length)
+          setLoading(false)
           
         }
         
@@ -49,6 +55,7 @@ import UsersView from './UsersView';
 				// Verificar si response.data es un array antes de asignarlo a users
 				if (Array.isArray(response.data)) {
           setUsers(response.data);
+          setLoading(false)
 				} else {
           console.log("La respuesta no es un array:", response.data);
 				}
@@ -68,6 +75,7 @@ import UsersView from './UsersView';
 
             if (response.data) {
                 setProductos(response.data);
+                setLoading(false)
             }
         } catch (error) {
             console.log('No fue posible cargar los productos', error);
@@ -88,19 +96,49 @@ import UsersView from './UsersView';
     <div className="py-[300px] py-sm-24 py-md-32  bg-info-light">
      
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <dl className="grid grid-cols-1 gap-x-8 shadow-xl hover:shadow-lg focus:outline-none  border py-12 rounded gap-y-16 text-center lg:grid-cols-3">
+          <dl className="grid grid-cols-1 gap-x-8 shadow-xl hover:shadow-lg focus:outline-none  border py-12 rounded-md justify-between gap-y-16 text-center lg:grid-cols-3">
             {stats.map((stat) => (
-              <div key={stat.id} className="mx-auto rounded hover:cursor-pointer  flex max-w-xs ring-1 ring-inset ring-black p-10 bg-blue-300 flex-col gap-y-2">
-                <dt onClick={(e)=>{handleMenuSelect(e,stat.menu),updateMenuSelected({menu:stat.menu, component:stat.component })}} className="text-base leading-7 text-gray-900 transition">{stat.name}</dt>
-                <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                  {stat.value}
-                </dd>
-              </div>
+           <div key={stat.id} className="mx-auto item-center rounded hover:cursor-pointer  max-w-xs ring-1 ring-inset ring-black p-10 bg-blue-700 flex flex-col gap-y-4">
+          
+           <button
+             onClick={(e) => { handleMenuSelect(e, stat.menu); updateMenuSelected({ menu: stat.menu, component: stat.component }); }}
+             className="text-base text-center leading-7 ring-1 py-3 p-5 ring-pink-600 hover:bg-sky-100 rounded-md hover:text-pink-500 text-white transition"
+           >
+             {stat.name}
+            
+
+
+            
+          
+            
+           </button>
+          
+           <dd className="order-first content-center item-center justify-center text-3xl font-semibold tracking-tight text-white border-red-500 sm:text-5xl">
+                  {(!loading) ? (
+                  stat.value
+                ) : (
+                  <img 
+                    src={spinner} 
+                    alt="Loading..." 
+                    className=" bg-transparent rounded-lg mx-auto inset-1 flex items-center justify-center   w-11 h-11"
+                  />
+                )}
+
+
+              
+                      
+           </dd>
+
+          
+         </div>
+         
+          
             ))}
+            
           </dl>
           
         </div>
-       
+      
       </div>
       
     )
