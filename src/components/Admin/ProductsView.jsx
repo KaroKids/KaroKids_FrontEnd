@@ -91,15 +91,17 @@ export default function ProductList() {
   };
 
   useEffect(() => {
+    let admin = true;
     productos.volver === 0
-      ? dispatch(getAllProducts())
+      ? dispatch(getAllProducts(admin))
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
   }, []);
 
   useEffect(() => {
+    let admin = true;
     if (ordernarPor !== 0) {
-      dispatch(getProductsByFilters(filtrosAplicados));
+      dispatch(getProductsByFilters(filtrosAplicados, admin));
     }
   }, [ordernarPor]);
 
@@ -136,6 +138,7 @@ export default function ProductList() {
   };
 
   const toggleProductStatus = async (producto_id) => {
+    let admin = true;
     const Toast = Swal.mixin({
       toast: true,
       position: "top-end",
@@ -188,7 +191,7 @@ export default function ProductList() {
           title: `Estado del producto ${response.payload} actualizado exitosamente.`,
         });
 
-        dispatch(getAllProducts());
+        dispatch(getAllProducts(admin));
       } else {
         // Muestra una notificación de error si la respuesta no es satisfactoria
         setIsLoading(false);
@@ -250,7 +253,7 @@ export default function ProductList() {
       const response = await dispatch(productStandOutChange(body));
       if (query.length > 0) {
         console.log(query);
-        dispatch(getProductsByName(query));
+        dispatch(getProductsByName(query, admin));
       }
 
       if (response.payload) {
@@ -261,7 +264,7 @@ export default function ProductList() {
           title: `Estado del producto ${response.payload} actualizado exitosamente.`,
         });
 
-        dispatch(getAllProducts());
+        dispatch(getAllProducts(admin));
       } else {
         // Muestra una notificación de error si la respuesta no es satisfactoria
         setIsLoading(false);
@@ -289,11 +292,12 @@ export default function ProductList() {
 
   //Optimiza la busqueda espera unos segundos antes de hacer el fetch
   useEffect(() => {
+    let admin = true;
     const identifier = setTimeout(() => {
       if (query.length > 0) {
-        dispatch(getProductsByName(query));
+        dispatch(getProductsByName(query, admin));
       } else {
-        dispatch(getAllProducts());
+        dispatch(getAllProducts(admin));
       }
     }, 500);
 
@@ -442,7 +446,7 @@ export default function ProductList() {
             </div>
           </div>
 
-          <PaginationControls filtros={filtrosAplicados} />
+          <PaginationControls filtros={filtrosAplicados} rol={true} />
         </div>
       )}
 

@@ -12,10 +12,17 @@ import {
 
 const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
-export const getAllProducts = () => {
+export const getAllProducts = (admin) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`${URL_PRODUCT}`);
+      if (admin === true) {
+        admin = "true";
+        console.log("es true");
+      } else {
+        admin = "false";
+        console.log("es false");
+      }
+      const { data } = await axios.get(`${URL_PRODUCT}?admin=${admin}`);
       const { elementosPaginados, totalPaginas, paginaActual } = data;
 
       return dispatch(
@@ -42,10 +49,19 @@ export const getDestacados = (limite) => {
   };
 };
 
-export const getProductsByName = (nombre) => {
+export const getProductsByName = (nombre, admin) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`${URL_PRODUCT}?nombre=${nombre}`);
+      if (admin === true) {
+        admin = "true";
+        console.log("es true");
+      } else {
+        admin = "false";
+        console.log("es false");
+      }
+      const { data } = await axios.get(
+        `${URL_PRODUCT}?nombre=${nombre}&admin=${admin}`
+      );
       const { elementosPaginados, totalPaginas, paginaActual } = data;
       return dispatch(
         productsByName({
@@ -80,9 +96,17 @@ export const setFilteringActive = (active) => {
   };
 };
 
-export const getProductsByFilters = (filters) => {
+export const getProductsByFilters = (filters, admin) => {
   return async (dispatch) => {
     try {
+      if (admin === true) {
+        admin = "true";
+        console.log("es true");
+      } else {
+        admin = "false";
+        console.log("es false");
+      }
+
       let urlFilters = "";
 
       if (filters.nombre === null) filters.nombre = "";
@@ -90,6 +114,7 @@ export const getProductsByFilters = (filters) => {
       for (const [key, value] of Object.entries(filters)) {
         urlFilters += `${key}=${value}&`;
       }
+      urlFilters += `admin=${admin}`;
 
       const { data } = await axios.get(`${URL_PRODUCT}?${urlFilters}`);
       const { elementosPaginados, totalPaginas, paginaActual } = data;
@@ -99,6 +124,7 @@ export const getProductsByFilters = (filters) => {
           productos: elementosPaginados,
           totalPaginas,
           paginaActual,
+          filtros: filters,
         })
       );
     } catch (error) {
