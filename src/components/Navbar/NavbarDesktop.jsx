@@ -54,7 +54,7 @@ const NavbarDesktop = () => {
           </Link>
         )}
         <li
-          onMouseOver={handleOpenCategorias}
+          onClick={handleOpenCategorias}
           className="flex flex-row gap-x-2 items-center cursor-pointer"
         >
           Productos
