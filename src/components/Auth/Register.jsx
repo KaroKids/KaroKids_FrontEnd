@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { postUser } from "@/redux/userAction";
 import { getUserByEmail } from "@/redux/userAction";
 import Swal from "sweetalert2";
+import validateRegistration from "./validator";
 
 const Register = ({ isOpen, onClose, className }) => {
 	const Toast = Swal.mixin({
@@ -29,6 +30,7 @@ const Register = ({ isOpen, onClose, className }) => {
 	const [nameRegister, setNameRegister] = useState("");
 	const [lastNameRegister, setLastNameRegister] = useState("");
 	const [isChecked, setIsChecked] = useState(false);
+	const [errors, setErrors] = useState({});
 
 	const handleOnChange = () => {
 		setIsChecked(!isChecked);
@@ -53,6 +55,36 @@ const Register = ({ isOpen, onClose, className }) => {
 			dispatch(postUser(body));
 			auth.register(emailRegister, passwordRegister, nameRegister, onClose);
 		}
+	};
+
+	useEffect(() => {
+		const validationErrors = validateRegistration(
+			nameRegister,
+			lastNameRegister,
+			emailRegister,
+			passwordRegister
+		);
+		setErrors(validationErrors);
+	}, [nameRegister, lastNameRegister, emailRegister, passwordRegister]);
+
+	const handleNameChange = (e) => {
+		setNameRegister(e.target.value);
+		setErrors((prevErrors) => ({ ...prevErrors, name: "" }));
+	};
+
+	const handleLastNameChange = (e) => {
+		setLastNameRegister(e.target.value);
+		setErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
+	};
+
+	const handleEmailChange = (e) => {
+		setEmailRegister(e.target.value);
+		setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+	};
+
+	const handlePasswordChange = (e) => {
+		setPasswordRegister(e.target.value);
+		setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
 	};
 
 	return (
@@ -86,12 +118,16 @@ const Register = ({ isOpen, onClose, className }) => {
 								</label>
 								<div className="mt-2">
 									<input
-										onChange={(e) => setNameRegister(e.target.value)}
+										onChange={handleNameChange}
+										value={nameRegister}
 										name="nameRegister"
 										type="text"
 										placeholder="Nombre"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
+									{errors.name && (
+										<p className="text-red-500 text-sm mt-1">{errors.name}</p>
+									)}
 								</div>
 							</div>
 							<div>
@@ -102,12 +138,18 @@ const Register = ({ isOpen, onClose, className }) => {
 								</label>
 								<div className="mt-2">
 									<input
-										onChange={(e) => setLastNameRegister(e.target.value)}
+										onChange={handleLastNameChange}
+										value={lastNameRegister}
 										name="lastnameRegister"
 										type="text"
 										placeholder="Apellido"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
+									{errors.lastName && (
+										<p className="text-red-500 text-sm mt-1">
+											{errors.lastName}
+										</p>
+									)}
 								</div>
 							</div>
 							<div>
@@ -118,13 +160,17 @@ const Register = ({ isOpen, onClose, className }) => {
 								</label>
 								<div className="mt-2">
 									<input
-										onChange={(e) => setEmailRegister(e.target.value)}
+										onChange={handleEmailChange}
+										value={emailRegister}
 										name="emailRegister"
 										type="email"
 										autoComplete="email"
 										placeholder="ejemplo@ejemplo.com"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
+									{errors.email && (
+										<p className="text-red-500 text-sm mt-1">{errors.email}</p>
+									)}
 								</div>
 							</div>
 							<div>
@@ -137,13 +183,19 @@ const Register = ({ isOpen, onClose, className }) => {
 								</div>
 								<div className="mt-2">
 									<input
-										onChange={(e) => setPasswordRegister(e.target.value)}
+										onChange={handlePasswordChange}
+										value={passwordRegister}
 										name="passwordRegister"
 										type="password"
 										autoComplete="current-password"
 										placeholder="Ingrese su contraseña"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
+									{errors.password && (
+										<p className="text-red-500 text-sm mt-1">
+											{errors.password}
+										</p>
+									)}
 								</div>
 							</div>
 							<div className="flex flex-row">
@@ -166,7 +218,7 @@ const Register = ({ isOpen, onClose, className }) => {
 									variant="detail"
 									onClick={(e) => handleRegister(e)}
 									type="submit"
-									disabled={!isChecked}
+									disabled={!isChecked || Object.keys(errors).length > 0}
 									className="flex w-full justify-center px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm   ">
 									Registrarse
 								</Button>

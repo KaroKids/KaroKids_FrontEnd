@@ -7,29 +7,27 @@ const URL_USERS = import.meta.env.VITE_URL_USERS;
 function UsersView() {
 	const [users, setUsers] = useState([]);
 	const [pageLoading, setPageLoading] = useState(true);
-	const [toastShown, setToastShown] = useState(false); 
+	const [toastShown, setToastShown] = useState(false);
 	useEffect(() => {
 		if (!users) {
-		  // Los productos aún no se han cargado, establece el estado de carga en true
-		  setPageLoading(true);
+			// Los productos aún no se han cargado, establece el estado de carga en true
+			setPageLoading(true);
 		} else {
-		  // Los productos se han cargado, establece el estado de carga en false
-		  setPageLoading(false);
-		  if (!toastShown) {
-			// Muestra la notificación solo si aún no se ha mostrado
-			if(users){
-
-				Toast.fire({
-				  icon: "info",
-				  title: "Datos de clientes obtenidos con éxito...",
-				});
+			// Los productos se han cargado, establece el estado de carga en false
+			setPageLoading(false);
+			if (!toastShown) {
+				// Muestra la notificación solo si aún no se ha mostrado
+				if (users) {
+					Toast.fire({
+						icon: "info",
+						title: "Datos de clientes obtenidos con éxito...",
+					});
+				}
+				// Marca la notificación como mostrada
+				setToastShown(true);
 			}
-			// Marca la notificación como mostrada
-			setToastShown(true);
-		  }
 		}
-	  }, [users, toastShown]);
-	
+	}, [users, toastShown]);
 
 	const toggleUserStatus = async (usuario_id) => {
 		try {
@@ -73,7 +71,7 @@ function UsersView() {
 				usuario_id: usuario_id.toString(),
 				roles: roles,
 			};
-		
+
 			const result = await axios.put(`${URL_USERS}/rol`, body);
 
 			setUsers(
@@ -122,11 +120,10 @@ function UsersView() {
 			} finally {
 				// Establecer pageLoading en false una vez que se haya completado la solicitud
 				setPageLoading(false);
-			  }
+			}
 		};
 
 		fetchUsuarios();
-		 
 	}, []);
 
 	const Toast = Swal.mixin({
@@ -185,20 +182,20 @@ function UsersView() {
 		});
 	};
 
-
 	if (pageLoading) {
-		return (
-		 <LoadingView />
-		);
-	  }
+		return <LoadingView />;
+	}
 	return (
 		<div className="bg-white mt-20 sm:mt-0">
-
-		 
-
-			{!pageLoading &&  (
+			{!pageLoading && (
 				<div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
 					<h2 className="text-xl font-semibold mb-4">Lista de Usuarios</h2>
+
+					{users && users.length === 0 && (
+						<div className="py-20 text-center text-xl fold-semibold">
+							<h2>No se encontraron resultados</h2>
+						</div>
+					)}
 
 					<div className="overflow-x-auto">
 						<div className="table w-full border-collapse">
