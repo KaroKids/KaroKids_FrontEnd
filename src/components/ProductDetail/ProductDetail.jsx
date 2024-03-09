@@ -271,7 +271,7 @@ const ProductDetail = () => {
                   type="number"
                   min="1"
                   max={cantidadStock[0].value}
-                  className="border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
+                  className="remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
                 {selectedTalle && (
