@@ -24,6 +24,7 @@ const PanelUsuario = () => {
   };
 
   useEffect(() => {
+    window.scroll(0, 0);
     if (userLogued.usuario_id !== undefined) {
       handleOrders();
     }

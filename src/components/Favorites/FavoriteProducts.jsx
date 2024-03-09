@@ -33,6 +33,7 @@ const FavoriteProducts = () => {
   const [dataCharged, setDataCharged] = useState(false);
 
   useEffect(() => {
+    window.scroll(0, 0);
     const renderFavorites = async () => {
       if (!dataCharged && loginUser.usuario_id !== undefined) {
         const { payload } = await dispatch(getUserByEmail(user.email));
