@@ -64,8 +64,15 @@ const ProductDetail = () => {
   let stock = product.stock;
 
   const handleQuantityChange = ({ target }) => {
+    let inputCantidad = document.getElementById("cantidadProducto");
+
+    if (target.value <= "0" && target.value !== "") {
+      inputCantidad.value = 1;
+    }
+
     setselectedQuantity(target.value);
   };
+
   const handleTalleyColor = (key, values) => {
     setSelectedTalle(key);
     const newColors = values.map((info) => {
@@ -89,6 +96,14 @@ const ProductDetail = () => {
 
   const handleAddToCart = (item) => {
     const { producto_id, precio, nombre, imagen_principal } = product;
+
+    let inputCantidad = document.getElementById("cantidadProducto");
+
+    if (inputCantidad.value == "") {
+      inputCantidad.value = 1;
+      setselectedQuantity(1);
+      item.compra_cantidad = 1;
+    }
 
     if (item.compra_cantidad > cantidadStock[0].value) {
       Toast.fire({
@@ -252,9 +267,11 @@ const ProductDetail = () => {
                 <label>Cantidad:</label>
                 <input
                   value={selectedQuantity}
+                  id="cantidadProducto"
                   type="number"
+                  min="1"
                   max={cantidadStock[0].value}
-                  className="remove-arrow border-gray-200 border-2  focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
+                  className="remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
                 {selectedTalle && (
