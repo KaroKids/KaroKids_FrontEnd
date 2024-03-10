@@ -32,9 +32,11 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     }));
   };
   const handleFilterSubmit = () => {
+    dispatch(setFilteringActive(true));
     dispatch(getProductsByFilters(filters));
   };
   const handleReset = () => {
+    dispatch(setFilteringActive(false));
     setFilters({ genero: "", edad: "", talla: "", color: "" });
 
     if (nombre === null) nombre = "";
