@@ -1,6 +1,6 @@
 const SideBarSocial = () => {
   return (
-    <nav className="flex fixed z-auto right-0 top-20 mt-48 transition-all duration-300 shadow-md bg-white rounded-l-xl">
+    <nav className="flex fixed z-[999] right-0 top-20 mt-48 transition-all duration-300 shadow-md bg-white rounded-l-xl">
       <ul>
         <li>
           <a
