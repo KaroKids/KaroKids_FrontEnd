@@ -23,6 +23,8 @@ import { getUserByEmail } from "@/redux/userAction";
 import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
 import { addProductLS } from "@/redux/carritoSlice";
 import { addProductInDB } from "@/redux/carritoActions";
+import ShowReviews from "../Reviews/ShowReviews";
+import StarRating from "../Reviews/StarRating";
 
 const ProductDetail = () => {
   const { user } = useContext(authContext);
@@ -245,6 +247,7 @@ const ProductDetail = () => {
               <p className="text-slate-500 font-semibold my-4  text-3xl text-center xl:my-0 xl:text-left xl:font-semibold">
                 ${fixedPrice}
               </p>
+              <ShowReviews />
               <div className=" w-full border-t-2 border-gray-100  py-4 xl:border-gray-200 xl:py-0 xl:pt-0">
                 <p className="text-sm md:text-base xl:text-lg xl:mt-4">
                   {product.descripcion}
