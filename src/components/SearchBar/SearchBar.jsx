@@ -65,7 +65,7 @@ const SearchBar = () => {
       <Input
         type="text"
         placeholder="Busca aquí..."
-        className=" w-full  md:w-16 lg:w-12 xl:w-32"
+        className=" w-full lg:w-16 xl:w-32"
         value={query}
         onChange={(e) => handleInput(e.target.value)}
       />
