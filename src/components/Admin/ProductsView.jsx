@@ -442,7 +442,7 @@ export default function ProductList({ updateMenuSelected }) {
 												)}
 											</button>
 
-											<Link to={`/producto/${product.producto_id}`}>
+											<Link to={`/producto/detalle/${product.producto_id}`}>
 												<button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">
 													Ver
 												</button>
