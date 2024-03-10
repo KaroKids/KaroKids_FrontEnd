@@ -39,7 +39,7 @@ const PanelUsuario = () => {
             <h1 className="text-center mb-10 text-xl font-medium">
               Hola {userName}!
             </h1>
-            <p className="text-justify border-b-2 border-b-slate-300 h-36 w-full text-slate-500 p-1">
+            <p className="border-b-2 border-b-slate-300 h-36 w-full text-slate-500 p-1">
               Desde Mi Cuenta puedes ver un resumen de tus actividades recientes
               y actualizar tu información.
             </p>

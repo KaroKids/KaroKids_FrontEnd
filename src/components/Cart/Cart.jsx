@@ -5,8 +5,23 @@ import Carrousel from "../Home/Carrousel";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const Cart = () => {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
   const [preferenceId, setPreferenceId] = useState(null);
   const userLogued = useSelector((state) => state.users.user);
   const cart = userLogued.usuario_id
@@ -19,7 +34,6 @@ const Cart = () => {
 
   const createPreference = async () => {
     try {
-      console.log(cart);
       const response = await axios.post(
         "https://karokids.onrender.com/payment/create-order",
         { user_id: userLogued.usuario_id, cart }
@@ -33,9 +47,16 @@ const Cart = () => {
   };
 
   const handleMp = async () => {
-    const id = await createPreference();
-    if (id) {
-      setPreferenceId(id);
+    if (userLogued.usuario_id !== undefined) {
+      const id = await createPreference();
+      if (id) {
+        setPreferenceId(id);
+      }
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Debes estar logueado para comprar",
+      });
     }
   };
 
@@ -47,7 +68,6 @@ const Cart = () => {
       setAnchoPantalla(window.innerWidth);
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
-
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
@@ -60,13 +80,22 @@ const Cart = () => {
       </header>
       <main className="flex flex-col items-center md:flex-row md:items-center  xl:items-start">
         <ProductCart />
-        <div className="flex flex-col bg-slate-100  h-56 mb-0   items-start xl:mt-20  my-4 py-4 gap-y-6 w-80 md:w-[600px]  xl:justify-start xl:mx-4 xl:w-[900px] xl:h-[400px]">
+        <div className="flex flex-col rounded-lg bg-slate-100  h-56 mb-0 items-start xl:mt-20  my-4 py-2 gap-y-6 w-80 md:w-[600px]  xl:justify-start xl:mx-4 xl:w-[900px] xl:h-[250px]">
           <h1 className="text-xl ml-2 font-semibold text-slate-700 text-left">
             Resumen de compra
           </h1>
-          <div className="w-full ">
-            <h2 className="text-2xl text-center border-t-2 h-20 mx-2 py-2 border-t-slate-300">
-              Total:
+          <div className="flex w-full h-full border-t-2 justify-center items-center">
+            <h2 className="text-2xl h-20 mx-2 py-2 border-t-slate-300">
+              Total: ${" "}
+              {userLogued.usuario_id
+                ? cart?.reduce(
+                    (acc, el) => acc + el.producto_precio * el.compra_cantidad,
+                    0
+                  )
+                : cart?.reduce(
+                    (acc, el) => acc + el.unit_price * el.quantity,
+                    0
+                  )}
             </h2>
           </div>
           {anchoPantalla < 1024 ? (
@@ -80,15 +109,16 @@ const Cart = () => {
             </div>
           ) : (
             <>
-              <div className="my-4 w-full">
+              <div className="w-full">
                 <Button
                   variant="detail"
-                  className="w-full xl:mt-40"
+                  className="w-full"
                   onClick={handleMp}
+                  disabled={cart && cart?.length === 0}
                 >
                   Completar compra
                 </Button>
-                {preferenceId && (
+                {preferenceId && userLogued.usuario_id && (
                   <Wallet initialization={{ preferenceId: preferenceId }} />
                 )}
               </div>

@@ -5,6 +5,7 @@ import {
   getAllProducts,
   getProductsByFilters,
   modifyVolverFunc,
+  setFilteringActive,
 } from "@/redux/productosActions";
 import { getFavorites } from "@/redux/favoritosActions";
 import { Button } from "../ui/button";
@@ -38,7 +39,7 @@ const relevancias = [
   },
 ];
 
-export default function ProductList({ valor }) {
+export default function ProductList() {
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -52,7 +53,6 @@ export default function ProductList({ valor }) {
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
   );
-  const filtros = useSelector((state) => state.productos.filtros);
 
   const handleApplyFilters = (filtrosSeleccionados) => {
     setFiltrosAplicados(filtrosSeleccionados);
@@ -60,7 +60,12 @@ export default function ProductList({ valor }) {
 
   const handleOrdenar = (event) => {
     const nuevoOrden = parseInt(event.target.value);
-    setOrdernarPor(nuevoOrden);
+    if (event.target.value === 0) {
+      dispatch(setFilteringActive(false));
+    } else {
+      dispatch(setFilteringActive(true));
+      setOrdernarPor(nuevoOrden);
+    }
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
@@ -138,6 +143,7 @@ export default function ProductList({ valor }) {
                     (product, i) =>
                       !product.inactivo && (
                         <ProductCard
+                          key={i}
                           id={product.producto_id}
                           imageSrc={product.imagen_principal}
                           imageAlt={product.nombre}

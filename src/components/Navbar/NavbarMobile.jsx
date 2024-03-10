@@ -171,7 +171,7 @@ const NavbarMobile = () => {
           onClose={handleCloseUser}
         />
       </div>
-      <div className="mb-2 md:hidden">
+      <div className="mb-2 lg:hidden">
         {pathname === "/productos" && <SearchBar />}
       </div>
     </nav>
