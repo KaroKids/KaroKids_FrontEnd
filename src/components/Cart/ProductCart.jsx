@@ -94,8 +94,8 @@ const ProductCart = () => {
     window.addEventListener("resize", manejarCambiosDeAncho);
     renderCart();
 
-    if (cart.length >= 0) setDataCharged(true);
-
+    if (cart && cart?.length >= 0) setDataCharged(true);
+    console.log(cart);
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
       setDataCharged(false);
