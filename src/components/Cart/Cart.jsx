@@ -42,6 +42,7 @@ const Cart = () => {
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
   useEffect(() => {
+    window.scroll(0, 0);
     const manejarCambiosDeAncho = () => {
       setAnchoPantalla(window.innerWidth);
     };

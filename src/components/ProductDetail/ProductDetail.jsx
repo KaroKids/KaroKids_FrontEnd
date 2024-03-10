@@ -51,15 +51,25 @@ const ProductDetail = () => {
       value: "",
     },
   ]);
+  const [cantidadStock, setCantidadStock] = useState([
+    {
+      value: "",
+    },
+  ]);
   const [selectedTalle, setSelectedTalle] = useState(false);
   const [selectedQuantity, setselectedQuantity] = useState(1);
   const { id } = useParams();
-
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
   let stock = product.stock;
 
   const handleQuantityChange = ({ target }) => {
+    let inputCantidad = document.getElementById("cantidadProducto");
+
+    if (target.value <= "0" && target.value !== "") {
+      inputCantidad.value = 1;
+    }
+
     setselectedQuantity(target.value);
   };
 
@@ -71,7 +81,14 @@ const ProductDetail = () => {
       }
     });
 
+    const newCantidades = values.map((info) => {
+      if (info.cantidad) {
+        return { value: info.cantidad };
+      }
+    });
+
     setColor(newColors);
+    setCantidadStock(newCantidades);
     if (!newColors.some((color) => color.value === selectedColor)) {
       setSelectedColor(null);
     }
@@ -80,27 +97,42 @@ const ProductDetail = () => {
   const handleAddToCart = (item) => {
     const { producto_id, precio, nombre, imagen_principal } = product;
 
-    let complementado = {
-      usuario_id: item.usuario_id,
-      id: producto_id,
-      title: nombre,
-      picture_url: imagen_principal,
-      compra_talla: item.compra_talla,
-      compra_color: item.compra_color,
-      quantity: item.compra_cantidad,
-      unit_price: precio,
-    };
+    let inputCantidad = document.getElementById("cantidadProducto");
 
-    // console.log(complementado);
+    if (inputCantidad.value == "") {
+      inputCantidad.value = 1;
+      setselectedQuantity(1);
+      item.compra_cantidad = 1;
+    }
 
-    user.accessToken
-      ? dispatch(addProductInDB(complementado))
-      : dispatch(addProductLS(complementado));
+    if (item.compra_cantidad > cantidadStock[0].value) {
+      Toast.fire({
+        icon: "error",
+        title: "La cantidad excede el stock.",
+      });
+    } else {
+      let complementado = {
+        usuario_id: item.usuario_id,
+        id: producto_id,
+        title: nombre,
+        picture_url: imagen_principal,
+        compra_talla: item.compra_talla,
+        compra_color: item.compra_color,
+        quantity: item.compra_cantidad,
+        unit_price: precio,
+      };
 
-    Toast.fire({
-      icon: "success",
-      title: "Producto agregado al carrito",
-    });
+      // console.log(complementado);
+
+      user.accessToken
+        ? dispatch(addProductInDB(complementado))
+        : dispatch(addProductLS(complementado));
+
+      Toast.fire({
+        icon: "success",
+        title: "Producto agregado al carrito",
+      });
+    }
   };
 
   useEffect(() => {
@@ -235,8 +267,11 @@ const ProductDetail = () => {
                 <label>Cantidad:</label>
                 <input
                   value={selectedQuantity}
+                  id="cantidadProducto"
                   type="number"
-                  className="remove-arrow border-gray-200 border-2  focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
+                  min="1"
+                  max={cantidadStock[0].value}
+                  className="remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
                 {selectedTalle && (

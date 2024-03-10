@@ -18,15 +18,15 @@ const NavbarModal = ({ isOpen, onClose, className }) => {
 
   return (
     <div
-      className={`fixed mt-[81px] transition-opacity duration-300 ease-in-out  bg-gray-800 bg-opacity-50 top-0 right-0 bottom-0 left-0 flex z-0 ${className}`}
+      className={`fixed  mt-[81px] transition-opacity duration-300 ease-in-out  bg-gray-800 bg-opacity-50 top-0 right-0 bottom-0 left-0 flex z-0 ${className}`}
     >
       <div
         onMouseLeave={onClose}
-        className=" lg:mx-20  shadow-lg rounded-b-md  w-96 flex flex-col items-center  bg-white  h-44"
+        className=" lg:mx-20  shadow-lg rounded-b-md  w-[550px] flex flex-col items-center  bg-white  h-44"
       >
         <span
           onClick={() => handleClick("recien_nacido")}
-          value=""
+          value="recien_nacido"
           className="h-auto tracking-widest cursor-pointer w-full font-slate-500 font-semibold border-y-2 border-x-none  text-center py-2"
         >
           RECIEN NACIDO (0-3 meses)
@@ -48,11 +48,12 @@ const NavbarModal = ({ isOpen, onClose, className }) => {
         <span
           onClick={() => handleClick("junior")}
           value="junior"
-          className="h-auto tracking-widest cursor-pointer w-full font-slate-500 font-semibold border-y-2 rounded-b-md  border-x-none text-center py-2"
+          className="h-auto tracking-widest  cursor-pointer w-full font-slate-500 font-semibold border-y-2 rounded-b-md   border-x-none text-center py-2"
         >
           JUNIOR (9-14 años)
         </span>
       </div>
+      <div onMouseOver={onClose} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };

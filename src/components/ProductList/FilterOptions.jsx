@@ -125,7 +125,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
             value={filters.edad}
           >
             <option value="">EDAD</option>
-            <option value="recien-nacido">RECIEN NACIDO</option>
+            <option value="recien_nacido">RECIEN NACIDO</option>
             <option value="bebe">BEBÉ</option>
             <option value="infantil">INFANTIL</option>
             <option value="junior">JUNIOR</option>

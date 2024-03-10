@@ -82,7 +82,7 @@ export default function ProductList({ valor }) {
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
-  }, [isFilteringActive]);
+  }, []);
 
   useEffect(() => {
     if (ordernarPor !== 0) {
@@ -120,29 +120,35 @@ export default function ProductList({ valor }) {
             </Button>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            {!loading // Corrección: Cambiado !loading por loading
-              ? [1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
-                  <div key={index} className="animate-pulse">
-                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                      <img className="h-auto aspect-square w-full object-cover bg-gray-300 object-center group-hover:opacity-75" />
+          {productos?.productos.length === 0 ? (
+            <div className="h-[30vh] flex items-center justify-center text-center text-xl fold-semibold">
+              <h2>No se encontraron resultados</h2>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+              {!loading // Corrección: Cambiado !loading por loading
+                ? [1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
+                    <div key={index} className="animate-pulse">
+                      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                        <img className="h-auto aspect-square w-full object-cover bg-gray-300 object-center group-hover:opacity-75" />
+                      </div>
                     </div>
-                  </div>
-                ))
-              : productos?.productos.map(
-                  (product, i) =>
-                    !product.inactivo && (
-                      <ProductCard
-                        id={product.producto_id}
-                        imageSrc={product.imagen_principal}
-                        imageAlt={product.nombre}
-                        name={product.nombre}
-                        price={product.precio}
-                        myFavorites={favorites}
-                      />
-                    )
-                )}
-          </div>
+                  ))
+                : productos?.productos.map(
+                    (product, i) =>
+                      !product.inactivo && (
+                        <ProductCard
+                          id={product.producto_id}
+                          imageSrc={product.imagen_principal}
+                          imageAlt={product.nombre}
+                          name={product.nombre}
+                          price={product.precio}
+                          myFavorites={favorites}
+                        />
+                      )
+                  )}
+            </div>
+          )}
           <PaginationControls filtros={filtrosAplicados} />
         </div>
       )}

@@ -9,7 +9,7 @@ export const productosSlice = createSlice({
     volver: 0,
     paginaActual: 1,
     totalPaginas: 0,
-    isFilteringActive: true,
+    isFilteringActive: false,
     filtros: {},
   },
   reducers: {

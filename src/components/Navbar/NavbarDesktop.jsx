@@ -54,16 +54,13 @@ const NavbarDesktop = () => {
           </Link>
         )}
         <li
+          onClick={handleOpenCategorias}
           className="flex flex-row gap-x-2 items-center cursor-pointer"
-          onMouseOver={handleOpenCategorias}
-          onClick={
-            CategoriasModalOpen ? handleCloseCategorias : handleOpenCategorias
-          }
         >
           Productos
           <img
             src="/assets/navbar-icons/arrow-down.svg"
-            alt="Logo usuarios"
+            alt="Logo flecha abajo"
             className="w-2 h-2"
           />
         </li>
@@ -97,9 +94,7 @@ const NavbarDesktop = () => {
           </li>
         ) : (
           <li
-            onClick={
-              CategoriasModalOpen ? handleCloseCategorias : handleOpenCategorias
-            }
+            onClick={handleOpenModal}
             className="flex flex-row gap-x-2 items-end cursor-pointer"
           >
             <img

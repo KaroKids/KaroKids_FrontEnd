@@ -7,10 +7,13 @@ export default function PaginationControls({ rol }) {
   let admin = rol;
   const paginaActual = useSelector((state) => state.productos.paginaActual);
   const totalPaginas = useSelector((state) => state.productos.totalPaginas);
-  const isFiltering = useSelector((state) => state.productos.isFilteringActive);
-  const filtros = isFiltering
-    ? useSelector((state) => state.productos.filtros)
-    : {};
+  const filtros = useSelector((state) => {
+    if (state.productos.isFilteringActive) {
+      return state.productos.filtros;
+    } else {
+      return {};
+    }
+  });
   const dispatch = useDispatch();
 
   const renderPaginationsButtons = () => {
@@ -31,6 +34,7 @@ export default function PaginationControls({ rol }) {
     }
     return buttons;
   };
+
   const handlePagination = ({ target }) => {
     dispatch(
       getProductsByFilters({ ...filtros, paginaActual: target.value }, admin)
