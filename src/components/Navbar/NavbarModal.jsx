@@ -22,7 +22,7 @@ const NavbarModal = ({ isOpen, onClose, className }) => {
     >
       <div
         onMouseLeave={onClose}
-        className=" lg:mx-20  shadow-lg rounded-b-md  w-[550px] flex flex-col items-center  bg-white  h-44"
+        className=" lg:mx-4  shadow-lg rounded-b-md  w-[550px] flex flex-col items-center  bg-white  h-44"
       >
         <span
           onClick={() => handleClick("recien_nacido")}

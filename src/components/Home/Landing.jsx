@@ -3,24 +3,29 @@ import Carrousel from "./Carrousel";
 import ServicesHome from "../Services/ServicesHome";
 import BoyGirl from "./BoyGirl";
 import axios from "axios";
+import { useEffect } from "react";
 
 const peticion = async () => {
-	const { data } = await axios.post(
-		"http://localhost:3001/payment/create-order"
-	);
-	window.location.href = data.init_point;
+  const { data } = await axios.post(
+    "http://localhost:3001/payment/create-order"
+  );
+  window.location.href = data.init_point;
 };
 
 const Landing = () => {
-	return (
-		<div className="mt-20">
-			<Hero />
-			{/* <button onClick={peticion}>Checkout</button> */}
-			<Carrousel />
-			<BoyGirl />
-			<ServicesHome />
-		</div>
-	);
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
+  return (
+    <div className="mt-20">
+      <Hero />
+      {/* <button onClick={peticion}>Checkout</button> */}
+      <Carrousel />
+      <BoyGirl />
+      <ServicesHome />
+    </div>
+  );
 };
 
 export default Landing;

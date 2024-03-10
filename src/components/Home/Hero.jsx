@@ -11,8 +11,8 @@ export default function Hero() {
               Bienvenidos a KaroKids!
             </h1>
             <p className="mt-4 text-xl text-gray-500">
-              Nuestras prendas son exclusivas , elaboradas por fábricas
-              calificadas donde el diseño, la calidad , la creatividad y el buen
+              Nuestras prendas son exclusivas, elaboradas por fábricas
+              calificadas donde el diseño, la calidad, la creatividad y el buen
               gusto se unen para crear MODA KAROKIDS!
             </p>
           </div>
