@@ -15,6 +15,7 @@ const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
 const EditProduct = ({producto_id}) => {
     let initData = {
+		producto_id: "",
 		nombre: "",
 		descripcion: "",
 		imagen_principal: "",
@@ -54,8 +55,7 @@ const EditProduct = ({producto_id}) => {
     });
     const getProductDetailById = async (producto_id) => {
         try {
-            // Enviar una solicitud DELETE al servidor con el usuarioId en la URL
-			// await axios.delete(`${URL_USERS}/usuarios/${usuarioId}`);
+
 			const body = {
                 producto_id: producto_id.toString(),
 			};
@@ -75,14 +75,10 @@ const EditProduct = ({producto_id}) => {
 			
 			
 			
-			
-            
-           // console.log('ims',imagenes_sec)
-			//console.log('producto imagenes sec imagenes_sec',imagenes_sec)
-            //console.log('imagenes secundarias trycatch', imagenes_secundarias)
-            //console.log('producto trycat',producto.data)
+
 
                 initData = {
+				producto_id: producto.data.producto_id,
                 nombre: producto.data.nombre,
                 descripcion:producto.data.descripcion ,
                 imagen_principal: producto.data.imagen_principal,
@@ -97,33 +93,7 @@ const EditProduct = ({producto_id}) => {
             
         setData(initData);
          
-                 // Actualizar el estado newStock con el stock del producto
-                 // Inicializar el estado newStock con el stock del producto
-            // Object.keys(producto.data.stock).forEach((size) => {
-            //     producto.data.stock[size].forEach(({ color, cantidad }) => {
-            //         setNewStock((prevStock) => ({
-            //             ...prevStock,
-            //             [size]: [...(prevStock[size] || []), { color, cantidad }],
-            //         }));
-            //     });
-            // });
-
-          //  console.log('data cargado', data)
-           // console.log('newStock',newStock)
-        
-        
-			// Actualizar la lista de usuarios después de la eliminación
-			// setData(
-                // 	users.map((usuario) => {
-                    // 		if (usuario.usuario_id === usuario_id) {
-                        // 			// Invertir el estado de inactivo del usuario
-                        // 			return { ...usuario, inactivo: !usuario.inactivo };
-                        // 		}
-                        // 		return usuario;
-                        // 	})
-                        // );
-                        // Mostrar notificación de éxito
-                        //setData(resultProduct.data)
+       
                         Toast.fire({
                             icon: "success",
                             title: `Producto ${producto.data.nombre} encontrado exitosamente.`,
@@ -200,6 +170,7 @@ const EditProduct = ({producto_id}) => {
 		if (!validationErrors.msgData) {
 			try {
 				setIsloading(true);
+				console.log (data)
 				const response = await dispatch(editProduct(data));
 				console.log('editProduct',response)
 				if (response.payload) {
@@ -280,31 +251,22 @@ const EditProduct = ({producto_id}) => {
 
 	//Esta función realiza una copia del estado de la propiedad "imagenes_secundarias" de "data" y actualiza su valor agregándole el último archivo recibido desde el componente UploadImage.
 	const getImagSecundarias = (imagSecundarias) => {
-		// Verificar si la imagen ya está presente en el array de imágenes secundarias
-		const existe = data.imagenes_secundarias.some(img => img.index === imagSecundarias.index);
-		
-		if (!existe) {
-			// Si la imagen no existe, agregarla al array
-			setData(prevData => ({ ...prevData, imagenes_secundarias: [...prevData.imagenes_secundarias, imagSecundarias] }));
+
+			const aux = data.imagenes_secundarias;
+
+			// Verificar si la imagen secundaria ya existe en el arreglo
+			const existeImagen = aux.some((imagen) => imagen === imagSecundarias);
+		  
+			if (!existeImagen) {
+			  aux.push(imagSecundarias);
+			aux.push(imagSecundarias)
+			setData({...data,imagenes_secundarias :aux})
 			setErrors(validation(data, newStock));
-		} else {
-			// Si la imagen ya existe, puedes mostrar un mensaje o realizar otra acción según sea necesario
-			console.log("La imagen ya existe en el array de imágenes secundarias.");
-		}
+
 	};
-	
+}
 
-	useEffect(() => {
-     
-		setErrors(validation(data, newStock));
-	}, [data]);
 
-	// useEffect(() => {
-	//   // Realizar la validación solo cuando el usuario interactúe con el formulario
-	//   if (Object.keys(errors).length === 0) {
-	//     setErrors(validation(data, newStock));
-	//   }
-	// }, [data]);
 	useEffect(() => {
 		if (limpiar === true || limpiar === false) {
 			setLimpio(true);
@@ -424,7 +386,7 @@ const EditProduct = ({producto_id}) => {
 						onGetImagSecundarias={getImagSecundarias}
 						errors={errors}
                         data={data}
-                     
+						
                         
 					/>
 				)}
