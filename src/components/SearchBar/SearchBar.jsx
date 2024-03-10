@@ -61,11 +61,11 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="flex  items-center mx-4 gap-2">
+    <div className="flex items-center mx-2 gap-2">
       <Input
         type="text"
         placeholder="Busca aquí..."
-        className=" lg:w-20 xl:w-32"
+        className=" w-full  md:w-16 lg:w-12 xl:w-32"
         value={query}
         onChange={(e) => handleInput(e.target.value)}
       />
