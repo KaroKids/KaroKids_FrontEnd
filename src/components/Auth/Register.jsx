@@ -125,7 +125,7 @@ const Register = ({ isOpen, onClose, className }) => {
 										placeholder="Nombre"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
-									{errors.name && (
+									{nameRegister.length > 0 && errors.name && (
 										<p className="text-red-500 text-sm mt-1">{errors.name}</p>
 									)}
 								</div>
@@ -145,7 +145,7 @@ const Register = ({ isOpen, onClose, className }) => {
 										placeholder="Apellido"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
-									{errors.lastName && (
+									{lastNameRegister.length > 0 && errors.lastName && (
 										<p className="text-red-500 text-sm mt-1">
 											{errors.lastName}
 										</p>
@@ -168,7 +168,7 @@ const Register = ({ isOpen, onClose, className }) => {
 										placeholder="ejemplo@ejemplo.com"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
-									{errors.email && (
+									{emailRegister.length > 0 && errors.email && (
 										<p className="text-red-500 text-sm mt-1">{errors.email}</p>
 									)}
 								</div>
@@ -191,7 +191,7 @@ const Register = ({ isOpen, onClose, className }) => {
 										placeholder="Ingrese su contraseña"
 										className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
-									{errors.password && (
+									{passwordRegister.length > 0 && errors.password && (
 										<p className="text-red-500 text-sm mt-1">
 											{errors.password}
 										</p>
