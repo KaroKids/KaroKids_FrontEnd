@@ -213,6 +213,7 @@ const ProductDetail = () => {
                     />
                     {product.imagenes_secundarias.map((prod, i) => (
                       <img
+                        key={i}
                         src={prod}
                         alt={product.nombre}
                         className="w-auto h-10 "
@@ -250,8 +251,9 @@ const ProductDetail = () => {
                 </p>
                 <h2 className="mt-6 mb-2 xl:text-left">Tallas disponibles:</h2>
                 <div className="flex justify-center xl:justify-start gap-4">
-                  {Object.entries(stock).map(([key, values]) => (
+                  {Object.entries(stock).map(([key, values], i) => (
                     <li
+                      key={i}
                       value={values}
                       className={`flex items-center justify-center border-2 w-20 h-8 ${
                         selectedTalle === key ? "border-slate-500" : ""
@@ -376,8 +378,11 @@ const ProductDetail = () => {
                   <input className="bg-gray-300 remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 " />
                   <label></label>
                   <div className="flex flex-row ">
-                    {color.map((color) => (
-                      <div style={{ backgroundColor: color.value }}></div>
+                    {color.map((color, i) => (
+                      <div
+                        key={i}
+                        style={{ backgroundColor: color.value }}
+                      ></div>
                     ))}
                   </div>
                 </div>

@@ -143,6 +143,7 @@ export default function ProductList() {
                     (product, i) =>
                       !product.inactivo && (
                         <ProductCard
+                          key={i}
                           id={product.producto_id}
                           imageSrc={product.imagen_principal}
                           imageAlt={product.nombre}
