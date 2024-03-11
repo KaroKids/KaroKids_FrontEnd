@@ -32,12 +32,14 @@ const Cart = () => {
     locale: "es-AR",
   });
 
+  const URL_PAYMENT = import.meta.env.VITE_URL_PAYMENT;
+
   const createPreference = async () => {
     try {
-      const response = await axios.post(
-        "https://karokids.onrender.com/payment/create-order",
-        { user_id: userLogued.usuario_id, cart }
-      );
+      const response = await axios.post(`${URL_PAYMENT}`, {
+        user_id: userLogued.usuario_id,
+        cart,
+      });
 
       const { id } = response.data;
       return id;
