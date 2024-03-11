@@ -31,10 +31,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
       [name]: value,
     }));
   };
-  // useEffect(() => {
-  // 	dispatch(setFilteringActive(true));
-  // 	dispatch(getProductsByFilters(filters));
-  // }, [filters, dispatch]);
+
   const handleFilterSubmit = () => {
     dispatch(setFilteringActive(true));
     dispatch(getProductsByFilters(filters));
