@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import validation from "@/utils/validation";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { editProduct } from "@/redux/productosActions";
 import { useDispatch, useSelector } from "react-redux";
 import UploadImageEdit from "./UploadImageEdit";
@@ -13,7 +13,10 @@ import axios from "axios";
 
 const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
-const EditProduct = ({producto_id}) => {
+const EditProduct = () => {
+	const { producto_id } = useParams();
+	console.log('pID', producto_id)
+
     let initData = {
 		producto_id: "",
 		nombre: "",
@@ -280,10 +283,12 @@ const EditProduct = ({producto_id}) => {
 		}
            
 	}, [data]);
+ 
 
     useEffect(() => {
         getProductDetailById(producto_id);
         //setNewStock(data.stock)
+		console.log('useeffect prod id', producto_id)
    
     }, [producto_id]); // solo se ejecuta cuando cambia producto_idx
 
@@ -306,7 +311,7 @@ const EditProduct = ({producto_id}) => {
     
     
 	return (
-		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8  ">
+		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8 mt-6 ">
 			<div
 				className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
 				aria-hidden="true">
