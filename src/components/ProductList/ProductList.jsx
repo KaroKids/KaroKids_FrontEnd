@@ -63,22 +63,18 @@ export default function ProductList() {
     if (event.target.value === 0) {
       dispatch(setFilteringActive(false));
     } else {
-      dispatch(setFilteringActive(true));
       setOrdernarPor(nuevoOrden);
     }
     let edadesIguales = productos.productos.every(
       (producto) => producto.edad === productos.productos[1].edad
     );
-    console.log(edadesIguales);
-    if (!edadesIguales) {
-      setFiltrosAplicados((prevFiltrosAplicados) => ({
-        ...prevFiltrosAplicados,
+    if (!edadesIguales && isFilteringActive) {
+      setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         genero: productos.productos[0].genero,
       }));
-    } else if (edadesIguales) {
-      setFiltrosAplicados((prevFiltrosAplicados) => ({
-        ...prevFiltrosAplicados,
+    } else if (edadesIguales && isFilteringActive) {
+      setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         edad: productos.productos[0].edad,
       }));
