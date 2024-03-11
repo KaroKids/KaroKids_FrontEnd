@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState, useTransition } from "react"
 import { numberMask } from "@/utils/numberMask"
 import Swal from "sweetalert2";
-const URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
+const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
 
 
 
@@ -27,7 +27,7 @@ export default function Orders() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(URL_ORDERS);
+                const response = await axios.get(URL_ORDENES);
                // console.log('orders', response);
 
                 if(response.data){

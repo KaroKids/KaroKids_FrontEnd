@@ -11,7 +11,7 @@
   import { NavLink } from 'react-router-dom';
  
   
-  const URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
+  const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
   const URL_USERS = import.meta.env.VITE_URL_USERS;
   const URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCT;
 
@@ -28,7 +28,7 @@
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(URL_ORDERS);
+        const response = await axios.get(URL_ORDENES);
         if (response && response.data) {
           setTotalOrdenes(response.data.length);
           setLoading(false);
