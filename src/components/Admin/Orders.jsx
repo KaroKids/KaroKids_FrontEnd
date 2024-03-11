@@ -6,7 +6,7 @@ const URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
 
 
 
-export default function Orders({updateMenuSelected,handleMenuSelect}) {
+export default function Orders() {
     const [ordenes, setOrdenes] = useState();
 
     const Toast = Swal.mixin({
@@ -46,8 +46,6 @@ export default function Orders({updateMenuSelected,handleMenuSelect}) {
 
     
     const handleStatusPayment=(ordenID,estatus)=>{
-
-       // console.log('Orden id:', ordenID);
 
         // Mostrar confirmación antes de activar/desactivar usuario
 		Swal.fire({

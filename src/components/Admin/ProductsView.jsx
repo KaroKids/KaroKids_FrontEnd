@@ -62,7 +62,7 @@ const relevancias = [
   },
 ];
 
-export default function ProductList({updateMenuSelected}) {
+export default function ProductList() {
   
   
   const [ordernarPor, setOrdernarPor] = useState(0);
@@ -450,10 +450,11 @@ export default function ProductList({updateMenuSelected}) {
                           Ver
                         </button>
                       </Link>
-                     
-                      <button onClick={(e)=>{  updateMenuSelected({menu:'Editar', component:<EditProduct producto_id={product.producto_id}/>});}} className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
+                       <Link to={`../editproduct/${product.producto_id}`}>
+                      <button  className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
                         Editar
                       </button>
+                       </Link>
 
                       {product.inactivo ? (
                         <button
