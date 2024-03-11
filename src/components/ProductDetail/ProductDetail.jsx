@@ -20,11 +20,16 @@ import { Link, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getUserByEmail } from "@/redux/userAction";
-import { getProductsById, modifyVolverFunc } from "@/redux/productosActions";
+import {
+  getProductsById,
+  modifyVolverFunc,
+  getRatingByProduct,
+  getTopCommentsByProduct,
+} from "@/redux/productosActions";
 import { addProductLS } from "@/redux/carritoSlice";
 import { addProductInDB } from "@/redux/carritoActions";
 import ShowReviews from "../Reviews/ShowReviews";
-import StarRating from "../Reviews/StarRating";
+import TopComments from "../Reviews/TopComments";
 
 const ProductDetail = () => {
   const { user } = useContext(authContext);
@@ -143,6 +148,8 @@ const ProductDetail = () => {
     dispatch(getUserByEmail(user.email));
     window.scroll(0, 0);
     setSelectedColor("");
+    dispatch(getRatingByProduct(id));
+    dispatch(getTopCommentsByProduct(id));
   }, []);
 
   useEffect(() => {
@@ -183,7 +190,7 @@ const ProductDetail = () => {
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
-                      className=" w-auto h-full xl:h-full  "
+                      className=" w-auto h-full xl:h-full rounded-lg"
                     />
                   </Card>
                 </CarouselItem>
@@ -193,7 +200,7 @@ const ProductDetail = () => {
                       <img
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto h-full xl:h-full  "
+                        className="w-auto h-full xl:h-full rounded-lg"
                       />
                     </Card>
                   </CarouselItem>
@@ -211,14 +218,14 @@ const ProductDetail = () => {
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
-                      className=" w-auto h-10  "
+                      className=" w-auto h-10 rounded-lg"
                     />
                     {product.imagenes_secundarias.map((prod, i) => (
                       <img
                         key={i}
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto h-10 "
+                        className="w-auto h-10 rounded-lg"
                       />
                     ))}
                     <CarouselNext className="right-0 " />{" "}
@@ -396,6 +403,7 @@ const ProductDetail = () => {
           </div>
         </>
       )}
+      <TopComments />
       <ServicesDetail />
       <Carrousel />
     </div>
