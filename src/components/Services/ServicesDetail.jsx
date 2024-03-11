@@ -10,7 +10,7 @@ const ServicesDetail = () => {
 					/>
 					<div className="flex flex-col text-start">
 						<p className="font-bold">ENVÍOS GRATIS</p>
-						<p>Para compras mayores a $50.000</p>
+						<p>Para compras mayores a $120.000</p>
 					</div>
 				</div>
 				<div className="flex flex-row justify-start sm:justify-center">
