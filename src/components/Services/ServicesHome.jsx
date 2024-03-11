@@ -13,7 +13,7 @@ const ServicesHome = () => {
 						className="w-10 py-4"
 					/>
 					<p className="font-bold">ENVÍOS GRATIS</p>
-					<p>Para compras mayores a $50.000</p>
+					<p>Para compras mayores a $120.000</p>
 				</div>
 				<div className="flex flex-col items-center text-center justify-center">
 					<img
