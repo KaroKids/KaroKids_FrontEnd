@@ -10,7 +10,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getDestacados } from "@/redux/productosActions";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { resetFiltering } from "@/redux/productosSlice";
 
 const Carrousel = () => {
   const destacados = useSelector((state) => state.productos.destacados);
@@ -27,7 +26,6 @@ const Carrousel = () => {
     if (destacados.length === 0) {
       dispatch(getDestacados());
     }
-    dispatch(resetFiltering());
   });
   return (
     <div className="bg-white">

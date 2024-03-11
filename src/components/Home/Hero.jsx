@@ -28,14 +28,14 @@ export default function Hero() {
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="h-64 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100">
                         <img
-                          src="https://assets.theplace.com/image/upload/w_310,f_auto,q_auto,dpr_3/ecom/assets/content/tcp/us/plp/hop_shop/boy-new.jpg"
+                          src="https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709763784/Imagenes_Productos/r36qhj1lzpunemoehdva.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
                       </div>
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
-                          src="https://tailwindui.com/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg"
+                          src="https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709765861/Imagenes_Productos/tbzkdadkxks3zyzntziw.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -44,14 +44,14 @@ export default function Hero() {
                     <div className="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
-                          src="https://assets.theplace.com/image/upload/t_pdp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3044654/3044654_BQ.jpg"
+                          src="https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709763482/Imagenes_Productos/h5yfxbz67rv0wi1a0fgt.jpg"
                           alt=""
                           className="h-full w-full object-bottom"
                         />
                       </div>
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
-                          src="https://assets.theplace.com/image/upload/t_plp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3044662/3044662_1195.jpg"
+                          src="https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709675220/Imagenes_Productos/yyyg5kuddnbhjs3pjcqi.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -59,7 +59,7 @@ export default function Hero() {
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
                           src="
-                              https://assets.theplace.com/image/upload/t_plp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3043489/3043489_32M2.png"
+                          https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709763394/Imagenes_Productos/kfexhqckttvgxbt2kasp.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -69,7 +69,7 @@ export default function Hero() {
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
                           src="
-                              https://assets.theplace.com/image/upload/l_ecom:assets:static:badge:pack2,g_west,w_0.22,fl_relative/t_plp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3038654/3038654_333I.png"
+                          https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709763330/Imagenes_Productos/utltdjs8zv8oqktub52p.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -77,7 +77,7 @@ export default function Hero() {
                       <div className="h-64 w-44 overflow-hidden rounded-lg">
                         <img
                           src="
-                              https://assets.theplace.com/image/upload/t_plp_img_m,f_auto,q_auto,dpr_3.0/v1/ecom/assets/products/tcp/3046158/3046158_136.png"
+                          https://res.cloudinary.com/dk4ysl2hw/image/upload/v1709791812/Imagenes_Productos/p9sfdr0qafnyo6krmrkj.jpg"
                           alt=""
                           className="h-full w-full object-cover object-center"
                         />
@@ -89,7 +89,7 @@ export default function Hero() {
               <Link to="/productos">
                 <Button
                   variant="detail"
-                  className="inline-block rounded-md border border-transparent px-8 py-3 text-lg text-center font-semibold text-white w-48 sm:w-52 h-14"
+                  className="inline-block rounded-md border border-transparent mt-4 px-8 py-3 text-lg text-center font-semibold lg:mt-0 text-white w-48 sm:w-52 h-14"
                 >
                   Ver productos
                 </Button>

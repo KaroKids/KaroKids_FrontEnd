@@ -15,34 +15,35 @@ const TopComments = () => {
     <section className="w-full text-left pt-4">
       <h3 className="text-2xl font-bold">Opiniones destacadas</h3>
       <article>
-        {comments.map((comment) => {
-          const fecha = new Date(comment.createdAt);
-          const opciones = { year: "numeric", month: "long", day: "numeric" };
-          const fechaFixed = fecha.toLocaleDateString("es-ES", opciones);
+        {Array.isArray(comments) &&
+          comments?.map((comment) => {
+            const fecha = new Date(comment.createdAt);
+            const opciones = { year: "numeric", month: "long", day: "numeric" };
+            const fechaFixed = fecha.toLocaleDateString("es-ES", opciones);
 
-          return (
-            <div className="my-4 p-4 flex flex-col gap-y-2 border rounded-sm ">
-              <article className="flex justify-between items-center">
-                <div className="flex justify-center items-center">
-                  {[...Array(5)].map((_, i) => {
-                    const fullStar = i < Math.ceil(comment.puntuacion);
+            return (
+              <div className="my-4 p-4 flex flex-col gap-y-2 border rounded-sm ">
+                <article className="flex justify-between items-center">
+                  <div className="flex justify-center items-center">
+                    {[...Array(5)].map((_, i) => {
+                      const fullStar = i < Math.ceil(comment.puntuacion);
 
-                    return (
-                      <label key={i}>
-                        <FaStar
-                          size={15}
-                          color={fullStar ? "#ffc107" : "#e4e5e9"}
-                        />
-                      </label>
-                    );
-                  })}
-                </div>
-                <span className="text-sm">{fechaFixed}</span>
-              </article>
-              <p> {comment.comentario}</p>
-            </div>
-          );
-        })}
+                      return (
+                        <label key={i}>
+                          <FaStar
+                            size={15}
+                            color={fullStar ? "#ffc107" : "#e4e5e9"}
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+                  <span className="text-sm">{fechaFixed}</span>
+                </article>
+                <p> {comment.comentario}</p>
+              </div>
+            );
+          })}
       </article>
       <span
         onClick={allCommentsHandler}

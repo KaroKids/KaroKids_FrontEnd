@@ -66,10 +66,28 @@ export default function ProductList() {
       dispatch(setFilteringActive(true));
       setOrdernarPor(nuevoOrden);
     }
-    setFiltrosAplicados((prevFiltrosAplicados) => ({
-      ...prevFiltrosAplicados,
-      orden: nuevoOrden,
-    }));
+    let edadesIguales = productos.productos.every(
+      (producto) => producto.edad === productos.productos[1].edad
+    );
+    console.log(edadesIguales);
+    if (!edadesIguales) {
+      setFiltrosAplicados((prevFiltrosAplicados) => ({
+        ...prevFiltrosAplicados,
+        orden: nuevoOrden,
+        genero: productos.productos[0].genero,
+      }));
+    } else if (edadesIguales) {
+      setFiltrosAplicados((prevFiltrosAplicados) => ({
+        ...prevFiltrosAplicados,
+        orden: nuevoOrden,
+        edad: productos.productos[0].edad,
+      }));
+    } else {
+      setFiltrosAplicados((prevFiltrosAplicados) => ({
+        ...prevFiltrosAplicados,
+        orden: nuevoOrden,
+      }));
+    }
   };
 
   const handleOpenModal = () => {
