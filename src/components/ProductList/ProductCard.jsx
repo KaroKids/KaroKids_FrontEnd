@@ -23,48 +23,50 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
 
   const auth = useAuth();
   const priceArray = price.toString().split("");
-  const [isFav, setIsFav] = useState(false);
   const usuario = useSelector((state) => state.users.user);
+  const favorites = useSelector((state) => state.favorites.favoritesDB);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (auth.user && Array.isArray(myFavorites)) {
-      // Verificar si myFavorites es un array
-      myFavorites.forEach((fav) => {
-        // Utilizar forEach en lugar de map
-        if (fav.producto_id === id) {
-          setIsFav(true);
-        }
-      });
-    }
-  }, [myFavorites]);
+  const isFav =
+    Array.isArray(favorites) && favorites.some((fav) => fav.producto_id === id);
 
   function handleClick(id) {
     navigate(`/producto/detalle/${id}`);
   }
 
-  function handleFavorite() {
-    let usuario_id = usuario.usuario_id;
-    let producto_id = id;
-    const fav = {
-      usuario_id,
-      producto_id,
-    };
-
-    if (isFav) {
-      setIsFav(false);
-      dispatch(deleteFavorite(fav));
-    } else {
-      if (auth.user) {
-        setIsFav(true);
-        dispatch(addFavorite(fav));
-      } else {
+  async function handleFavorite() {
+    try {
+      if (!auth.user) {
         Toast.fire({
           icon: "error",
           title: "Ingresar para añadir favoritos.",
         });
+        return;
       }
+
+      let usuario_id = usuario.usuario_id;
+      let producto_id = id;
+      const fav = {
+        usuario_id,
+        producto_id,
+      };
+
+      if (isFav) {
+        await dispatch(deleteFavorite(fav));
+        Toast.fire({
+          icon: "success",
+          title: "Producto eliminado de favoritos.",
+        });
+      } else {
+        await dispatch(addFavorite(fav));
+        Toast.fire({
+          icon: "success",
+          title: "Producto añadido a favoritos.",
+        });
+      }
+    } catch (error) {
+      console.log("Error al manejar el favorito:", error);
     }
   }
 
@@ -84,13 +86,25 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
           src={imageSrc}
           alt={imageAlt}
           onClick={() => handleClick(id)}
-          className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center group-hover:opacity-75"
+          className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center hover:opacity-75 cursor-pointer"
         />
         <button
           onClick={handleFavorite}
           className="absolute top-0 right-0  p-2 "
         >
-          {isFav && auth.user ? "❤️" : "🤍"}
+          {isFav && auth.user ? (
+            <img
+              src="/assets/navbar-icons/favorite.svg"
+              alt="Logo fav"
+              className="w-6 h-6"
+            />
+          ) : (
+            <img
+              src="/assets/navbar-icons/notFavorite.svg"
+              alt="Logo not fav"
+              className="w-6 h-6"
+            />
+          )}
         </button>
       </div>
       <h3 className="mt-4 text-xs font-semibold md:text-sm text-gray-700">

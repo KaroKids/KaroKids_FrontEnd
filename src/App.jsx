@@ -37,23 +37,11 @@ function App() {
 				{pathname !== "/create" &&
 					pathname !== "/admin" &&
 					pathname !== "/login" && <Header />}
-				 
-						
-					 
-
+				 		
 				<Routes>
-						
 					<Route path="/" element={<Landing />} />
 					<Route path="/producto/detalle/:id" element={<ProductDetail />} />
 					<Route path="/productos" element={<ProductList />} />
-					{/* <Route
-						path="/create"
-						element={
-							<ProtectedAdmin>
-								<CreateProduct />
-							</ProtectedAdmin>
-						}
-					/> */}
 					<Route path="/favoritos" element={<FavoriteProducts />} />
 					
 					<Route
@@ -64,8 +52,8 @@ function App() {
 					</ProtectedAdmin>
 					}
 				    >
+
 					{/* Rutas anidadas dentro del Dashboard */}
-				 
 					<Route index  element={<Stats />} />
 					<Route path="users" element={<UsersView />} />
 					<Route path="products" element={<ProductsView />} />

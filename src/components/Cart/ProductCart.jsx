@@ -44,7 +44,6 @@ const ProductCart = () => {
     } else {
       dispatch(deleteProductLS({ id, talla, color }));
     }
-    console.log("click");
   };
   const handleIncrementarLS = (e, id, talla, color, cantidad) => {
     e.preventDefault();
@@ -93,16 +92,15 @@ const ProductCart = () => {
       setAnchoPantalla(window.innerWidth);
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
-
     renderCart();
-    if (cart.length >= 0) setDataCharged(true);
 
+    if (cart && cart?.length >= 0) setDataCharged(true);
+    console.log(cart);
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
+      setDataCharged(false);
     };
-  }, [user, loginUser.usuario_id, dataCharged]);
-
-  useEffect(() => {}, [cart]);
+  }, [user, loginUser.usuario_id, dataCharged, firstRender.current, cart]);
 
   if (!dataCharged) {
     return <p>Cargando...</p>;
@@ -144,7 +142,7 @@ const ProductCart = () => {
                           product.compra_color
                         )
                       }
-                      className="border w-6 ml-auto mr-4 text-center  mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
+                      className="w-6 ml-auto mr-4 text-center  mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
                     >
                       <img
                         src="/assets/navbar-icons/trash.svg"

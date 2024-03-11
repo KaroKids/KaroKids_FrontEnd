@@ -14,7 +14,7 @@ import { resetFiltering } from "@/redux/productosSlice";
 
 const Carrousel = () => {
   const destacados = useSelector((state) => state.productos.destacados);
- // console.log(destacados);
+  // console.log(destacados);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +57,7 @@ const Carrousel = () => {
                             <img
                               src={prod.imagen_principal}
                               alt={prod.nombre}
-                              className="w-auto h-full object-cover rounded-md"
+                              className="w-auto h-full object-cover rounded-md hover:opacity-75"
                             />
                           </CardContent>
                         </Card>

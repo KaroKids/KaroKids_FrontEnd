@@ -47,11 +47,11 @@ const BoyGirl = () => {
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-2 lg:gap-x-12 lg:space-y-0">
             {callouts.map((callout) => (
               <div key={callout.name} className="group">
-                <div className="flex justify-center border-2 mt-6 mb-10 h-80 w-full  rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
+                <div className="cursor-pointer flex justify-center border-2 mt-6 mb-10 h-80 w-full rounded-lg bg-white sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 sm:h-64 hover:opacity-75">
                   <img
                     src={callout.imageSrc}
                     alt={callout.imageAlt}
-                    className="h-full w-auto  object-center "
+                    className="h-full w-auto object-center"
                   />
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const UserPedidos = (data) => {
   const ordersDB = useSelector((state) => state.users.ordenes);
+
   useEffect(() => {
     console.log(ordersDB);
   }, [data]);

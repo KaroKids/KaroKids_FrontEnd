@@ -5,7 +5,9 @@ import { authContext } from "@/context/AuthContext";
 import { Link } from "react-router-dom";
 import { getUserByEmail } from "@/redux/userAction";
 
-import { getFavorites, deleteFavorite } from "@/redux/favoritosActions";
+import { getFavorites } from "@/redux/favoritosActions";
+
+import ProductCard from "../ProductList/ProductCard";
 
 const FavoriteProducts = () => {
   const { user } = useContext(authContext);
@@ -18,6 +20,7 @@ const FavoriteProducts = () => {
   const [dataCharged, setDataCharged] = useState(false);
 
   useEffect(() => {
+    window.scroll(0, 0);
     const renderFavorites = async () => {
       if (!dataCharged && loginUser.usuario_id !== undefined) {
         const { payload } = await dispatch(getUserByEmail(user.email));
@@ -42,71 +45,31 @@ const FavoriteProducts = () => {
 
   useEffect(() => {}, [favorites]);
 
-  const handleDeleteFavorite = (producto_id) => {
-    if (loginUser.usuario_id !== undefined) {
-      dispatch(
-        deleteFavorite({
-          usuario_id: loginUser.usuario_id,
-          producto_id: producto_id,
-        })
-      );
-    }
-  };
-
   return (
-    <article className="max-w-[1400px] min-h-screen w-full pt-28 mx-auto">
-      <header className="flex justify-between text-4xl font-semibold">
+    <article className="container flex flex-col items-center mb-4 min-h-screen w-full pt-28 mx-auto">
+      <header className="text-4xl font-semibold">
         <h2 className="text-2xl mx-6 xl:text-3xl">Mis Favoritos</h2>
       </header>
 
-      <div className="h-auto style-scrollbar  md:w-fit  overflow-y-auto remove-scroll w-full grid grid-cols-2 xl:w-fit xl:grid-cols-2 xl:place-items-center place-items-start gap-y-4 py-4">
+      <div className="h-full overflow-y-auto grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 md:pl-10 gap-y-4 py-4 flex justify-between gap-8">
         {user.accessToken ? (
           favorites && favorites.length ? (
             favorites &&
             favorites?.map((producto, i) => {
               return (
-                <React.Fragment key={i}>
-                  <Link
-                    key={i}
-                    to={`/producto/detalle/${producto.producto_id}`}
-                  >
-                    <div className="flex   justify-center border-t-2  border-slate-200 items-center h-full w-full xl:border-2 xl:w-52">
-                      <img
-                        src={producto.imagen_principal}
-                        alt={producto.nombre}
-                        className="w-28 h-28 xl:w-30 xl:h-40"
-                      />
-                    </div>
-                  </Link>
-
-                  <div className="flex flex-col border-t-2 w-full  border-slate-200 xl:w-96 xl:h-full">
-                    <span
-                      onClick={() => handleDeleteFavorite(producto.producto_id)}
-                      className="border w-6 ml-auto mr-4 text-center border-slate-300 mt-2 rounded md:ml-auto md:mr-4 xl:ml-[350px] cursor-pointer"
-                    >
-                      🗑
-                    </span>
-                    <p className=" my-2 flex flex-col  gap-1 text-xl">
-                      <strong className="text-base">
-                        <Link
-                          key={i}
-                          to={`/producto/detalle/${producto.producto_id}`}
-                        >
-                          {producto.nombre}
-                        </Link>
-                      </strong>
-                    </p>
-                    $ {producto.precio}{" "}
-                    <form
-                      id="counter"
-                      className=" mt-2 md:justify-center flex gap-x-0 sm:gap-x-4"
-                    ></form>
-                  </div>
-                </React.Fragment>
+                <ProductCard
+                  key={i}
+                  id={producto.producto_id}
+                  imageSrc={producto.imagen_principal}
+                  imageAlt={producto.nombre}
+                  name={producto.nombre}
+                  price={producto.precio}
+                  myFavorites={favorites}
+                />
               );
             })
           ) : (
-            <p>Agrega productos a tus favoritos</p>
+            <p className="">Agrega productos a tus favoritos</p>
           )
         ) : (
           <p>
