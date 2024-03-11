@@ -11,6 +11,9 @@ export const productosSlice = createSlice({
     totalPaginas: 0,
     isFilteringActive: false,
     filtros: {},
+
+    rating: [],
+    comments: [],
   },
   reducers: {
     allProducts: (state, action) => {
@@ -54,6 +57,12 @@ export const productosSlice = createSlice({
         isFilteringActive: false,
       };
     },
+    ratingByProduct: (state, action) => {
+      state.rating = action.payload;
+    },
+    topCommentsByProduct: (state, action) => {
+      state.comments = action.payload;
+    },
   },
 });
 
@@ -67,5 +76,7 @@ export const {
   allDestacados,
   FilteringActive,
   resetFiltering,
+  ratingByProduct,
+  topCommentsByProduct,
 } = productosSlice.actions;
 export default productosSlice.reducer;

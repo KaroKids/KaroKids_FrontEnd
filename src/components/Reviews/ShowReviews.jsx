@@ -1,28 +1,37 @@
-import React from "react";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-const ShowReviews = ({ rating }) => {
+import { useSelector } from "react-redux";
+
+const ShowReviews = () => {
+  const rating = useSelector((state) => state.productos.rating);
+
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {[...Array(5)].map((_, i) => {
-        const fullStar = i < Math.floor(rating);
-        const halfStar = i === Math.floor(rating) && rating % 1 !== 0;
-        return (
-          <label key={i}>
-            {halfStar ? (
-              <FaStarHalfAlt size={25} color="#ffc107" />
-            ) : (
-              <FaStar size={25} color={fullStar ? "#ffc107" : "#e4e5e9"} />
-            )}
-          </label>
-        );
-      })}
+    <div className="flex justify-center items-center gap-x-2">
+      <span className="text-slate-500 text-xl h-6 w-7">
+        {rating.promedioReal}
+      </span>
+      <div className="flex justify-center items-center">
+        {[...Array(5)].map((_, i) => {
+          const fullStar = i < Math.ceil(rating.promedioReal);
+          const halfStar =
+            i < Math.ceil(rating.promedioReal) &&
+            i + 0.5 >= rating.promedioReal &&
+            i <= Math.floor(rating.promedioReal);
+
+          return (
+            <label key={i}>
+              {halfStar ? (
+                <FaStarHalfAlt size={25} color="#ffc107" />
+              ) : (
+                <FaStar size={25} color={fullStar ? "#ffc107" : "#e4e5e9"} />
+              )}
+            </label>
+          );
+        })}
+      </div>
+      <span className="text-slate-500 text-xl h-6 w-7">
+        ({rating.totalCalificaciones})
+      </span>
     </div>
   );
 };
