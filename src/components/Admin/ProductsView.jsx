@@ -64,7 +64,6 @@ const relevancias = [
 
 export default function ProductList() {
   
-  
   const [ordernarPor, setOrdernarPor] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -221,7 +220,20 @@ export default function ProductList() {
 		}
 	};
 
-	const toggleProductStandOut = async (producto_id) => {
+	const toggleProductStandOut = async (producto_id, inactivo, destacado) => {
+		if(inactivo == true && destacado == false){
+			Swal.fire({
+				title: "No se puede destacar el producto",
+				text: "El producto está inactivo",
+				icon: "error",
+				confirmButtonColor: "#3085d6",
+				confirmButtonText: "Aceptar",
+				customClass: {
+				  popup: "my-toast",
+				},
+			  });
+		}else{
+		let admin = true;
 		const Toast = Swal.mixin({
 			toast: true,
 			position: "top-end",
@@ -256,13 +268,11 @@ export default function ProductList() {
 			const body = {
 				producto_id: producto_id.toString(),
 			};
-
 			const response = await dispatch(productStandOutChange(body));
 			if (query.length > 0) {
 				console.log(query);
 				dispatch(getProductsByName(query, admin));
 			}
-
 			if (response.payload) {
 				setIsLoading(false);
 
@@ -282,6 +292,7 @@ export default function ProductList() {
 			}
 		} catch (error) {
 			// Maneja el error y muestra una notificación de error
+			console.log("error")
 			setIsLoading(false);
 			Toast.fire({
 				icon: "error",
@@ -290,6 +301,7 @@ export default function ProductList() {
 		} finally {
 			// Cierra el SweetAlert
 			// Swal.close();
+		}
 		}
 	};
 
@@ -430,7 +442,7 @@ export default function ProductList() {
 														className="h-6 w-6 rounded-full hover:cursor-pointer mr-2 inline-block "
 														src={noDestacado}
 														onClick={() =>
-															toggleProductStandOut(product.producto_id)
+															toggleProductStandOut(product.producto_id, product.inactivo, product.destacado)
 														}
 														alt=""
 													/>
@@ -439,7 +451,7 @@ export default function ProductList() {
 														className="h-6 w-6 border-red-400 rounded-full  hover:cursor-pointer mr-2 inline-block "
 														src={destacado}
 														onClick={() =>
-															toggleProductStandOut(product.producto_id)
+															toggleProductStandOut(product.producto_id, product.inactivo, product.destacado)
 														}
 														alt={""}
 													/>
