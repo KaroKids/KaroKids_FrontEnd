@@ -15,7 +15,7 @@ const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
 const EditProduct = () => {
 	const { producto_id } = useParams();
-	console.log('pID', producto_id)
+	//console.log('pID', producto_id)
 
     let initData = {
 		producto_id: "",
@@ -173,9 +173,9 @@ const EditProduct = () => {
 		if (!validationErrors.msgData) {
 			try {
 				setIsloading(true);
-				console.log (data)
+				//console.log ('data',data)
 				const response = await dispatch(editProduct(data));
-				console.log('editProduct',response)
+				//console.log('editProduct',response)
 				if (response.payload) {
 					setIsloading(false);
 					Toast.fire({
@@ -262,9 +262,10 @@ const EditProduct = () => {
 		  
 			if (!existeImagen) {
 			  aux.push(imagSecundarias);
-			aux.push(imagSecundarias)
+			//aux.push(imagSecundarias)
 			setData({...data,imagenes_secundarias :aux})
 			setErrors(validation(data, newStock));
+			 
 
 	};
 }
@@ -288,7 +289,7 @@ const EditProduct = () => {
     useEffect(() => {
         getProductDetailById(producto_id);
         //setNewStock(data.stock)
-		console.log('useeffect prod id', producto_id)
+		//console.log('useeffect prod id', producto_id)
    
     }, [producto_id]); // solo se ejecuta cuando cambia producto_idx
 
@@ -391,6 +392,7 @@ const EditProduct = () => {
 						onGetImagSecundarias={getImagSecundarias}
 						errors={errors}
                         data={data}
+						setData={setData}
 						
                         
 					/>
