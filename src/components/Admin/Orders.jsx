@@ -29,9 +29,9 @@ export default function Orders() {
             try {
                 const response = await axios.get(URL_ORDENES);
                // console.log('orders', response);
-
+                console.log(response)
                 if(response.data){
-                    setOrdenes(response.data)
+                    setOrdenes(response.data.elementosPaginados)
 
                 }
 
