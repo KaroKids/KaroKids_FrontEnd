@@ -10,7 +10,7 @@ import { persistReducer, persistStore } from "redux-persist";
 const persistConfig = {
   key: "cartRender",
   storage,
-  whitelist: ["carrito"],
+  whitelist: ["carrito", "users"],
 };
 
 const rootReducer = combineReducers({
