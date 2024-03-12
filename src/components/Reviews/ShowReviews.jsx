@@ -6,7 +6,7 @@ const ShowReviews = () => {
   const rating = useSelector((state) => state.productos.rating);
 
   return (
-    <div className="flex justify-center items-center gap-x-2">
+    <div className="flex justify-center mb-2 items-center gap-x-2">
       <span className="text-slate-500 text-xl h-6 w-7">
         {rating.promedioReal}
       </span>

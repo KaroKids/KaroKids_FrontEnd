@@ -2,11 +2,11 @@ import axios from "axios"
 import { useEffect, useState, useTransition } from "react"
 import { numberMask } from "@/utils/numberMask"
 import Swal from "sweetalert2";
-const URL_ORDERS = import.meta.env.VITE_URL_ORDERS;
+const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
 
 
 
-export default function Orders({updateMenuSelected,handleMenuSelect}) {
+export default function Orders() {
     const [ordenes, setOrdenes] = useState();
 
     const Toast = Swal.mixin({
@@ -27,7 +27,7 @@ export default function Orders({updateMenuSelected,handleMenuSelect}) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(URL_ORDERS);
+                const response = await axios.get(URL_ORDENES);
                // console.log('orders', response);
 
                 if(response.data){
@@ -46,8 +46,6 @@ export default function Orders({updateMenuSelected,handleMenuSelect}) {
 
     
     const handleStatusPayment=(ordenID,estatus)=>{
-
-       // console.log('Orden id:', ordenID);
 
         // Mostrar confirmación antes de activar/desactivar usuario
 		Swal.fire({

@@ -1,11 +1,11 @@
 import NavBarDesktopDB from "./NavBarDeskTopDB";
 import NavBarMobileDB from "./NavBarMobileDB";
 
-const HeaderDashBoard = ({updateMenuSelected}) => {
+const HeaderDashBoard = () => {
   return (
     <header className="mb-2">
-      <NavBarMobileDB updateMenuSelected={updateMenuSelected} />
-      <NavBarDesktopDB updateMenuSelected={updateMenuSelected}  />
+      <NavBarMobileDB  />
+      <NavBarDesktopDB />
     </header>
   );
 };

@@ -62,14 +62,16 @@ const relevancias = [
 	},
 ];
 
-export default function ProductList({ updateMenuSelected }) {
-	const [ordernarPor, setOrdernarPor] = useState(0);
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [filtrosAplicados, setFiltrosAplicados] = useState([]);
-	const [query, setQuery] = useState("");
-	const [pageLoading, setPageLoading] = useState(true);
-	const [toastShown, setToastShown] = useState(false);
+export default function ProductList() {
+  
+  
+  const [ordernarPor, setOrdernarPor] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filtrosAplicados, setFiltrosAplicados] = useState([]);
+  const [query, setQuery] = useState("");
+  const [pageLoading, setPageLoading] = useState(true);
+  const [toastShown, setToastShown] = useState(false);  
 
 	const dispatch = useDispatch();
 	const productos = useSelector((state) => state.productos);
@@ -306,59 +308,61 @@ export default function ProductList({ updateMenuSelected }) {
 			}
 		}, 500);
 
-		return () => {
-			// console.log('CLEANUP');
-			clearTimeout(identifier);
-		};
-	}, [query]);
+    return () => {
+      // console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
+  }, [query]);
+    
+  useEffect(() => {
+    if (!productos) {
+      // Los productos aún no se han cargado, establece el estado de carga en true
+      setPageLoading(true);
+    } else {
+      // Los productos se han cargado, establece el estado de carga en false
+      setPageLoading(false);
+      if (!toastShown) {
+        // Muestra la notificación solo si aún no se ha mostrado
+        Toast.fire({
+          icon: "info",
+          title: "Productos cargados con éxito.",
+        });
+        // Marca la notificación como mostrada
+        setToastShown(true);
+      }
+    }
+  }, [productos, toastShown]);
+  
 
-	useEffect(() => {
-		if (!productos) {
-			// Los productos aún no se han cargado, establece el estado de carga en true
-			setPageLoading(true);
-		} else {
-			// Los productos se han cargado, establece el estado de carga en false
-			setPageLoading(false);
-			if (!toastShown) {
-				// Muestra la notificación solo si aún no se ha mostrado
-				Toast.fire({
-					icon: "info",
-					title: "Productos cargados con éxito.",
-				});
-				// Marca la notificación como mostrada
-				setToastShown(true);
-			}
-		}
-	}, [productos, toastShown]);
+  return (
+    <div className="bg-white mt-3 sm:mt-0">
+    {pageLoading && <LoadingView />}
+      
+      {!pageLoading && productos && (
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
+          <h2 className=" text-xl  font-semibold mb-4">Lista de Productos</h2>
 
-	return (
-		<div className="bg-white mt-3 sm:mt-0">
-			{pageLoading && <LoadingView />}
-
-			{!pageLoading && productos && (
-				<div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
-					<h2 className=" text-xl  font-semibold mb-4">Lista de Productos</h2>
-
-					<div className="flex flex-col sm: gap-y-4 sm:flex-row gap-x-3 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
-						<Input
-							type="text"
-							placeholder="Busca aquí..."
-							className="flex items-center  w-100 h-23 ring-1 ring-gray-500"
-							value={query}
-							onChange={(e) => handleInput(e.target.value)}
-							onKeyDown={handleKeyDown}
-						/>
-						<select
-							name="ordenarpor"
-							className="border border-black hover:cursor-pointer   rounded px-5  focus:ring-black focus:border-black-500  bg-white py-3 pl-3 pr-10 text-left"
-							onChange={handleOrdenar}
-							value={ordernarPor}>
-							{relevancias.map((item, i) => (
-								<option key={i} value={item.id}>
-									{item.name}
-								</option>
-							))}
-						</select>
+          <div className="flex flex-col sm: gap-y-4 sm:flex-row gap-x-3 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
+            <Input
+              type="text"
+              placeholder="Busca aquí..."
+              className="flex items-center  w-100 h-23 ring-1 ring-gray-500"
+              value={query}
+              onChange={(e) => handleInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <select
+              name="ordenarpor"
+              className="border border-black hover:cursor-pointer   rounded px-5  focus:ring-black focus:border-black-500  bg-white py-3 pl-3 pr-10 text-left"
+              onChange={handleOrdenar}
+              value={ordernarPor}
+            >
+              {relevancias.map((item, i) => (
+                <option key={i} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
 
 						<Button
 							className="flex items-center justify-center bg-white text-black  ring-1 hover:bg-sky-500  ring-black  p-6 "
@@ -442,24 +446,16 @@ export default function ProductList({ updateMenuSelected }) {
 												)}
 											</button>
 
-											<Link to={`/producto/detalle/${product.producto_id}`}>
-												<button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">
-													Ver
-												</button>
-											</Link>
-
-											<button
-												onClick={(e) => {
-													updateMenuSelected({
-														menu: "Editar",
-														component: (
-															<EditProduct producto_id={product.producto_id} />
-														),
-													});
-												}}
-												className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
-												Editar
-											</button>
+                      <Link to={`/producto/${product.producto_id}`}>
+                        <button className="text-indigo-600 ring-1 rounded hover:bg-blue-500 hover:text-white text-center w-[83px] mr-2">
+                          Ver
+                        </button>
+                      </Link>
+                       <Link to={`../editproduct/${product.producto_id}`}>
+                      <button  className="text-yellow-600 ring-1 rounded hover:bg-yellow-600 hover:text-white w-[83px] mr-2">
+                        Editar
+                      </button>
+                       </Link>
 
 											{product.inactivo ? (
 												<button

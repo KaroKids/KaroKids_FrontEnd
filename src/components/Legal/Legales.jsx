@@ -73,7 +73,6 @@ const Legales = () => {
 				Ropa interior, medias, gorras, boinas, y tops, no se cambian por
 				seguridad e higiene
 			</p>
-			<h2 className="font-semibold pt-10 text-xl">Políticas de privacidad</h2>
 		</div>
 	);
 };

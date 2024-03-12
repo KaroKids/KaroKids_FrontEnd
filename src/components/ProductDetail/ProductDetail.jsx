@@ -27,7 +27,7 @@ import {
   getTopCommentsByProduct,
 } from "@/redux/productosActions";
 import { addProductLS } from "@/redux/carritoSlice";
-import { addProductInDB } from "@/redux/carritoActions";
+import { addProductInDB, getCartFromDB } from "@/redux/carritoActions";
 import ShowReviews from "../Reviews/ShowReviews";
 import TopComments from "../Reviews/TopComments";
 
@@ -61,13 +61,18 @@ const ProductDetail = () => {
   const [cantidadStock, setCantidadStock] = useState([
     {
       value: "",
+      color: "",
     },
   ]);
   const [selectedTalle, setSelectedTalle] = useState(false);
   const [selectedQuantity, setselectedQuantity] = useState(1);
+  let cantidad = 0;
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
+  const cart = user.accessToken
+    ? useSelector((state) => state.carrito.cartDB)
+    : useSelector((state) => state.carrito.cartLS);
   let stock = product.stock;
 
   const handleQuantityChange = ({ target }) => {
@@ -88,14 +93,8 @@ const ProductDetail = () => {
       }
     });
 
-    const newCantidades = values.map((info) => {
-      if (info.cantidad) {
-        return { value: info.cantidad };
-      }
-    });
-
     setColor(newColors);
-    setCantidadStock(newCantidades);
+    setCantidadStock(values);
     if (!newColors.some((color) => color.value === selectedColor)) {
       setSelectedColor(null);
     }
@@ -112,7 +111,15 @@ const ProductDetail = () => {
       item.compra_cantidad = 1;
     }
 
-    if (item.compra_cantidad > cantidadStock[0].value) {
+    const find = cart?.find((prod) => {
+      return prod.compra_color.toLowerCase() === item.compra_color;
+    });
+    let cantidad2 = 0;
+    if (find) {
+      cantidad2 = user.accessToken ? find.compra_cantidad : find.quantity;
+    }
+
+    if (cantidad2 + item.compra_cantidad > cantidad) {
       Toast.fire({
         icon: "error",
         title: "La cantidad excede el stock.",
@@ -157,7 +164,7 @@ const ProductDetail = () => {
       setAnchoPantalla(window.innerWidth);
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
-
+    dispatch(getCartFromDB(userGlobalState.usuario_id));
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
@@ -277,6 +284,7 @@ const ProductDetail = () => {
               </div>
               <div className="grid grid-rows-1 place-items-center py-2  w-full border-y-2  border-gray-100  xl:grid xl:place-items-start xl:border-gray-200  ">
                 <label>Cantidad:</label>
+
                 <input
                   value={selectedQuantity}
                   id="cantidadProducto"
@@ -286,6 +294,22 @@ const ProductDetail = () => {
                   className="remove-arrow border-gray-200 border-2 focus:outline-none w-20 h-10 text-center xl:w-24 mt-2 mb-4 "
                   onChange={handleQuantityChange}
                 />
+                {cantidadStock.map((prod) => {
+                  if (selectedColor === prod.color) {
+                    cantidad = prod.cantidad;
+                    return (
+                      cantidadStock[0].value !== "" && (
+                        <span
+                          key={prod.id}
+                          className="text-xs mb-4 font-semibold"
+                        >
+                          Stock disponible: {prod.cantidad}
+                        </span>
+                      )
+                    );
+                  }
+                  return null; // Importante agregar este retorno nulo para otros elementos del array
+                })}
                 {selectedTalle && (
                   <>
                     <label>Color:</label>

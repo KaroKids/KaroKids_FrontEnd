@@ -63,13 +63,27 @@ export default function ProductList() {
     if (event.target.value === 0) {
       dispatch(setFilteringActive(false));
     } else {
-      dispatch(setFilteringActive(true));
       setOrdernarPor(nuevoOrden);
     }
-    setFiltrosAplicados((prevFiltrosAplicados) => ({
-      ...prevFiltrosAplicados,
-      orden: nuevoOrden,
-    }));
+    let edadesIguales = productos.productos.every(
+      (producto) => producto.edad === productos.productos[1].edad
+    );
+    if (!edadesIguales && isFilteringActive) {
+      setFiltrosAplicados(() => ({
+        orden: nuevoOrden,
+        genero: productos.productos[0].genero,
+      }));
+    } else if (edadesIguales && isFilteringActive) {
+      setFiltrosAplicados(() => ({
+        orden: nuevoOrden,
+        edad: productos.productos[0].edad,
+      }));
+    } else {
+      setFiltrosAplicados((prevFiltrosAplicados) => ({
+        ...prevFiltrosAplicados,
+        orden: nuevoOrden,
+      }));
+    }
   };
 
   const handleOpenModal = () => {

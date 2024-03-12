@@ -1,55 +1,21 @@
 import { useState, useEffect } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink,Link, useLocation } from "react-router-dom";
 import Login from "../Auth/Login";
 import UserModal from "../User/UserModal";
 import { useAuth } from "@/context/AuthContext";
 import { useSelector } from "react-redux";
-import Stats from './Stats'
-import  ProductsView from './ProductsView';
-import UsersView from './UsersView';
-import CreateProduct from '../CreateProduct/CreateProduct';
-import EditProduct from '@/components/CreateProduct/EditProduct';
-import Orders from "./Orders";
+ 
 
-const NavBarMobile = ({updateMenuSelected}) => {
-	const handleMenuSelect = (e,menuName) => {
-		const menu=menuName;
-	   //console.log('handle navig', menu)
-		// Actualizar la variable navigation
-	   const updatedNavigation = navigation.map((item) => {
-		 if (item.name === menu) {
-			updateMenuSelected({menu:menu, component:item.component});
-		   return { ...item, current: true };
-		 } else {
-		   return { ...item, current: false };
-		 }
-	   });
-	   //setOpenHamMenu(false)
-	   setNavigation(updatedNavigation);
-	  
-	   
-	  };
-	
-	 
-	
-	 
-	
-	const [navigation, setNavigation] = useState([
-		{ name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true },
-		{ name: 'Usuarios', component: <UsersView />, current: false },
-		{ name: 'Registrar', component: <CreateProduct />, current: false },
-		{ name: 'Productos', component: <ProductsView updateMenuSelected={updateMenuSelected} />, current: false },
-		{ name: '', component: <EditProduct/>, current: false },
-		{ name: '', component: <Orders/>, current: false },
+const NavBarMobile = () => {
+ 
+	const navigation = ([
+		// { name: 'Admin',  link:'/admin' },
+		{ name: 'Usuarios',  link:'/admin/users'},
+		{ name: 'Registrar', link:'/admin/create' },
+		{ name: 'Productos', link:'/admin/products' },
+		 
 	]);
-		
-	
-	useEffect(()=>{
-	  updateMenuSelected({name: 'Admin', component: <Stats updateMenuSelected={updateMenuSelected} handleMenuSelect={handleMenuSelect}   />, current: true});
-	},[])
-		
-		  
 
 	const auth = useAuth();
 	const { displayName } = auth.user;
@@ -81,9 +47,15 @@ const NavBarMobile = ({updateMenuSelected}) => {
 	const { pathname } = useLocation();
 
 	const user = useSelector((state) => state.users.user);
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
+	const [adminActive, setAdminActive] = useState(true); // Estado para administrar la activación del menu Admin
+
+	useEffect(() => {
+		if (pathname !== '/admin') {
+		  setAdminActive(false);
+		} else {
+		  setAdminActive(true)
+		}
+	  }, [pathname]);
 
 	return (
 		<nav className=" py-2 fixed z-10 top-0 bg-white shadow-md shadow-gray-300 lg:hidden">
@@ -159,19 +131,30 @@ const NavBarMobile = ({updateMenuSelected}) => {
 					style={{
 						transform: openHamMenu ? "translateX(0)" : "translateX(-100%)",
 					}}>
-				  {navigation?.map((item, index)=>(
+				 <NavLink to="/admin"
+         className={ adminActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
+            
+         >
+          Admin
+         </NavLink>
 
-                <a
-                key={index}
-                className={classNames(
-                item.current ? 'bg-sky-700 text-white hover:cursor-pointer' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white',
-                'rounded-md px-3 py-2 text-sm font-medium'
-                )}
-                onClick={(e) => handleMenuSelect(e, item.name)}
-                href="#"
-                >
+            {navigation?.map((item)=>(
+
+                <NavLink to={item.link}
+                key={item.name}
+                  // className={({isActive})=>console.log('isActive',isActive, item.link)}
+                 className={({isActive})=> isActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
+                 onClick={() => {
+                  if (item.name === 'Admin') {
+                    
+                    setAdminActive(!adminActive);
+                  } else {
+                    setAdminActive(false);
+                  }
+                }}
+                      >
                 {item.name}
-                </a>
+                </NavLink>
             ))}
 				</ul>
 				<Login
