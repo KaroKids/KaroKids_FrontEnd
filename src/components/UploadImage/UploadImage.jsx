@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import { convertFromHeic } from "@/utils/heicToJpeg";
 
 const UploadImage = ({
   onGetImagenPrincipal,
@@ -11,8 +10,6 @@ const UploadImage = ({
   const [imagenPrincipal, setImagenPrincipal] = useState([]);
   const [imagSecundarias, setImagSecundarias] = useState([]);
   const [loadingImage, setloadingImage] = useState(false);
-
-  const extensionRegex = /\.(heic|heif)$/i;
 
   //Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
   useEffect(() => {
@@ -50,13 +47,6 @@ const UploadImage = ({
 
     const selectedImage = e.target.files[0];
 
-    //todo Condicional para la conversión de las imágenes en formato HEIC a formato JPEG.
-    if (extensionRegex.test(selectedImage)) {
-      const conversionResult = convertFromHeic(selectedImage);
-
-      previewFiles(conversionResult, type);
-    }
-
     previewFiles(selectedImage, type);
   };
 
@@ -64,13 +54,6 @@ const UploadImage = ({
     const type = "imgSecundarias";
 
     const selectedImage = e.target.files[0];
-
-    //todo Condicional para la conversión de las imágenes en formato HEIC a formato JPEG.
-    if (extensionRegex.test(selectedImage)) {
-      const conversionResult = convertFromHeic(selectedImage);
-
-      previewFiles(conversionResult, type);
-    }
 
     previewFiles(selectedImage, type);
   };

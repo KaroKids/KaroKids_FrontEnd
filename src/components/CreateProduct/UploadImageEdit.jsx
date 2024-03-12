@@ -6,7 +6,8 @@ const UploadImage = ({
 	onGetImagenPrincipal,
 	onGetImagSecundarias,
 	errors,
-	data
+	data,
+	setData
 }) => {
 	const [imagenPrincipal, setImagenPrincipal] = useState([]);
 	const [imagSecundarias, setImagSecundarias] = useState([]);
@@ -22,12 +23,13 @@ const UploadImage = ({
 	//Carga las imagenes secundarias
 	useEffect(() => {
 		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {
-			console.log("pushea de nuevo")
+			 
 			setImagSecundarias(data.imagenes_secundarias);
+			
 		}
-		console.log('imag secundarias',imagSecundarias)
+	 
+
 	}, [data.imagenes_secundarias]);
-	
 	
 
 	//Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
@@ -46,7 +48,7 @@ const UploadImage = ({
 			let i = imagSecundarias.length - 1;
 			onGetImagSecundarias(imagSecundarias[i]);
 		}
-		console.log('imagSec',imagSecundarias);
+	 
 	}, [imagSecundarias]);
 
 	//Funciones almacenan los valores de previsualización de los archivos cargados por el usuario.
@@ -76,11 +78,21 @@ const UploadImage = ({
 			}
 
 			if (type === "imgSecundarias") {
-				setImagSecundarias([...imagSecundarias, reader.result]);
-			}
+			    setImagSecundarias([...imagSecundarias, reader.result]);
+			  }
+			  
 		};
 	}
-	console.log(data.imagenes_secundarias)
+	
+	const eliminarImagenSecundaria = (index) => {
+        const nuevasImagSecundarias = imagSecundarias.filter((_, i) => i !== index);
+        setImagSecundarias(nuevasImagSecundarias);
+        // Actualizar el estado data.imagenes_secundarias en el componente padre
+        setData({ ...data, imagenes_secundarias: nuevasImagSecundarias });
+
+    };
+
+ 
 	return (
 		<div>
 			<div className="col-span-full r">
@@ -107,7 +119,9 @@ const UploadImage = ({
 										className="h-96 w-full rounded-lg object-cover object-center"
 										src={imageUrl}
 										alt={`Imagen ${index + 1}`}
+										
 									/>
+									
 								))}
 							</div>
 						)}
@@ -159,14 +173,23 @@ const UploadImage = ({
 						</div>
 						{imagSecundarias && (
 							<div className="mt-2 flex flex-wrap justify-center lg:flex-col gap-2">
-								{imagSecundarias?.map((imageUrl, index) => (
-									<img
-										key={index}
-										className="lg:h-25 lg:w-40  rounded-lg object-cover object-center"
-										src={imageUrl}
-										alt={`Imagen ${index + 1}`}
-									/>
-								))}
+								{/* Código para imagenes secundarias */}
+						{imagSecundarias.map((imageUrl, index) => (
+							<div key={index} className="relative">
+								<img
+									className="lg:h-25 lg:w-40  rounded-lg object-cover object-center cursor-pointer"
+									src={imageUrl}
+									alt={`Imagen ${index + 1}`}
+									onClick={() => eliminarImagenSecundaria(index)}
+								/>
+								<button
+									className="absolute top-2 right-2 bg-white text-red-500 rounded-full p-1"
+									onClick={() => eliminarImagenSecundaria(index)}
+								>
+									X
+								</button>
+							</div>
+						))}
 							</div>
 						)}
 						{!imagSecundarias.length && (
