@@ -89,3 +89,7 @@
   scrollbar-width: thin;
   scrollbar-color: rgb(56 189 248) white;
 }
+
+.filter-perso {
+  filter: drop-shadow(1px 1px 1px rgb(148 163 184));
+}

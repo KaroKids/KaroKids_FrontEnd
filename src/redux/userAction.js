@@ -6,6 +6,7 @@ import {
   UserPut,
   allOrders,
   ordenDetail,
+  existeReview,
 } from "./userSlice.js";
 
 const URL_USERS = import.meta.env.VITE_URL_USERS;
@@ -100,9 +101,72 @@ export const getOrderById = (orden_id) => {
     try {
       const { data } = await axios.get(`${URL_ORDERS}/detail/${orden_id}`);
 
-      return dispatch(ordenDetail(data));
+      console.log(data);
+
+      const productosFiltrados = data?.productos_compra.reduce(
+        (accumulator, currentItem) => {
+          const { description, ...rest } = currentItem;
+          const [size, color] = description && description?.split("-");
+          const id = currentItem.id;
+
+          const existingItem = accumulator.find((item) => item.id === id);
+          if (existingItem) {
+            if (!existingItem.producto_detalle[size]) {
+              existingItem.producto_detalle[size] = {};
+            }
+            if (!existingItem.producto_detalle[size][color]) {
+              existingItem.producto_detalle[size][color] = 0;
+            }
+            existingItem.producto_detalle[size][color] += Number(
+              currentItem.quantity
+            );
+          } else {
+            const newItem = { ...rest };
+            newItem.producto_detalle = {
+              [size]: { [color]: Number(currentItem.quantity) },
+            };
+            newItem.id = id;
+            accumulator.push(newItem);
+          }
+
+          return accumulator;
+        },
+        []
+      );
+
+      const productosFixed = productosFiltrados.map((item) => {
+        // Eliminar las claves 'L' y 'S' que no corresponden a tallas o colores en producto_detalle
+        delete item.XS;
+        delete item.S;
+        delete item.M;
+        delete item.L;
+        delete item.XL;
+
+        return item;
+      });
+
+      console.log(productosFiltrados);
+      console.log(productosFixed);
+
+      return dispatch(
+        ordenDetail({ ...data, productos_compra: productosFixed })
+      );
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+export const seHizoUnaReview = (usuario_id, producto_id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(
+        `${URL_REVIEWS}?usuario_id=${usuario_id}&&producto_id=${producto_id}`
+      );
+      console.log(data);
+      return dispatch(existeReview(data));
+    } catch (error) {
+      console.error(error);
     }
   };
 };

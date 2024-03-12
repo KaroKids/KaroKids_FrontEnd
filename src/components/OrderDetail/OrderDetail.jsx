@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../ui/button";
 import OrderModal from "./OrderModal";
+import { seHizoUnaReview } from "@/redux/userAction";
 
 const OrderDetail = () => {
   const ordenDetail = useSelector((state) => state.users.ordenDetail);
+  const dispatch = useDispatch();
   const [isRatingModalOpen, setRatingModalOpen] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
-  const handleModal = (producto_id) => {
+  const handleModal = (usuario_id, producto_id) => {
+    dispatch(seHizoUnaReview(usuario_id, producto_id));
     setSelectedProductId(producto_id);
     setRatingModalOpen(true);
   };
 
-  useEffect(() => {
-    console.log(ordenDetail);
-  }, [ordenDetail]);
+  useEffect(() => {}, [ordenDetail]);
 
   const fecha = new Date(ordenDetail.createdAt);
   const opciones = { year: "numeric", month: "long", day: "numeric" };
@@ -25,7 +26,8 @@ const OrderDetail = () => {
       <div className="flex flex-col gap-y-4">
         {ordenDetail ? (
           ordenDetail &&
-          ordenDetail?.productos_compra.map((product) => {
+          ordenDetail.productos_compra &&
+          ordenDetail?.productos_compra?.map((product) => {
             return (
               <article className="bg-slate-100 flex flex-col md:flex-row items-center gap-4 px-4 py-2 rounded-md shadow-md shadow-slate-400">
                 <img
@@ -34,17 +36,39 @@ const OrderDetail = () => {
                   alt={product.title}
                 />
                 <div className="flex flex-col gap-y-2">
-                  <h3>{product.title}</h3>
-                  <p className="flex flex-col items-center">
-                    <strong>Cantidad:</strong> {product.quantity}
+                  <h3 className="font-bold">{product.title}</h3>
+
+                  <p>
+                    <strong className="mb-2">
+                      Tallas, colores y cantidad:
+                    </strong>
+                    {Object.entries(product.producto_detalle).map(
+                      ([talla, colores]) => (
+                        <div className="flex flex-col gap-y-1">
+                          <strong className="underline">Talla {talla}</strong>
+                          {Object.entries(colores).map(([color, cantidad]) => (
+                            <div className="flex gap-x-2">
+                              <p>
+                                <strong>Color:</strong> {color}
+                              </p>
+                              <p>
+                                <strong>Cantidad:</strong> {cantidad}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    )}
                   </p>
                   <p className="flex flex-col items-center">
-                    <strong>Precio p/u:</strong> {product.unit_price}
+                    <strong>Precio p/u:</strong> $ {product.unit_price}
                   </p>
                 </div>
                 <Button
                   variant="detail"
-                  onClick={() => handleModal(product.id)}
+                  onClick={() =>
+                    handleModal(ordenDetail.usuario_id, product.id)
+                  }
                 >
                   Calificar
                 </Button>
@@ -69,7 +93,7 @@ const OrderDetail = () => {
           <li>
             <strong>Estado del pago: </strong> {ordenDetail.estado_pago}
           </li>
-          <li className="border-t-2 border-slate-900">
+          <li className="border-t-2 border-slate-900 text-center">
             <strong>Total: </strong> $ {ordenDetail.coste_total}
           </li>
         </ul>

@@ -7,6 +7,7 @@ export const userSlice = createSlice({
     user: {},
     ordenes: [],
     ordenDetail: {},
+    existeReview: {},
   },
   reducers: {
     allUsers: (state, { payload }) => {
@@ -30,6 +31,9 @@ export const userSlice = createSlice({
     ordenDetail: (state, action) => {
       state.ordenDetail = action.payload;
     },
+    existeReview: (state, action) => {
+      state.existeReview = action.payload;
+    },
   },
 });
 
@@ -40,5 +44,6 @@ export const {
   resetState,
   allOrders,
   ordenDetail,
+  existeReview,
 } = userSlice.actions;
 export default userSlice.reducer;
