@@ -27,7 +27,7 @@ import {
   getTopCommentsByProduct,
 } from "@/redux/productosActions";
 import { addProductLS } from "@/redux/carritoSlice";
-import { addProductInDB } from "@/redux/carritoActions";
+import { addProductInDB, getCartFromDB } from "@/redux/carritoActions";
 import ShowReviews from "../Reviews/ShowReviews";
 import TopComments from "../Reviews/TopComments";
 
@@ -70,6 +70,9 @@ const ProductDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const product = useSelector((state) => state.productos.detail);
+  const cart = user.accessToken
+    ? useSelector((state) => state.carrito.cartDB)
+    : useSelector((state) => state.carrito.cartLS);
   let stock = product.stock;
 
   const handleQuantityChange = ({ target }) => {
@@ -108,7 +111,15 @@ const ProductDetail = () => {
       item.compra_cantidad = 1;
     }
 
-    if (item.compra_cantidad > cantidad) {
+    const find = cart?.find((prod) => {
+      return prod.compra_color.toLowerCase() === item.compra_color;
+    });
+    let cantidad2 = 0;
+    if (find) {
+      cantidad2 = user.accessToken ? find.compra_cantidad : find.quantity;
+    }
+
+    if (cantidad2 + item.compra_cantidad > cantidad) {
       Toast.fire({
         icon: "error",
         title: "La cantidad excede el stock.",
@@ -153,7 +164,7 @@ const ProductDetail = () => {
       setAnchoPantalla(window.innerWidth);
     };
     window.addEventListener("resize", manejarCambiosDeAncho);
-
+    dispatch(getCartFromDB(userGlobalState.usuario_id));
     return () => {
       window.removeEventListener("resize", manejarCambiosDeAncho);
     };
