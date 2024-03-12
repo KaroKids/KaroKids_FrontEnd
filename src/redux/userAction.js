@@ -1,9 +1,16 @@
 import axios from "axios";
 
-import { allUsers, UserByEmail, UserPut, allOrders } from "./userSlice.js";
+import {
+  allUsers,
+  UserByEmail,
+  UserPut,
+  allOrders,
+  ordenDetail,
+} from "./userSlice.js";
 
 const URL_USERS = import.meta.env.VITE_URL_USERS;
 const URL_ORDERS = import.meta.env.VITE_URL_ORDENES;
+const URL_REVIEWS = import.meta.env.VITE_URL_REVIEWS;
 
 export const getAllUsers = () => {
   return async (dispatch) => {
@@ -82,6 +89,29 @@ export const getAllOrders = (id) => {
       const { data } = await axios.get(`${URL_ORDERS}/${id}`);
 
       return dispatch(allOrders(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const getOrderById = (orden_id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`${URL_ORDERS}/detail/${orden_id}`);
+
+      return dispatch(ordenDetail(data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const createReview = (body) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`${URL_REVIEWS}`, body);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
