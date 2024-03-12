@@ -108,9 +108,9 @@ const EditProduct = ({producto_id}) => {
                         });
                     }
                 };
+				const [data, setData] = useState(initData);  
                 
              // console.log('init data',initData)
-              const [data, setData] = useState(initData);  
              // console.log('data', data) 
    // const product = useSelector((state) => state.productos.detail);
 	const Toast = Swal.mixin({

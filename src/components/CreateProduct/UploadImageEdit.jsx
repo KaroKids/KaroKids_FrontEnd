@@ -28,13 +28,7 @@ const UploadImage = ({
 		console.log('imag secundarias',imagSecundarias)
 	}, [data.imagenes_secundarias]);
 	
-	useEffect(() => {
-		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {
-			console.log("pushea de nuevo")
-			setImagSecundarias(data.imagenes_secundarias);
-		}
-		console.log('imag secundarias',imagSecundarias)
-	}, [data.imagenes_secundarias]);
+	
 
 	//Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
 	useEffect(() => {
