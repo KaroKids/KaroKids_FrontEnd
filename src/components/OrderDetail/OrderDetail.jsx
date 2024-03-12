@@ -1,0 +1,87 @@
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Button } from "../ui/button";
+import OrderModal from "./OrderModal";
+
+const OrderDetail = () => {
+  const ordenDetail = useSelector((state) => state.users.ordenDetail);
+  const [isRatingModalOpen, setRatingModalOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+
+  const handleModal = (producto_id) => {
+    setSelectedProductId(producto_id);
+    setRatingModalOpen(true);
+  };
+
+  useEffect(() => {
+    console.log(ordenDetail);
+  }, [ordenDetail]);
+
+  const fecha = new Date(ordenDetail.createdAt);
+  const opciones = { year: "numeric", month: "long", day: "numeric" };
+  const fechaFixed = fecha.toLocaleDateString("es-ES", opciones);
+  return (
+    <section className="h-screen px-2 pt-28 flex gap-x-10 justify-center items-start">
+      <div className="flex flex-col gap-y-4">
+        {ordenDetail ? (
+          ordenDetail &&
+          ordenDetail?.productos_compra.map((product) => {
+            return (
+              <article className="bg-slate-100 flex flex-col md:flex-row items-center gap-4 px-4 py-2 rounded-md shadow-md shadow-slate-400">
+                <img
+                  className="w-32 rounded-lg"
+                  src={product.picture_url}
+                  alt={product.title}
+                />
+                <div className="flex flex-col gap-y-2">
+                  <h3>{product.title}</h3>
+                  <p className="flex flex-col items-center">
+                    <strong>Cantidad:</strong> {product.quantity}
+                  </p>
+                  <p className="flex flex-col items-center">
+                    <strong>Precio p/u:</strong> {product.unit_price}
+                  </p>
+                </div>
+                <Button
+                  variant="detail"
+                  onClick={() => handleModal(product.id)}
+                >
+                  Calificar
+                </Button>
+              </article>
+            );
+          })
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </div>
+      <div className="bg-slate-100 p-4 rounded-md shadow-md shadow-slate-400">
+        <h2 className="mb-3 text-center font-bold underline">
+          Resumen de pago
+        </h2>
+        <ul className="flex flex-col gap-y-2">
+          <li>
+            <strong>Fecha de compra: </strong> {fechaFixed}
+          </li>
+          <li>
+            <strong>Metodo de pago: </strong> {ordenDetail.metodo_pago}
+          </li>
+          <li>
+            <strong>Estado del pago: </strong> {ordenDetail.estado_pago}
+          </li>
+          <li className="border-t-2 border-slate-900">
+            <strong>Total: </strong> $ {ordenDetail.coste_total}
+          </li>
+        </ul>
+      </div>
+      <OrderModal
+        isOpen={isRatingModalOpen}
+        onClose={() => setRatingModalOpen(false)}
+        usuario_id={ordenDetail.usuario_id}
+        producto_id={selectedProductId}
+      />
+    </section>
+  );
+};
+
+export default OrderDetail;
