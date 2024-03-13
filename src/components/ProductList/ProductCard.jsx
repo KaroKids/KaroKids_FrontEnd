@@ -80,17 +80,17 @@ const ProductCard = ({ id, name, imageAlt, imageSrc, price, myFavorites }) => {
   let fixedPrice = priceArray.join("");
 
   return (
-    <div key={id} className="group relative">
-      <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7">
+    <div key={id}>
+      <div className="w-full overflow-hidden rounded-lg relative">
         <img
           src={imageSrc}
           alt={imageAlt}
           onClick={() => handleClick(id)}
-          className="h-52 md:h-auto aspect-square rounded-lg object-cover object-center hover:opacity-75 cursor-pointer"
+          className="h-auto w-full aspect-square rounded-lg object-cover object-center hover:opacity-75 cursor-pointer"
         />
         <button
           onClick={handleFavorite}
-          className="absolute top-0 right-0  p-2 "
+          className="absolute top-2 right-2 sm:top-2 sm:right-2"
         >
           {isFav && auth.user ? (
             <img

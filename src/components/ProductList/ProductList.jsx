@@ -144,7 +144,7 @@ export default function ProductList() {
               <h2>No se encontraron resultados</h2>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <div className="grid grid-cols-2 gap-x-5 sm:gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {!loading // Corrección: Cambiado !loading por loading
                 ? [1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
                     <div key={index} className="animate-pulse">
