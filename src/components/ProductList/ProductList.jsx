@@ -101,7 +101,7 @@ export default function ProductList() {
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
-  }, []);
+  }, [productos.volver]);
 
   useEffect(() => {
     if (ordernarPor !== 0) {
@@ -139,7 +139,7 @@ export default function ProductList() {
             </Button>
           </div>
 
-          {productos?.productos.length === 0 ? (
+          {loading && productos?.productos.length === 0 ? (
             <div className="h-[30vh] flex items-center justify-center text-center text-xl fold-semibold">
               <h2>No se encontraron resultados</h2>
             </div>

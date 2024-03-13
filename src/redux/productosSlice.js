@@ -11,7 +11,6 @@ export const productosSlice = createSlice({
     totalPaginas: 0,
     isFilteringActive: false,
     filtros: {},
-
     rating: [],
     comments: [],
   },
