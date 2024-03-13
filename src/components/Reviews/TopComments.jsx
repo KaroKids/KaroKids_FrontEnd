@@ -12,8 +12,9 @@ const TopComments = () => {
   };
 
   return (
+    
     <section className="w-full text-left pt-4">
-      <h3 className="text-2xl font-bold">Opiniones destacadas</h3>
+    {comments && comments.length > 0 && (<h3 className="text-2xl font-bold">Opiniones destacadas</h3>)} 
       <article>
         {Array.isArray(comments) &&
           comments?.map((comment) => {
@@ -45,14 +46,19 @@ const TopComments = () => {
             );
           })}
       </article>
+    {comments && comments.length >= 3 && (
       <span
         onClick={allCommentsHandler}
         className="text-sm text-sky-500 cursor-pointer"
       >
         Ver todos los comentarios...
       </span>
+      ) 
+  }
     </section>
+    
   );
+  
 };
 
 export default TopComments;
