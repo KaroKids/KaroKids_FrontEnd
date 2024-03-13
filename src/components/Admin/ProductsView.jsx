@@ -427,7 +427,7 @@ export default function ProductList() {
 											{product.nombre}
 										</div>
 										<div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">
-											{product.genero}
+											{product.genero==='universal' ? 'Unisex' : product.genero}
 										</div>
 										<div className="table-cell px-6 py-4 whitespace-nowrap max-w-12 overflow-hidden text-ellipsis">
 											{saldoStock(product.stock)}

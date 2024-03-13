@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import validation from "../../utils/validation";
 import { Link } from "react-router-dom";
 import { postProduct } from "@/redux/productosActions";
@@ -7,6 +7,8 @@ import UploadImage from "../UploadImage/UploadImage";
 import Swal from "sweetalert2";
 import spinner from "/assets/images/spinner.svg";
 import { numeroEnPalabras } from "@/utils/numerosEnPalabras";
+import Colores from "./Colores";
+import coloresTailwind from "@/utils/coloresTailwind";
 
 import { numberMask, numberMaskUnit } from "@/utils/numberMask";
 
@@ -57,12 +59,12 @@ const CreateProduct = () => {
 		msgData: "",
 	});
 
-	const [newStock, setNewStock] = useState({
-		size: "",
-		color: "",
-		cantidad: 1,
-		total: 0,
-	});
+	const newStockInit =  {size: "",
+	color: "",
+	cantidad: 1,
+	total: 0}
+
+    const [newStock, setNewStock] = useState(newStockInit);
 
 	const handleChange = (e) => {
 		const property = e.target.name;
@@ -194,12 +196,7 @@ const CreateProduct = () => {
 		setErrors(validation(data, newStock));
 	}, [data]);
 
-	// useEffect(() => {
-	//   // Realizar la validación solo cuando el usuario interactúe con el formulario
-	//   if (Object.keys(errors).length === 0) {
-	//     setErrors(validation(data, newStock));
-	//   }
-	// }, [data]);
+	
 	useEffect(() => {
 		if (limpiar === true || limpiar === false) {
 			setLimpio(true);
@@ -212,6 +209,15 @@ const CreateProduct = () => {
 			setErrors(validation(data, newStock));
 		}
 	}, [data]);
+
+	const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => (
+	 
+		<option key={key} value={key}>
+		  {value.front}
+		</option>
+	  ));
+
+	 
 	return (
 		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8  ">
 			<div
@@ -365,7 +371,7 @@ const CreateProduct = () => {
 								<option value="">Seleccionar Género</option>
 								<option value="chico">Chico (Niño)</option>
 								<option value="chica">Chica (Niña)</option>
-								<option value="universal">Universal</option>
+								<option value="universal">Unisex</option>
 							</select>
 						</div>
 						{errors?.genero && (
@@ -481,12 +487,8 @@ const CreateProduct = () => {
 							value={newStock.color}
 							onChange={handleNewStockChange}
 							className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-							<option value="">Selecciona un color</option>
-							<option value="red">Rojo</option>
-							<option value="blue">Azul</option>
-							<option value="black">Negro</option>
-							<option value="azul">Azul</option>
-							<option value="pink">Pink</option>
+							 <option selected value="">Selecciona un color</option>
+							{opcionesColores}
 						</select>
 						{errors && errors.stock && errors.stock[1]?.color && (
 							<p className="mt-1 text-left text-sm text-red-500">
@@ -531,42 +533,80 @@ const CreateProduct = () => {
 						Agregar
 					</button>
 				</div>
-				<div className="w-full mt-5  divide-y-2 divide-gray-100 overflow-y-auto max-h-[150px]">
-					<span
-						htmlFor="itemsAgregados"
-						className="text-sm mt-7  font-semibold leading-6 text-gray-900">
-						Items agregados:
-					</span>
-					{Object.keys(data.stock).map((size) => (
-						<div key={size} className="overflow-y-[50px] max-h-[150px]">
-							<h3>
-								Talla: <span className="font-bold">{size}</span>
-							</h3>
-							<ul className="border-t border-gray-100">
-								{data.stock[size].map((item, index) => (
-									<div key={index}>
-										<span>
-											{" "}
-											Color:{" "}
-											<span className={`text-${item.color}-500 font-bold`}>
-												{item.color.charAt(0).toUpperCase() +
-													item.color.slice(1)}
-											</span>{" "}
-											- Cantidad:{" "}
-											<span className="font-bold">
-												{numberMaskUnit(item.cantidad)}
-											</span>
-										</span>
-									</div>
-								))}
-							</ul>
-						</div>
-					))}
-				</div>
+				<div className="w-full mt-5">
+    <span htmlFor="itemsAgregados" className="text-sm mt-7 font-semibold leading-6 text-gray-900">
+        Items agregados:
+    </span>
+    <table className="mt-3 w-full border-collapse border border-gray-200">
+        <thead>
+            <tr className="bg-gray-100">
+                <th className="py-2 px-4 border border-gray-200">Talla</th>
+                <th className="py-2 px-4 border border-gray-200">Color</th>
+                <th className="py-2 px-4 border border-gray-200">Cantidad</th>
+                <th className="py-2 px-4 border border-gray-200"></th> {/* Espacio para el botón de eliminar */}
+            </tr>
+        </thead>
+        <tbody>
+            {Object.keys(data.stock).map((size) => (
+                <Fragment key={size}>
+                   
+				 
+                    {data.stock[size].map((item, index) => (
+                        <tr key={index}>
+						 
+                        <td className="py-2 px-4 border text-center border-gray-200 font-bold ">{size}</td>
+                     
+                            <td className="text-center border border-gray-200"> 
+							 
+								 <Colores key={index} color={item.color} />
+									
+							</td>
+                            <td className="py-2 px-4 border border-gray-200 text-center">
+                                <input
+                                    className="ring-1 ring-blue-400 ring-inset pl-2 w-[80px]"
+                                    type="number"
+                                    value={item.cantidad}
+                                    onChange={(e) => {
+                                        const newValue = parseInt(e.target.value);
+                                        const updatedStock = { ...data.stock };
+                                        updatedStock[size][index].cantidad = newValue;
+                                        setData({ ...data, stock: updatedStock });
+                                    }}
+                                />
+                            </td>
+                            <td className="py-2 px-4 border border-gray-200 text-red-500  text-center">
+                                <button
+                                 type="button"
+								 onClick={() => {
+									 const updatedStock = { ...data.stock};
+									 updatedStock[size].splice(index, 1);
+									 
+									 if (updatedStock[size].length === 0) {
+										 delete updatedStock[size];
+										 setNewStock(newStockInit)
+										 
+									 }
+									 
+									 setData({ ...data, stock: updatedStock });
+									 
+									 // Actualizar el estado con el nuevo stock
+								 }}
+							 >
+								 X
+							 </button>
+                            </td>
+                        </tr>
+                    ))}
+                </Fragment>
+            ))}
+        </tbody>
+    </table>
+</div>
+
 				{/* Mostrar el total */}
 				<div className="mt-3 border pr-2 pl-2">
 					<span className="font-semibold">Total items:</span>{" "}
-					<span className="font-bold">{numberMask(newStock.total)} </span>
+					<span className="font-bold">{numberMaskUnit(newStock.total)} </span>
 					<span className="font-thin font-italic">
 						{" "}
 						-{" "}
