@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+import { convertFromHeic } from "@/utils/convertFromHeic";
+import spinner from '/assets/images/spinner.svg';
+
 
 const UploadImage = ({
 	onGetImagenPrincipal,
@@ -11,7 +14,8 @@ const UploadImage = ({
 }) => {
 	const [imagenPrincipal, setImagenPrincipal] = useState([]);
 	const [imagSecundarias, setImagSecundarias] = useState([]);
-	const [loadingImage, setloadingImage] = useState(false);
+	const [loadingPcplImage, setloadingPcplImage] = useState(false);
+	const [loadingSndImage, setloadingSndImage] = useState(false);
 
   //Carga la imagen primaria
 	useEffect(() => {
@@ -22,24 +26,18 @@ const UploadImage = ({
 
 	//Carga las imagenes secundarias
 	useEffect(() => {
-		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {
-			 
+		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {			 
 			setImagSecundarias(data.imagenes_secundarias);
-			
 		}
-	 
-
 	}, [data.imagenes_secundarias]);
 	
-
 	//Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
 	useEffect(() => {
-
 		if (imagenPrincipal[0] !== undefined) {
 			onGetImagenPrincipal(imagenPrincipal[0]);
 		}
-		
 		//setImagenPrincipal([data.imagen_principal])
+		setloadingPcplImage(false);
 	}, [imagenPrincipal]);
 
 	useEffect(() => {
@@ -48,25 +46,8 @@ const UploadImage = ({
 			let i = imagSecundarias.length - 1;
 			onGetImagSecundarias(imagSecundarias[i]);
 		}
-	 
+		setloadingSndImage(false);
 	}, [imagSecundarias]);
-
-	//Funciones almacenan los valores de previsualización de los archivos cargados por el usuario.
-	const previewImagenPrincipal = (e) => {
-		const type = "imgPrincipal";
-
-		const selectedImage = e.target.files[0];
-
-		previewFiles(selectedImage, type);
-	};
-
-	const previewImagSecundarias = (e) => {
-		const type = "imgSecundarias";
-
-		const selectedImage = e.target.files[0];
-
-		previewFiles(selectedImage, type);
-	};
 
 	// Función para convertir los archivos previsulizados a Base64 y actualizar los estados ImagSecundarias y/o ImagenPrincipal.
 	function previewFiles(file, type) {
@@ -80,9 +61,33 @@ const UploadImage = ({
 			if (type === "imgSecundarias") {
 			    setImagSecundarias([...imagSecundarias, reader.result]);
 			  }
-			  
 		};
 	}
+
+	//Funciones que almacenan los valores de previsualización de los archivos cargados por el usuario.
+	const previewImagenPrincipal = async (e) => {
+		setloadingPcplImage(true);
+		const type = "imgPrincipal";
+		const selectedImage = e.target.files[0];
+
+		// Conversión de las imágenes en formato HEIC a formato JPEG.
+		let conversionResult = await convertFromHeic(selectedImage);
+		console.log('Imagen principal convertida: ', conversionResult)
+	
+		previewFiles(conversionResult, type);
+	};
+
+	const previewImagSecundarias = async (e) => {
+		setloadingSndImage(true);
+		const type = "imgSecundarias";
+		const selectedImage = e.target.files[0];
+
+		// Conversión de las imágenes en formato HEIC a formato JPEG.
+		let conversionResult = await convertFromHeic(selectedImage);
+		console.log('Imagen secundaria convertida: ', conversionResult)
+
+		previewFiles(conversionResult, type);
+	};
 	
 	const eliminarImagenSecundaria = (index) => {
         const nuevasImagSecundarias = imagSecundarias.filter((_, i) => i !== index);
@@ -135,9 +140,15 @@ const UploadImage = ({
 							<label
 								htmlFor="imagenPrincipal"
 								className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-								<span className="flex justify-center text-center">
-									Subir la foto
-								</span>
+								{(!loadingPcplImage) ? (<span className="flex justify-center text-center">
+									Cambiar foto
+									</span>) : (
+									<img 
+										src={spinner} 
+										alt="Loading..." 
+										className=" bg-transparent rounded-lg mx-auto inset-1 flex items-center justify-center   w-8 h-8"
+									/>
+								)}
 								<input
 									id="imagenPrincipal"
 									onChange={previewImagenPrincipal}
@@ -146,7 +157,7 @@ const UploadImage = ({
 									className="sr-only"
 								/>
 							</label>
-							<p className="pl-1">click para subir la foto</p>
+							<p className="pl-2">Click para subir la foto</p>
 						</div>
 						<p className="flex flex-col text-xs leading-5 text-gray-600">
 							PNG, JPG, GIF hasta 1 MB
@@ -203,9 +214,15 @@ const UploadImage = ({
 							<label
 								htmlFor="imagSecundarias"
 								className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-								<span className="flex justify-center text-center">
-									Subir la foto
-								</span>
+								{(!loadingSndImage) ? (<span className="flex justify-center text-center">
+									Añadir fotos
+									</span>) : (
+									<img 
+										src={spinner} 
+										alt="Loading..." 
+										className=" bg-transparent rounded-lg mx-auto inset-1 flex items-center justify-center   w-8 h-8"
+									/>
+								)}
 								<input
 									id="imagSecundarias"
 									onChange={previewImagSecundarias}
@@ -214,7 +231,7 @@ const UploadImage = ({
 									className="sr-only"
 								/>
 							</label>
-							<p className="pl-1">click para subir foto</p>
+							<p className="pl-2">Click para subir foto</p>
 						</div>
 						<p className="flex flex-col text-xs leading-5 text-gray-600">
 							PNG, JPG, GIF hasta 1 MB
