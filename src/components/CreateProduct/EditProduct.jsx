@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import validation from "@/utils/validation";
 import { Link, useParams } from "react-router-dom";
 import { editProduct } from "@/redux/productosActions";
@@ -9,7 +9,8 @@ import spinner from "/assets/images/spinner.svg";
 import { numeroEnPalabras } from "@/utils/numerosEnPalabras";
 import { numberMask, numberMaskUnit } from "@/utils/numberMask";
 import axios from "axios";
- 
+import Colores from "./Colores";
+import coloresTailwind from "@/utils/coloresTailwind";
 
 const URL_PRODUCT = import.meta.env.VITE_URL_PRODUCT;
 
@@ -50,12 +51,13 @@ const EditProduct = () => {
         msgData: "",
     });
     
-    const [newStock, setNewStock] = useState({
-        size: "",
-        color: "",
-        cantidad: 1,
-        total: 0,
-    });
+	const newStockInit =  {size: "",
+	color: "",
+	cantidad: 1,
+	total: 0}
+
+    const [newStock, setNewStock] = useState(newStockInit);
+
     const getProductDetailById = async (producto_id) => {
         try {
 
@@ -114,7 +116,7 @@ const EditProduct = () => {
 				const [data, setData] = useState(initData);  
                 
              // console.log('init data',initData)
-             // console.log('data', data) 
+              console.log('data', data) 
    // const product = useSelector((state) => state.productos.detail);
 	const Toast = Swal.mixin({
 		toast: true,
@@ -306,10 +308,16 @@ const EditProduct = () => {
                 }));
             });
         });
+		 
     }, [data]);
     
-    
-    
+
+
+const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => (
+	<option key={key} value={key}>
+		{value.front}
+	</option>
+));
     
 	return (
 		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8 mt-6 ">
@@ -469,7 +477,7 @@ const EditProduct = () => {
 								<option value="">Seleccionar Género</option>
 								<option value="chico">Chico (Niño)</option>
 								<option value="chica">Chica (Niña)</option>
-								<option value="universal">Universal</option>
+								<option value="universal">Unisex</option>
 							</select>
 						</div>
 						{errors?.genero && (
@@ -585,12 +593,8 @@ const EditProduct = () => {
 							value={newStock.color}
 							onChange={handleNewStockChange}
 							className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-							<option value="">Selecciona un color</option>
-							<option value="red">Rojo</option>
-							<option value="blue">Azul</option>
-							<option value="black">Negro</option>
-							<option value="azul">Azul</option>
-							<option value="pink">Pink</option>
+							 <option selected value="">Selecciona un color</option>
+							{opcionesColores}
 						</select>
 						{errors && errors.stock && errors.stock[1]?.color && (
 							<p className="mt-1 text-left text-sm text-red-500">
@@ -636,37 +640,77 @@ const EditProduct = () => {
 					</button>
 				</div>
 				<div className="w-full mt-5  divide-y-2 divide-gray-100 overflow-y-auto max-h-[150px]">
-					<span
-						htmlFor="itemsAgregados"
-						className="text-sm mt-7  font-semibold leading-6 text-gray-900">
-						Items agregados:
-					</span>
-					{Object.keys(data.stock).map((size) => (
-						<div key={size} className="overflow-y-[50px] max-h-[150px]">
-							<h3>
-								Talla: <span className="font-bold">{size}</span>
-							</h3>
-							<ul className="border-t border-gray-100">
-								{data.stock[size].map((item, index) => (
-									<div key={index}>
-										<span>
-											{" "}
-											Color:{" "}
-											<span className={`text-${item.color}-500 font-bold`}>
-												{item.color.charAt(0).toUpperCase() +
-													item.color.slice(1)}
-											</span>{" "}
-											- Cantidad:{" "}
-											<span className="font-bold">
-												{numberMaskUnit(item.cantidad)}
-											</span>
-										</span>
-									</div>
-								))}
-							</ul>
-						</div>
-					))}
-				</div>
+    <span
+        htmlFor="itemsAgregados"
+        className="text-sm mt-7  font-semibold leading-6 text-gray-900">
+        Items agregados:
+    </span>
+	<table className="mt-3 w-full border-collapse border border-gray-200">
+        <thead>
+            <tr className="bg-gray-100">
+                <th className="py-2 px-4 border border-gray-200">Talla</th>
+                <th className="py-2 px-4 border border-gray-200">Color</th>
+                <th className="py-2 px-4 border border-gray-200">Cantidad</th>
+                <th className="py-2 px-4 border border-gray-200"></th> {/* Espacio para el botón de eliminar */}
+            </tr>
+        </thead>
+        <tbody>
+            {Object.keys(data.stock).map((size) => (
+                <Fragment key={size}>
+                   
+				 
+                    {data.stock[size].map((item, index) => (
+                        <tr key={index}>
+						 
+                        <td className="py-2 px-4 border text-center border-gray-200 font-bold ">{size}</td>
+                     
+                            <td className="text-center border border-gray-200"> 
+							 
+								 <Colores key={index} color={item?.color} />
+									
+							</td>
+                            <td className="py-2 px-4 border border-gray-200 text-center">
+                                <input
+                                    className="ring-1 ring-blue-400 ring-inset pl-2 w-[80px]"
+                                    type="number"
+                                    value={item.cantidad}
+                                    onChange={(e) => {
+                                        const newValue = parseInt(e.target.value);
+                                        const updatedStock = { ...data.stock };
+                                        updatedStock[size][index].cantidad = newValue;
+                                        setData({ ...data, stock: updatedStock });
+                                    }}
+                                />
+                            </td>
+                            <td className="py-2 px-4 border border-gray-200 text-red-500  text-center">
+                                <button
+                                 type="button"
+								 onClick={() => {
+									 const updatedStock = { ...data.stock};
+									 updatedStock[size].splice(index, 1);
+									 
+									 if (updatedStock[size].length === 0) {
+										 delete updatedStock[size];
+										 setNewStock(newStockInit)
+										 
+									 }
+									 
+									 setData({ ...data, stock: updatedStock });
+									 
+									 // Actualizar el estado con el nuevo stock
+								 }}
+							 >
+								 X
+							 </button>
+                            </td>
+                        </tr>
+                    ))}
+                </Fragment>
+            ))}
+        </tbody>
+    </table>
+</div>
+
 				{/* Mostrar el total */}
 				<div className="mt-3 border pr-2 pl-2">
 					<span className="font-semibold">Total items:</span>{" "}

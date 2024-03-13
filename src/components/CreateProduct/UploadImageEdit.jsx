@@ -177,12 +177,13 @@ const UploadImage = ({
 						{imagSecundarias.map((imageUrl, index) => (
 							<div key={index} className="relative">
 								<img
-									className="lg:h-25 lg:w-40  rounded-lg object-cover object-center cursor-pointer"
+									className="lg:h-25 lg:w-40  rounded-lg object-cover object-center "
 									src={imageUrl}
 									alt={`Imagen ${index + 1}`}
-									onClick={() => eliminarImagenSecundaria(index)}
+									 
 								/>
 								<button
+								    type="button"
 									className="absolute top-2 right-2 bg-white text-red-500 rounded-full p-1"
 									onClick={() => eliminarImagenSecundaria(index)}
 								>

@@ -3,7 +3,6 @@
   import Orders from './Orders'
   import axios from 'axios'
   import { useState, useEffect } from 'react';
-  import { useDispatch, useSelector } from "react-redux";
   import clsx from 'clsx';
   import UsersView from './UsersView';
   import orderImg from '/assets/e-commerce/orders.svg'
@@ -30,7 +29,7 @@
       try {
         const response = await axios.get(URL_ORDENES);
         if (response && response.data) {
-          setTotalOrdenes(response.data.length);
+          setTotalOrdenes(response.data.elementosPaginados.length);
           setLoading(false);
         }
       } catch (error) {
@@ -81,7 +80,7 @@
 }, []);
   
      const stats = [
-       { id: 1, name: 'Ordenes de compra', value: `+ ${totalOrdenes}`, component:<Orders handleMenuSelect={handleMenuSelect}  updateMenuSelected={updateMenuSelected}/>,menu:'Productos', link:'/admin/orders' } ,
+       { id: 1, name: 'Ordenes de compra', value: `+ ${totalOrdenes ? totalOrdenes :0}`, component:<Orders handleMenuSelect={handleMenuSelect}  updateMenuSelected={updateMenuSelected}/>,menu:'Productos', link:'/admin/orders' } ,
        { id: 2, name: 'Clientes registrados', value: `+ ${users.length}` , component:<UsersView handleMenuSelect={handleMenuSelect}  updateMenuSelected={updateMenuSelected}/>,menu:'Usuarios', link:'/admin/users' },
        { id: 3, name: 'Productos disponibles', value: `+ ${productos.elementosPaginados?.length * productos?.totalPaginas}`, component:<ProductsView handleMenuSelect={handleMenuSelect}  updateMenuSelected={updateMenuSelected}/>,menu:'Productos', link:'/admin/products' },
      ]

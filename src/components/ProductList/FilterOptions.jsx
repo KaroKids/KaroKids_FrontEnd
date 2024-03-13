@@ -9,6 +9,7 @@ import {
 } from "@/redux/productosActions";
 
 import { useLocation } from "react-router-dom";
+import coloresTailwind from "@/utils/coloresTailwind";
 
 function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
   const [filters, setFilters] = useState({});
@@ -51,6 +52,13 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
   useEffect(() => {
     handleApplyFilters(filters);
   }, [filters]);
+
+  const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => (
+	 
+		<option key={key} value={key}>
+		  {value.front}
+		</option>
+	  ));
 
   return (
     <div
@@ -118,9 +126,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
             <option value="" defaultValue>
               COLOR
             </option>
-            <option value="red">ROJO</option>
-            <option value="blue">AZUL</option>
-            <option value="green">VERDE</option>
+            {opcionesColores}
           </select>
 
           <select
