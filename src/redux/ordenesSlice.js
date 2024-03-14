@@ -7,6 +7,7 @@ export const ordenesSlice = createSlice({
     paginaActual: 1,
     totalPaginas: 0,
     filtros: {},
+    detail: {},
   },
   reducers: {
     allOrdenes: (state, action) => {
@@ -25,9 +26,12 @@ export const ordenesSlice = createSlice({
       state.totalPaginas = action.payload.totalPaginas;
       state.filtros = action.payload.filtros;
     },
+    getOrdById: (state, action) => {
+      state.detail = { ...action.payload };
+    },
   },
 });
 
-export const { allOrdenes, ordenesByName, ordenesByFilters } =
+export const { allOrdenes, ordenesByName, ordenesByFilters, getOrdById } =
   ordenesSlice.actions;
 export default ordenesSlice.reducer;
