@@ -6,8 +6,12 @@ import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import generarPedidoJson from "@/utils/pedidosJSON";
+import { useNavigate } from "react-router-dom";
+
 
 const Cart = () => {
+  const navigate =useNavigate()
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -47,7 +51,35 @@ const Cart = () => {
       console.log(error);
     }
   };
+  
+  const handleWsp = async ()=>{
+  
+    const response = await axios.get(`http://localhost:3001/carritos/${userLogued.usuario_id}`)
+    function encodePedido(pedido) {
+      let encodedPedido = encodeURIComponent(pedido);
+      encodedPedido = encodedPedido.replace(/%2C/g, "%0A");
+      return encodedPedido;
+    }
+    
+const pedidojson = await generarPedidoJson(response.data.productos_compra)
+const aux = JSON.stringify(pedidojson)
+let removed = aux
+let array = removed.split("{")
+removed = array.join("")
+array = removed.split("}")
+removed = array.join("")
+array = removed.split('"')
+removed = array.join(" ")
+array = removed.split('=')
+removed = array.join(",")
+let encodedProductos = await encodePedido(removed);
+const phoneNumber = '5492216700210';
+const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
 
+//console.log(whatsappLink);
+
+    window.location.href = whatsappLink
+  }
   const handleMp = async () => {
     if (userLogued.usuario_id !== undefined) {
       const id = await createPreference();
@@ -102,6 +134,13 @@ const Cart = () => {
           </div>
           {anchoPantalla < 1024 ? (
             <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-xl z-50">
+              <Button  
+              variant="detail"
+              className="w-full"
+              onClick={handleWsp}
+              >
+                wasap
+              </Button>
               <Button variant="detail" className="w-full" onClick={handleMp}>
                 Completar compra
               </Button>
@@ -111,7 +150,15 @@ const Cart = () => {
             </div>
           ) : (
             <>
+            
               <div className="w-full">
+             <Button  
+              variant="detail"
+              className="w-full"
+              onClick={handleWsp}
+              >
+                wasap
+              </Button>
                 <Button
                   variant="detail"
                   className="w-full"
