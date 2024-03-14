@@ -3,6 +3,7 @@ import productos from "./productosSlice.js";
 import carrito from "./carritoSlice.js";
 import users from "./userSlice.js";
 import favorites from "./favoritosSlice.js";
+import ordenes from "./ordenesSlice.js";
 
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   carrito: carrito,
   users: users,
   favorites: favorites,
+  ordenes: ordenes,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
