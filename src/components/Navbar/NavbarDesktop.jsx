@@ -92,7 +92,9 @@ const NavbarDesktop = () => {
               alt="Logo usuarios"
               className="w-6 h-6"
             />
-            <p className="text-xs text-nowrap xl:text-sm ">Hola, {userName}</p>
+            <p className="text-xs text-nowrap xl:text-sm mr-2  ">
+              Hola, {userName}
+            </p>
           </li>
         ) : (
           <li

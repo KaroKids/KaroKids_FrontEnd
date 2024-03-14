@@ -101,7 +101,7 @@ export default function ProductList() {
       ? dispatch(getAllProducts())
       : dispatch(modifyVolverFunc(0));
     window.scroll(0, 0);
-  }, []);
+  }, [productos.volver]);
 
   useEffect(() => {
     if (ordernarPor !== 0) {
@@ -139,12 +139,12 @@ export default function ProductList() {
             </Button>
           </div>
 
-          {productos?.productos.length === 0 ? (
+          {loading && productos?.productos.length === 0 ? (
             <div className="h-[30vh] flex items-center justify-center text-center text-xl fold-semibold">
               <h2>No se encontraron resultados</h2>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            <div className="grid grid-cols-2 gap-x-5 sm:gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {!loading // Corrección: Cambiado !loading por loading
                 ? [1, 2, 3, 4, 5, 6, 7, 8].map((index) => (
                     <div key={index} className="animate-pulse">

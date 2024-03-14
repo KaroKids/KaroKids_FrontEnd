@@ -40,6 +40,9 @@ const Cart = () => {
 
   const createPreference = async () => {
     try {
+      const walletBrick = document.getElementById("walletBrick_container");
+      if (walletBrick) return false;
+
       const response = await axios.post(`${URL_PAYMENT}`, {
         user_id: userLogued.usuario_id,
         cart,
@@ -83,6 +86,7 @@ const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
   const handleMp = async () => {
     if (userLogued.usuario_id !== undefined) {
       const id = await createPreference();
+      console.log(id);
       if (id) {
         setPreferenceId(id);
       }
@@ -144,9 +148,12 @@ const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
               <Button variant="detail" className="w-full" onClick={handleMp}>
                 Completar compra
               </Button>
-              {preferenceId && userLogued.usuario_id && (
-                <Wallet initialization={{ preferenceId: preferenceId }} />
-              )}
+              {cart &&
+                cart.length > 0 &&
+                preferenceId &&
+                userLogued.usuario_id && (
+                  <Wallet initialization={{ preferenceId: preferenceId }} />
+                )}
             </div>
           ) : (
             <>
@@ -167,9 +174,12 @@ const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
                 >
                   Completar compra
                 </Button>
-                {preferenceId && userLogued.usuario_id && (
-                  <Wallet initialization={{ preferenceId: preferenceId }} />
-                )}
+                {cart &&
+                  cart.length > 0 &&
+                  preferenceId &&
+                  userLogued.usuario_id && (
+                    <Wallet initialization={{ preferenceId: preferenceId }} />
+                  )}
               </div>
             </>
           )}
