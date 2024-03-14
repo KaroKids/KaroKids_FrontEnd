@@ -197,7 +197,7 @@ const ProductDetail = () => {
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
-                      className=" w-auto h-full xl:h-full rounded-lg"
+                      className=" w-auto aspect-square h-full xl:h-full rounded-lg"
                     />
                   </Card>
                 </CarouselItem>
@@ -207,7 +207,7 @@ const ProductDetail = () => {
                       <img
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto h-full xl:h-full rounded-lg"
+                        className="w-auto aspect-square h-full xl:h-full rounded-lg"
                       />
                     </Card>
                   </CarouselItem>
