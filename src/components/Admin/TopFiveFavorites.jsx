@@ -33,7 +33,7 @@ export default function CompanyPerformance() {
             top:5
           }
             const response = await axios.get(`${URL_FAVORITES}/top`,body);
-            console.log(response.data)
+           // console.log(response.data)
   
             if (response.data) {
                 //setProductos(response.data);
