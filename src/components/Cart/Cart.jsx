@@ -37,6 +37,7 @@ const Cart = () => {
   });
 
   const URL_PAYMENT = import.meta.env.VITE_URL_PAYMENT;
+  const URL_CARRITO = import.meta.env.VITE_URL_CARIITO;
 
   const createPreference = async () => {
     try {
@@ -57,7 +58,7 @@ const Cart = () => {
   
   const handleWsp = async ()=>{
   
-    const response = await axios.get(`http://localhost:3001/carritos/${userLogued.usuario_id}`)
+    const response = await axios.get(`${URL_CARRITO}/${userLogued.usuario_id}`)
     function encodePedido(pedido) {
       let encodedPedido = encodeURIComponent(pedido);
       encodedPedido = encodedPedido.replace(/%2C/g, "%0A");
