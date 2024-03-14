@@ -115,8 +115,7 @@ const EditProduct = () => {
                 };
 				const [data, setData] = useState(initData);  
                 
-             // console.log('init data',initData)
-              console.log('data', data) 
+              
    // const product = useSelector((state) => state.productos.detail);
 	const Toast = Swal.mixin({
 		toast: true,

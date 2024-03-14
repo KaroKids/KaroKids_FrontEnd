@@ -4,16 +4,10 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import UserModal from "../User/UserModal";
 import { useSelector } from "react-redux";
+import navigation from "@/utils/navigationMenu";
 
 const NavBarDesktopDB = () => {
-  const navigation = [
-    // { name: 'Admin',  link:'/admin' },
-    { name: "Usuarios", link: "/admin/users" },
-    { name: "Registrar", link: "/admin/create" },
-    { name: "Productos", link: "/admin/products" },
-    { name: "Ordenes", link: "/admin/orders" },
-  ];
-
+ 
   const auth = useAuth();
   const { displayName, photoURL } = auth.user;
   const userName = displayName?.split(" ")[0];
@@ -129,6 +123,9 @@ const NavBarDesktopDB = () => {
             />
           </li>
         )}
+
+      
+      
       </ul>
 
       <Login
