@@ -7,11 +7,10 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import generarPedidoJson from "@/utils/pedidosJSON";
-import { useNavigate } from "react-router-dom";
+
 
 
 const Cart = () => {
-  const navigate =useNavigate()
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -37,7 +36,7 @@ const Cart = () => {
   });
 
   const URL_PAYMENT = import.meta.env.VITE_URL_PAYMENT;
-  const URL_CARRITO = import.meta.env.VITE_URL_CARIITO;
+  const URL_CARRITO = import.meta.env.VITE_URL_CARRITO;
 
   const createPreference = async () => {
     try {
