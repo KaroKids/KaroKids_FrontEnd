@@ -21,7 +21,9 @@ const Panel = () => {
 			try {
 				const response = await axios.get(URL_ORDENES);
 				if (response && response.data) {
-					setTotalOrdenes(response.data.elementosPaginados.length);
+					setTotalOrdenes(
+						response.data.elementosPaginados.length * response.data.totalPaginas
+					);
 					setLoading(false);
 				}
 			} catch (error) {
@@ -39,7 +41,7 @@ const Panel = () => {
 				const response = await axios.get(`${URL_USERS}`);
 				// Verificar si response.data es un array antes de asignarlo a users
 				if (Array.isArray(response.data.elementosPaginados)) {
-					setUsers(response.data.elementosPaginados);
+					setUsers(response.data);
 					setLoading(false);
 				} else {
 					console.log("La respuesta no es un array:", response.data);
@@ -80,7 +82,7 @@ const Panel = () => {
 		{
 			id: 2,
 			name: "Clientes registrados",
-			value: `+ ${users.length}`,
+			value: `+ ${users.elementosPaginados.length * users.totalPaginas}`,
 			menu: "Usuarios",
 			link: "/admin/users",
 		},
