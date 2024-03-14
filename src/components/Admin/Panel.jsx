@@ -1,8 +1,5 @@
-import ProductsView from './ProductsView'
-import Orders from './Orders'
 import axios from 'axios'
 import { useState, useEffect } from 'react';
-import UsersView from './UsersView';
 import spinner from '/assets/images/spinner.svg';
 import { NavLink } from 'react-router-dom';
 

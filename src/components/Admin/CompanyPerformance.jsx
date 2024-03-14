@@ -1,5 +1,6 @@
 
 import { Chart } from "react-google-charts";
+import axios from "axios";
  
   
 export const data = [

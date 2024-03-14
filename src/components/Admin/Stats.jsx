@@ -2,7 +2,7 @@ import CompanyPerformance from './CompanyPerformance';
 import TopFiveFavorites from './TopFiveFavorites'
 import TopFiveClientes from './TopFiveClientes';
 import Panel from './Panel';
-import TopProductos from './TopProductos';
+
 
   export default function Stats() {
 
