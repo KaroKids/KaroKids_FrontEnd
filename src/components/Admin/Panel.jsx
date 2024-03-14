@@ -1,10 +1,8 @@
-import ProductsView from "./ProductsView";
-import Orders from "./Orders";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import UsersView from "./UsersView";
-import spinner from "/assets/images/spinner.svg";
-import { NavLink } from "react-router-dom";
+import axios from 'axios'
+import { useState, useEffect } from 'react';
+import spinner from '/assets/images/spinner.svg';
+import { NavLink } from 'react-router-dom';
+
 
 const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
 const URL_USERS = import.meta.env.VITE_URL_USERS;
