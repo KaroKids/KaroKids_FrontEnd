@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import destacado from "/assets/images/destacado.svg";
 import noDestacado from "/assets/images/noDestacado.svg";
 import saldoStock from "@/utils/saldoStock";
-import EditProduct from "@/components/CreateProduct/EditProduct";
+ 
 
 import {
 	getAllProducts,

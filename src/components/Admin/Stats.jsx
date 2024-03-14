@@ -92,11 +92,11 @@
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <dl className="grid grid-cols-1 gap-x-8 shadow-xl hover:shadow-lg focus:outline-none  border py-12 rounded-md justify-between sm: gap-y-6 lg:gap-y-16 text-center lg:grid-cols-3">
             {stats.map((stat) => (
-           <div key={stat.id} className="mx-auto item-center rounded hover:cursor-pointer  max-w-xs ring-1 ring-inset ring-black p-10 bg-blue-700 flex flex-col gap-y-4">
+           <div key={stat.id} className="mx-auto item-center rounded hover:cursor-pointer  max-w-xs ring-2  ring-white-500 p-10 bg-sky-700 flex flex-col gap-y-4">
           
            <NavLink to={stat.link}
               // onClick={(e) => { handleMenuSelect(e, stat.menu); updateMenuSelected({ menu: stat.menu, component: stat.component }); }}
-             className="text-base text-center leading-7 ring-1 py-3 p-5 ring-pink-600 hover:bg-sky-100 rounded-md hover:text-pink-500 text-white transition"
+             className="text-base text-center leading-7 ring-2 py-3 p-5  ring-white hover:bg-sky-100 rounded-md hover:text-pink-500 text-white transition"
            >
              {stat.name}
           
