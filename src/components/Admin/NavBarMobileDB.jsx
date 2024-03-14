@@ -5,20 +5,14 @@ import Login from "../Auth/Login";
 import UserModal from "../User/UserModal";
 import { useAuth } from "@/context/AuthContext";
 import { useSelector } from "react-redux";
+import navigation from "@/utils/navigationMenu";
  
+
 
 const NavBarMobile = () => {
- 
-	const navigation = ([
-		// { name: 'Admin',  link:'/admin' },
-		{ name: 'Usuarios',  link:'/admin/users'},
-		{ name: 'Registrar', link:'/admin/create' },
-		{ name: 'Productos', link:'/admin/products' },
-		 
-	]);
-
+	
 	const auth = useAuth();
-	const { displayName } = auth.user;
+	const { displayName, photoURL } = auth.user;
 	const userName = displayName?.split(" ")[0];
 	const [openHamMenu, setOpenHamMenu] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,9 +60,10 @@ const NavBarMobile = () => {
 							onClick={handleOpenUser}
 							className="flex flex-row gap-x-2 items-end">
 							<img
-								src="/assets/navbar-icons/user-black.svg"
+							   src={photoURL}
+								
 								alt="Logo usuarios"
-								className="w-6 h-6"
+								className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
 							/>
 						</li>
 					) : (
@@ -76,19 +71,13 @@ const NavBarMobile = () => {
 							onClick={handleOpenModal}
 							className="flex flex-row gap-x-2 items-end">
 							<img
-								src="/assets/navbar-icons/user-black.svg"
-								alt="Logo usuarios"
-								className="w-6 h-6"
+							src="/assets/navbar-icons/user-black.svg"
+							alt="Logo usuarios"
+							className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
 							/>
+                           <p className="text-sm">Hola, {userName}</p>
 						</li>
 					)}
-					<li>
-						<img
-							src="/assets/navbar-icons/favourite-black.svg"
-							alt="Logo de Favoritos"
-							className="w-6 h-6"
-						/>
-					</li>
 					<li className="mx-auto">
 						<Link to="/">
 							<img
@@ -98,16 +87,6 @@ const NavBarMobile = () => {
 							/>
 						</Link>
 					</li>
-
-					<Link to="/carrito">
-						<li>
-							<img
-								src="/assets/navbar-icons/cart.svg"
-								alt="Logo del carrito de compras"
-								className="w-6 h-6"
-							/>
-						</li>
-					</Link>
 
 					<li onClick={showMenu}>
 						{openHamMenu === false ? (
@@ -132,11 +111,11 @@ const NavBarMobile = () => {
 						transform: openHamMenu ? "translateX(0)" : "translateX(-100%)",
 					}}>
 				 <NavLink to="/admin"
-         className={ adminActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
+                  className={ adminActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
             
-         >
-          Admin
-         </NavLink>
+					>
+					Admin
+					</NavLink>
 
             {navigation?.map((item)=>(
 

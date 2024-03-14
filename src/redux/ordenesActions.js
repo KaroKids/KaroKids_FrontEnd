@@ -66,7 +66,6 @@ export const getOrdenesByFilters = (filters) => {
 
       const { data } = await axios.get(`${URL_ORDENES}?${urlFilters}`);
       const { elementosPaginados, totalPaginas, paginaActual } = data;
-      console.log(data);
       return dispatch(
         ordenesByFilters({
           ordenes: elementosPaginados,

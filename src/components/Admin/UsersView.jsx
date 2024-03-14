@@ -110,8 +110,8 @@ function UsersView() {
 				setPageLoading(true);
 				const response = await axios.get(`${URL_USERS}`);
 				// Verificar si response.data es un array antes de asignarlo a users
-				if (Array.isArray(response.data)) {
-					setUsers(response.data);
+				if (Array.isArray(response.data.elementosPaginados)) {
+					setUsers(response.data.elementosPaginados);
 				} else {
 					console.log("La respuesta no es un array:", response.data);
 				}
@@ -274,8 +274,8 @@ function UsersView() {
 										</div>
 										<div className="table-cell px-6 py-4 whitespace-nowrap">
 											{/* Agrega aquí los botones de acciones, por ejemplo: */}
-											<button className="text-indigo-600 rounded hover:bg-blue-500  ring-1 w-[90px] hover:text-white mr-2">
-												Editar
+											<button className="text-indigo-600 rounded hover:bg-blue-500  pr-2 pl-2 ring-1 w-[115px] hover:text-white mr-2">
+												Ver Ordenes
 											</button>
 										</div>
 									</div>
