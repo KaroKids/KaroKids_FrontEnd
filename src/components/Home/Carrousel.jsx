@@ -29,12 +29,12 @@ const Carrousel = () => {
   });
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl  mt-8  sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className=" text-lg text-center md:text-left md:text-2xl font-bold tracking-tight text-gray-900">
           Nuestros productos destacados
         </h2>
 
-        <div className="flex justify-center items-center mt-6">
+        <div className="flex justify-center items-center ">
           <Carousel orientation="horizontal" className="rounded-sm mt-2">
             <CarouselContent className="mx-auto">
               {destacados.map(
@@ -42,20 +42,20 @@ const Carrousel = () => {
                   !prod.inactivo && (
                     <CarouselItem
                       key={prod.producto_id}
-                      className="pl-1 w-[30px] md:w-[45px] lg:w-[70px] xl:w-auto md:basis-1/2 lg:basis-1/4 "
+                      className="pl-1 w-[22px] h-auto   sm:w-[30px] md:w-[45px] lg:w-[70px] xl:w-auto md:basis-1/2 lg:basis-1/4 "
                     >
                       <div className="p-1">
                         <Card
-                          className="mx-2 border-none shadow-none cursor-pointer"
+                          className="mx-2  border-none shadow-none cursor-pointer"
                           onClick={() => {
                             handleNavigate(prod.producto_id);
                           }}
                         >
-                          <CardContent className="flex   flex-col pt-4 aspect-square items-center justify-center">
+                          <CardContent className="flex  flex-col aspect-square items-center justify-center">
                             <img
                               src={prod.imagen_principal}
                               alt={prod.nombre}
-                              className="w-auto h-full object-cover rounded-md hover:opacity-75"
+                              className="w-96  h-full mt-6  object-cover rounded-md hover:opacity-75"
                             />
                           </CardContent>
                         </Card>
