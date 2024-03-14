@@ -6,7 +6,9 @@ const URL_FAVORITOS = import.meta.env.VITE_URL_FAVORITES;
 export const getFavorites = (usuario_id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`${URL_FAVORITOS}/${usuario_id}`);
+      const { data } = await axios.get(
+        `${URL_FAVORITOS}/usuario/${usuario_id}`
+      );
 
       return await dispatch(allFavorites(data));
     } catch (error) {
