@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import SearchBar from "../SearchBar/SearchBar";
-import { NavLink,Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import Login from "../Auth/Login";
 import UserModal from "../User/UserModal";
 import { useAuth } from "@/context/AuthContext";
 import { useSelector } from "react-redux";
 import navigation from "@/utils/navigationMenu";
- 
-
 
 const NavBarMobile = () => {
-	
 	const auth = useAuth();
 	const { displayName, photoURL } = auth.user;
 	const userName = displayName?.split(" ")[0];
@@ -44,12 +41,12 @@ const NavBarMobile = () => {
 	const [adminActive, setAdminActive] = useState(true); // Estado para administrar la activación del menu Admin
 
 	useEffect(() => {
-		if (pathname !== '/admin') {
-		  setAdminActive(false);
+		if (pathname !== "/admin") {
+			setAdminActive(false);
 		} else {
-		  setAdminActive(true)
+			setAdminActive(true);
 		}
-	  }, [pathname]);
+	}, [pathname]);
 
 	return (
 		<nav className=" py-2 fixed z-10 top-0 bg-white shadow-md shadow-gray-300 lg:hidden">
@@ -60,8 +57,7 @@ const NavBarMobile = () => {
 							onClick={handleOpenUser}
 							className="flex flex-row gap-x-2 items-end">
 							<img
-							   src={photoURL}
-								
+								src={photoURL}
 								alt="Logo usuarios"
 								className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
 							/>
@@ -71,11 +67,11 @@ const NavBarMobile = () => {
 							onClick={handleOpenModal}
 							className="flex flex-row gap-x-2 items-end">
 							<img
-							src="/assets/navbar-icons/user-black.svg"
-							alt="Logo usuarios"
-							className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
+								src="/assets/navbar-icons/user-black.svg"
+								alt="Logo usuarios"
+								className="inline-block h-8 w-8 rounded-full ring-2 ring-sky-500"
 							/>
-                           <p className="text-sm">Hola, {userName}</p>
+							<p className="text-sm">Hola, {userName}</p>
 						</li>
 					)}
 					<li className="mx-auto">
@@ -110,31 +106,35 @@ const NavBarMobile = () => {
 					style={{
 						transform: openHamMenu ? "translateX(0)" : "translateX(-100%)",
 					}}>
-				 <NavLink to="/admin"
-                  className={ adminActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
-            
-					>
-					Admin
+					<NavLink
+						to="/admin"
+						className={
+							adminActive
+								? "bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium"
+								: "text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+						}>
+						Admin
 					</NavLink>
 
-            {navigation?.map((item)=>(
-
-                <NavLink to={item.link}
-                key={item.name}
-                  // className={({isActive})=>console.log('isActive',isActive, item.link)}
-                 className={({isActive})=> isActive ? 'bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium' : 'text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium'}
-                 onClick={() => {
-                  if (item.name === 'Admin') {
-                    
-                    setAdminActive(!adminActive);
-                  } else {
-                    setAdminActive(false);
-                  }
-                }}
-                      >
-                {item.name}
-                </NavLink>
-            ))}
+					{navigation?.map((item) => (
+						<NavLink
+							to={item.link}
+							key={item.name}
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium"
+									: "text-gray-600 hover:cursor-pointer hover:bg-sky-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+							}
+							onClick={() => {
+								if (item.name === "Admin") {
+									setAdminActive(!adminActive);
+								} else {
+									setAdminActive(false);
+								}
+							}}>
+							{item.name}
+						</NavLink>
+					))}
 				</ul>
 				<Login
 					isOpen={isModalOpen}

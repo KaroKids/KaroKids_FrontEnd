@@ -55,7 +55,6 @@ const UploadImage = ({
 
     // Conversión de las imágenes en formato HEIC a formato JPEG.
     let conversionResult = await convertFromHeic(selectedImage);
-    console.log('Imagen principal convertida: ', conversionResult)
 
     previewFiles(conversionResult, type);
   };
@@ -67,7 +66,6 @@ const UploadImage = ({
 
     // Conversión de las imágenes en formato HEIC a formato JPEG.
     let conversionResult = await convertFromHeic(selectedImage);
-    console.log('Imagen secundaria convertida: ', conversionResult)
 
     previewFiles(conversionResult, type);
   };
