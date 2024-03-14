@@ -82,7 +82,7 @@ const Panel = () => {
 		{
 			id: 2,
 			name: "Clientes registrados",
-			value: `+ ${users.elementosPaginados.length * users.totalPaginas}`,
+			value: `+ ${users.elementosPaginados?.length * users?.totalPaginas}`,
 			menu: "Usuarios",
 			link: "/admin/users",
 		},
