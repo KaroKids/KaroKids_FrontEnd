@@ -2,22 +2,21 @@ import { useState, useEffect } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { convertFromHeic } from "@/utils/convertFromHeic";
-import spinner from '/assets/images/spinner.svg';
-
+import spinner from "/assets/images/spinner.svg";
 
 const UploadImage = ({
 	onGetImagenPrincipal,
 	onGetImagSecundarias,
 	errors,
 	data,
-	setData
+	setData,
 }) => {
 	const [imagenPrincipal, setImagenPrincipal] = useState([]);
 	const [imagSecundarias, setImagSecundarias] = useState([]);
 	const [loadingPcplImage, setloadingPcplImage] = useState(false);
 	const [loadingSndImage, setloadingSndImage] = useState(false);
 
-  //Carga la imagen primaria
+	//Carga la imagen primaria
 	useEffect(() => {
 		if (data.imagen_principal) {
 			setImagenPrincipal([data.imagen_principal]);
@@ -26,11 +25,11 @@ const UploadImage = ({
 
 	//Carga las imagenes secundarias
 	useEffect(() => {
-		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {			 
+		if (data.imagenes_secundarias && data.imagenes_secundarias.length > 0) {
 			setImagSecundarias(data.imagenes_secundarias);
 		}
 	}, [data.imagenes_secundarias]);
-	
+
 	//Permite establecer los parámetros de las funciones que se envían por props al componente padre CreateProduct.
 	useEffect(() => {
 		if (imagenPrincipal[0] !== undefined) {
@@ -59,8 +58,8 @@ const UploadImage = ({
 			}
 
 			if (type === "imgSecundarias") {
-			    setImagSecundarias([...imagSecundarias, reader.result]);
-			  }
+				setImagSecundarias([...imagSecundarias, reader.result]);
+			}
 		};
 	}
 
@@ -72,8 +71,7 @@ const UploadImage = ({
 
 		// Conversión de las imágenes en formato HEIC a formato JPEG.
 		let conversionResult = await convertFromHeic(selectedImage);
-		console.log('Imagen principal convertida: ', conversionResult)
-	
+
 		previewFiles(conversionResult, type);
 	};
 
@@ -84,20 +82,17 @@ const UploadImage = ({
 
 		// Conversión de las imágenes en formato HEIC a formato JPEG.
 		let conversionResult = await convertFromHeic(selectedImage);
-		console.log('Imagen secundaria convertida: ', conversionResult)
 
 		previewFiles(conversionResult, type);
 	};
-	
+
 	const eliminarImagenSecundaria = (index) => {
-        const nuevasImagSecundarias = imagSecundarias.filter((_, i) => i !== index);
-        setImagSecundarias(nuevasImagSecundarias);
-        // Actualizar el estado data.imagenes_secundarias en el componente padre
-        setData({ ...data, imagenes_secundarias: nuevasImagSecundarias });
+		const nuevasImagSecundarias = imagSecundarias.filter((_, i) => i !== index);
+		setImagSecundarias(nuevasImagSecundarias);
+		// Actualizar el estado data.imagenes_secundarias en el componente padre
+		setData({ ...data, imagenes_secundarias: nuevasImagSecundarias });
+	};
 
-    };
-
- 
 	return (
 		<div>
 			<div className="col-span-full r">
@@ -124,9 +119,7 @@ const UploadImage = ({
 										className="h-96 w-full rounded-lg object-cover object-center"
 										src={imageUrl}
 										alt={`Imagen ${index + 1}`}
-										
 									/>
-									
 								))}
 							</div>
 						)}
@@ -140,12 +133,14 @@ const UploadImage = ({
 							<label
 								htmlFor="imagenPrincipal"
 								className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-								{(!loadingPcplImage) ? (<span className="flex justify-center text-center">
-									Cambiar foto
-									</span>) : (
-									<img 
-										src={spinner} 
-										alt="Loading..." 
+								{!loadingPcplImage ? (
+									<span className="flex justify-center text-center">
+										Cambiar foto
+									</span>
+								) : (
+									<img
+										src={spinner}
+										alt="Loading..."
 										className=" bg-transparent rounded-lg mx-auto inset-1 flex items-center justify-center   w-8 h-8"
 									/>
 								)}
@@ -185,23 +180,21 @@ const UploadImage = ({
 						{imagSecundarias && (
 							<div className="mt-2 flex flex-wrap justify-center lg:flex-col gap-2">
 								{/* Código para imagenes secundarias */}
-						{imagSecundarias.map((imageUrl, index) => (
-							<div key={index} className="relative">
-								<img
-									className="lg:h-25 lg:w-40  rounded-lg object-cover object-center "
-									src={imageUrl}
-									alt={`Imagen ${index + 1}`}
-									 
-								/>
-								<button
-								    type="button"
-									className="absolute top-2 right-2 bg-white text-red-500 rounded-full p-1"
-									onClick={() => eliminarImagenSecundaria(index)}
-								>
-									X
-								</button>
-							</div>
-						))}
+								{imagSecundarias.map((imageUrl, index) => (
+									<div key={index} className="relative">
+										<img
+											className="lg:h-25 lg:w-40  rounded-lg object-cover object-center "
+											src={imageUrl}
+											alt={`Imagen ${index + 1}`}
+										/>
+										<button
+											type="button"
+											className="absolute top-2 right-2 bg-white text-red-500 rounded-full p-1"
+											onClick={() => eliminarImagenSecundaria(index)}>
+											X
+										</button>
+									</div>
+								))}
 							</div>
 						)}
 						{!imagSecundarias.length && (
@@ -214,12 +207,14 @@ const UploadImage = ({
 							<label
 								htmlFor="imagSecundarias"
 								className=" relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-								{(!loadingSndImage) ? (<span className="flex justify-center text-center">
-									Añadir fotos
-									</span>) : (
-									<img 
-										src={spinner} 
-										alt="Loading..." 
+								{!loadingSndImage ? (
+									<span className="flex justify-center text-center">
+										Añadir fotos
+									</span>
+								) : (
+									<img
+										src={spinner}
+										alt="Loading..."
 										className=" bg-transparent rounded-lg mx-auto inset-1 flex items-center justify-center   w-8 h-8"
 									/>
 								)}

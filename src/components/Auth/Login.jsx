@@ -53,7 +53,6 @@ export default function Login({ isOpen, onClose, className }) {
         localStorage.removeItem("cart");
         // Espera a que la operación addProductInDB se complete antes de continuar
         await dispatch(getCartFromDB(usuario_id));
-        console.log("Operaciones completadas");
       }
     } catch (error) {
       console.error("Error en detectedLS:", error);
