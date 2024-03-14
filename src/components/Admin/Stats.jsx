@@ -1,0 +1,20 @@
+import CompanyPerformance from './CompanyPerformance';
+import TopFiveFavorites from './TopFiveFavorites'
+import TopFiveClientes from './TopFiveClientes';
+import Panel from './Panel';
+
+  export default function Stats() {
+
+  return (
+    <div className=" lg:py-[100px] py-sm-24 py-md-32    bg-info-light">
+     
+        <Panel />
+        <TopFiveFavorites />
+        <TopFiveClientes/>
+        <CompanyPerformance />
+              
+    </div>
+      
+    )
+  }
+  
