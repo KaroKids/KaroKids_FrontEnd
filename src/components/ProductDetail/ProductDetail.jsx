@@ -189,11 +189,11 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 mb-0 xl:gap-10  xl:mb-20 xl:mt-8 xl:grid-cols-2 place-items-center">
             <Carousel
               orientation="horizontal"
-              className="  rounded-sm mb-4 w-auto   md:h-[602px] xl:w-[570px]"
+              className="  rounded-sm mb-4 md:h-[602px] w-[300px] sm:w-[550px]"
             >
               <CarouselContent>
                 <CarouselItem>
-                  <Card className="flex justify-center border-2  shadow-none mb-4  h-[352px]  mx-auto md:w-full sm:h-[550px] md:h-[604px]">
+                  <Card className="flex justify-center border-2  shadow-none mb-4  h-[352px] mx-auto md:w-full sm:h-[550px] md:h-[604px]">
                     <img
                       src={product.imagen_principal}
                       alt={product.nombre}
@@ -207,7 +207,7 @@ const ProductDetail = () => {
                       <img
                         src={prod}
                         alt={product.nombre}
-                        className="w-auto aspect-square h-full xl:h-full rounded-lg"
+                        className="w-auto aspect-square h-full  rounded-lg"
                       />
                     </Card>
                   </CarouselItem>
@@ -215,8 +215,8 @@ const ProductDetail = () => {
               </CarouselContent>
               {anchoPantalla > 767 ? (
                 <>
-                  <CarouselPrevious className=" mx-20 xl:mx-0" />
-                  <CarouselNext className="mx-20 xl:mx-0" />
+                  <CarouselPrevious className="  xl:mx-0" />
+                  <CarouselNext className=" xl:mx-0" />
                 </>
               ) : (
                 <>

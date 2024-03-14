@@ -6,6 +6,7 @@ import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import generarPedidoJson from "@/utils/pedidosJSON";
 
 const Cart = () => {
   const Toast = Swal.mixin({
@@ -23,6 +24,7 @@ const Cart = () => {
     },
   });
   const [preferenceId, setPreferenceId] = useState(null);
+  const [showCheckout, setShowCheckout] = useState(true);
   const userLogued = useSelector((state) => state.users.user);
   const cart = userLogued.usuario_id
     ? useSelector((state) => state.carrito.cartDB)
@@ -33,6 +35,7 @@ const Cart = () => {
   });
 
   const URL_PAYMENT = import.meta.env.VITE_URL_PAYMENT;
+  const URL_CARRITO = import.meta.env.VITE_URL_CARRITO;
 
   const createPreference = async () => {
     try {
@@ -51,10 +54,36 @@ const Cart = () => {
     }
   };
 
+  const handleWsp = async () => {
+    const response = await axios.get(`${URL_CARRITO}/${userLogued.usuario_id}`);
+    function encodePedido(pedido) {
+      let encodedPedido = encodeURIComponent(pedido);
+      encodedPedido = encodedPedido.replace(/%2C/g, "%0A");
+      return encodedPedido;
+    }
+
+    const pedidojson = await generarPedidoJson(response.data.productos_compra);
+    const aux = JSON.stringify(pedidojson);
+    let removed = aux;
+    let array = removed.split("{");
+    removed = array.join("");
+    array = removed.split("}");
+    removed = array.join("");
+    array = removed.split('"');
+    removed = array.join(" ");
+    array = removed.split("=");
+    removed = array.join(",");
+    let encodedProductos = await encodePedido(removed);
+    const phoneNumber = "5492216700210";
+    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
+
+    //console.log(whatsappLink);
+
+    window.location.href = whatsappLink;
+  };
   const handleMp = async () => {
     if (userLogued.usuario_id !== undefined) {
       const id = await createPreference();
-      console.log(id);
       if (id) {
         setPreferenceId(id);
       }
@@ -64,6 +93,7 @@ const Cart = () => {
         title: "Debes estar logueado para comprar",
       });
     }
+    setShowCheckout(false);
   };
 
   const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
@@ -105,33 +135,71 @@ const Cart = () => {
             </h2>
           </div>
           {anchoPantalla < 1024 ? (
-            <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-xl z-50">
-              <Button variant="detail" className="w-full" onClick={handleMp}>
-                Completar compra
-              </Button>
+            <div className="fixed bottom-0 left-0 right-0 bg-white pb-4 border-t-2 border-black border-opacity-5 z-50">
+              {showCheckout && (
+                <Button variant="detail" className="w-full" onClick={handleMp}>
+                  Completar compra
+                </Button>
+              )}
               {cart &&
                 cart.length > 0 &&
                 preferenceId &&
                 userLogued.usuario_id && (
-                  <Wallet initialization={{ preferenceId: preferenceId }} />
+                  <div className=" flex flex-col items-center justify-center">
+                    <Wallet initialization={{ preferenceId: preferenceId }} />
+                    <div className="flex items-center my-2">
+                      <div className="flex-grow border-b-2 w-32 border-gray-300"></div>
+                      <div className="mx-4">0</div>
+                      <div className="flex-grow border-b-2 w-32 border-gray-300"></div>
+                    </div>
+
+                    <Button
+                      variant="detail"
+                      className="w-[285px] bg-green-400 h-12 "
+                      onClick={handleWsp}
+                    >
+                      <img
+                        src="/assets/navbar-icons/whatsapp.svg"
+                        alt="Logo whatsapp"
+                        className="w-8 h-8 mx-2"
+                      />
+                      Comprar por Whatsapp
+                    </Button>
+                  </div>
                 )}
             </div>
           ) : (
             <>
-              <div className="w-full">
-                <Button
-                  variant="detail"
-                  className="w-full"
-                  onClick={handleMp}
-                  disabled={cart && cart?.length === 0}
-                >
-                  Completar compra
-                </Button>
+              <div className="w-full bg-slate-100">
+                {showCheckout && (
+                  <Button
+                    variant="detail"
+                    className="w-full"
+                    onClick={handleMp}
+                  >
+                    Completar compra
+                  </Button>
+                )}
                 {cart &&
                   cart.length > 0 &&
                   preferenceId &&
                   userLogued.usuario_id && (
-                    <Wallet initialization={{ preferenceId: preferenceId }} />
+                    <div className="mt-10 flex items-center justify-center">
+                      <Wallet initialization={{ preferenceId: preferenceId }} />
+
+                      <Button
+                        variant="detail"
+                        className="w-full bg-green-400 h-12 mb-[19px] ml-2"
+                        onClick={handleWsp}
+                      >
+                        <img
+                          src="/assets/navbar-icons/whatsapp.svg"
+                          alt="Logo whatsapp"
+                          className="w-8 h-8 mx-2"
+                        />
+                        Comprar por Whatsapp
+                      </Button>
+                    </div>
                   )}
               </div>
             </>
