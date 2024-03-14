@@ -101,7 +101,7 @@ const NavbarMobile = () => {
               <img
                 src="/assets/images/logo-karokids.png"
                 alt="Logo de KaroKids"
-                className="w-[187px]"
+                className="w-[160px]"
               />
             </Link>
           </li>
