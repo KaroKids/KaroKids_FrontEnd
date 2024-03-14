@@ -22,7 +22,7 @@ const UserModal = ({ isOpen, onClose }) => {
   return (
     <>
       <div
-        className={`fixed top-0 right-0 bottom-0 left-0 flex  z-[20]  bg-gray-800 bg-opacity-50 ${isOpen ? "" : "hidden"}`}
+        className={`fixed top-0 right-0 bottom-0 left-0 flex z-[20]  bg-gray-800 bg-opacity-50 ${isOpen ? "" : "hidden"}`}
       >
         <div className="flex justify-end  min-w-full min-h-10">
           <div className="justify-center items-center bg-white p-8 w-full h-screen max-w-lg lg:max-w-md xl:max-w-lg overflow-y-auto">
