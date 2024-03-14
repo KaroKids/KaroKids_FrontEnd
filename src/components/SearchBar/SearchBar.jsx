@@ -61,7 +61,7 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 mx-2 lg:mx-0">
       <Input
         type="text"
         placeholder="Busca aquí..."
