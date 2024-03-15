@@ -356,7 +356,7 @@ export default function ProductList() {
       {pageLoading && <LoadingView />}
 
       {!pageLoading && productos && (
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl">
           <h2 className=" text-xl  font-semibold mb-4">Lista de Productos</h2>
 
           <div className="flex flex-col sm: gap-y-4 sm:flex-row gap-x-3 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
@@ -389,34 +389,35 @@ export default function ProductList() {
               <span className="p-2">FILTROS</span>
             </Button>
           </div>
-          {productos && productos.productos.length === 0 && (
-            <div className="py-20 text-center text-xl fold-semibold">
-              <h2>No se encontraron resultados</h2>
-            </div>
-          )}
-          <div className="overflow-x-auto">
-            <div className=" table w-full border-collapse sm:flex-col">
+          <div className="overflow-x-hidden">
+            <div className="table w-full border-collapse sm:flex-col">
               <div className="table-header-group bg-gray-50">
-                <div className="table-row">
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Imagen
+                {productos && productos.productos.length === 0 ? (
+                  <div className="py-20 text-center text-xl fold-semibold">
+                    <h2>No se encontraron resultados</h2>
                   </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Nombre
+                ) : (
+                  <div className="table-row">
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Imagen
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Nombre
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Género
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Stock
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Precio
+                    </div>
+                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Acciones
+                    </div>
                   </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Género
-                  </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Stock
-                  </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Precio
-                  </div>
-                  <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Acciones
-                  </div>
-                </div>
+                )}
               </div>
               <div className="table-row-group  rounded border">
                 {productos &&

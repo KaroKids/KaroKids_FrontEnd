@@ -268,9 +268,9 @@ function UsersView() {
                     <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
                       Estado
                     </div>
-                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    {/* <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
                       Acciones
-                    </div>
+                    </div> */}
                   </div>
                 ) : (
                   <div className="py-20 h-60 bg-white w-[1200px] flex justify-around items-end  text-center text-xl fold-semibold">
@@ -322,7 +322,7 @@ function UsersView() {
                           onClick={() =>
                             handleLogicDelete(usuario.usuario_id, true)
                           }
-                          className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
+                          className="text-white w-full h-6 pl-2 pr-2 py-x-1 rounded bg-blue-500 hover:bg-white hover:text-blue-500 hover:cursor-pointer"
                         >
                           Activar
                         </button>
@@ -331,18 +331,18 @@ function UsersView() {
                           onClick={() =>
                             handleLogicDelete(usuario.usuario_id, false)
                           }
-                          className="text-white w-22 h-6 pl-2 pr-2 w-[99px] py-x-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer"
+                          className="text-white w-full h-6 pl-2 pr-2 py-x-1 rounded bg-red-500 hover:bg-white hover:text-red-500 hover:cursor-pointer"
                         >
                           Desactivar
                         </button>
                       )}
                     </div>
-                    <div className="table-cell px-6 py-4 whitespace-nowrap">
-                      {/* Agrega aquí los botones de acciones, por ejemplo: */}
-                      <button className="text-indigo-600 rounded hover:bg-blue-500  pr-2 pl-2 ring-1 w-[115px] hover:text-white mr-2">
+                    {/* <div className="table-cell px-6 py-4 whitespace-nowrap"> */}
+                    {/* Agrega aquí los botones de acciones, por ejemplo: */}
+                    {/* <button className="text-indigo-600 rounded hover:bg-blue-500  pr-2 pl-2 ring-1 w-[115px] hover:text-white mr-2">
                         Ver Ordenes
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </div>
