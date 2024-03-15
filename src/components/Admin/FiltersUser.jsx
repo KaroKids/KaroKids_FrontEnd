@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
-  getAllOrdenes,
-  getOrdenesByFilters,
-  getOrdenesByName,
-} from "@/redux/ordenesActions";
+  getAllUsers,
+  getUsersByFilters,
+  getUsersByName,
+} from "@/redux/userAction";
 
 // import { useLocation } from "react-router-dom";
 
-function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
+function FiltersUser({ isOpen, onClose, onApplyFilters, className, query }) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
@@ -32,16 +32,14 @@ function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
   };
 
   const handleFilterSubmit = () => {
-    dispatch(getOrdenesByFilters(filters));
+    dispatch(getUsersByFilters(filters));
     onClose();
   };
   const handleReset = () => {
-    setFilters({ estado: "", orden: "", nombre: "" });
+    setFilters({ rol: "", estado: "", orden: "", nombre: "" });
 
     if (nombre === null) nombre = "";
-    nombre !== ""
-      ? dispatch(getOrdenesByName(nombre))
-      : dispatch(getAllOrdenes());
+    nombre !== "" ? dispatch(getUsersByName(nombre)) : dispatch(getAllUsers());
     onClose();
   };
 
@@ -78,17 +76,28 @@ function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
         </div>
         <div>
           <select
+            name="rol"
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
+            value={filters.rol}
+          >
+            <option value="" defaultValue>
+              ROL
+            </option>
+            <option value="admin">ADMIN</option>
+            <option value="client">CLIENTE</option>
+          </select>
+          <select
             name="estado"
             onChange={handleFilterChange}
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.estado}
           >
             <option value="" defaultValue>
-              Condicion
+              ESTADO
             </option>
-            <option value="aprobado">APROBADO</option>
-            <option value="pendiente">PENDIENTE</option>
-            <option value="cancelado">CANCELADO</option>
+            <option value="false">ACTIVO</option>
+            <option value="true">INACTIVO</option>
           </select>
           <div className="flex justify-center space-x-4 pt-4">
             <button
@@ -110,4 +119,4 @@ function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
   );
 }
 
-export default FiltersOrder;
+export default FiltersUser;

@@ -1,22 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProductsByFilters } from "@/redux/productosActions";
+import { getUsersByFilters } from "@/redux/userAction";
 
-export default function PaginationControls({ rol }) {
-  let admin = rol;
-  const paginaActual = useSelector((state) => state.productos.paginaActual);
-  const totalPaginas = useSelector((state) => state.productos.totalPaginas);
-  const isFilteringActive = useSelector(
-    (state) => state.productos.isFilteringActive
-  );
-  const filtros = useSelector((state) => {
-    if (isFilteringActive) {
-      return state.productos.filtros;
-    } else {
-      return {};
-    }
-  });
+export default function UserPagination() {
+  const paginaActual = useSelector((state) => state.users.paginaActual);
+  const totalPaginas = useSelector((state) => state.users.totalPaginas);
+  const filtros = useSelector((state) => state.users.filtros);
+
   const dispatch = useDispatch();
 
   const renderPaginationsButtons = () => {
@@ -39,44 +30,36 @@ export default function PaginationControls({ rol }) {
   };
 
   const handlePagination = ({ target }) => {
-    dispatch(
-      getProductsByFilters({ ...filtros, paginaActual: target.value }, admin)
-    );
+    dispatch(getUsersByFilters({ ...filtros, paginaActual: target.value }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleAtras = () => {
     dispatch(
-      getProductsByFilters(
-        {
-          ...filtros,
-          paginaActual:
-            Number(paginaActual) === 1
-              ? Number(paginaActual)
-              : Number(paginaActual) - 1,
-        },
-        admin
-      )
+      getUsersByFilters({
+        ...filtros,
+        paginaActual:
+          Number(paginaActual) === 1
+            ? Number(paginaActual)
+            : Number(paginaActual) - 1,
+      })
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleAdelante = () => {
     dispatch(
-      getProductsByFilters(
-        {
-          ...filtros,
-          paginaActual:
-            Number(paginaActual) < totalPaginas
-              ? Number(paginaActual) + 1
-              : Number(paginaActual),
-        },
-        admin
-      )
+      getUsersByFilters({
+        ...filtros,
+        paginaActual:
+          Number(paginaActual) < totalPaginas
+            ? Number(paginaActual) + 1
+            : Number(paginaActual),
+      })
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <div className="flex mt-10 items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div className="flex mt-2 items-center justify-between bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden items-center">
         <button
           onClick={handleAtras}
