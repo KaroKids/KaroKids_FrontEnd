@@ -11,7 +11,7 @@ const coloresTailwind = {
     white: { clase: "bg-white border ring-1 text-black-200", front: 'Blanco' },
     teal: { clase: "bg-teal-500 ring-teal-500/10", front: 'Turquesa' },
     indigo: { clase: "bg-indigo-500 ring-1 ring-indigo-700/10", front: 'Índigo' },
-    sky: { clase: "bg-sky-500 ring-sky-700/10", front: 'Celeste' },
+    cyan: { clase: "bg-cyan-500 ring-cyan-700/10", front: 'Celeste' },
     beige: { clase: "bg-amber-200  ring-1 ring-beige/10", front: 'Beige' },
   };
   export default coloresTailwind;
