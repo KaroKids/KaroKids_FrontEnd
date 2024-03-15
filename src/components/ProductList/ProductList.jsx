@@ -70,7 +70,6 @@ export default function ProductList() {
     let edadesIguales = productos.productos.every(
       (producto) => producto?.edad === productos?.productos[1]?.edad
     );
-    console.log(queryGlobal2);
     if (!edadesIguales && isFilteringActive && queryGlobal2.length === 0) {
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
@@ -81,8 +80,6 @@ export default function ProductList() {
       isFilteringActive &&
       queryGlobal2.length === 0
     ) {
-      console.log("entro");
-
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         edad: productos.productos[0].edad,
@@ -93,7 +90,6 @@ export default function ProductList() {
         orden: nuevoOrden,
         nombre: queryGlobal2,
       }));
-      console.log("no entro");
     }
   };
 
