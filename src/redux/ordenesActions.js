@@ -8,6 +8,7 @@ import {
 } from "./ordenesSlice";
 
 const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
+const URL_CARRITO = import.meta.env.VITE_URL_CARRITO;
 
 export const getAllOrdenes = () => {
 	return async (dispatch) => {
@@ -27,6 +28,18 @@ export const getAllOrdenes = () => {
 		}
 	};
 };
+
+export const postOrden = (body) =>{
+  return async (dispatch) =>{
+    try{
+    const response = await axios.post(`${URL_ORDENES}`, body)
+    const response2 = await axios.put(`${URL_CARRITO}/resetear`, body)
+  return(response)
+}catch(error){
+  console.log(error)
+}
+}
+}
 
 export const OrdenesStatusChange = (body) => {
 	// Activa o desactiva un producto.

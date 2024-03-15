@@ -4,31 +4,33 @@ import { useEffect, useState } from "react";
 import Carrousel from "../Home/Carrousel";
 import axios from "axios";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import generarPedidoJson from "@/utils/pedidosJSON";
+import { postOrden } from "@/redux/ordenesActions";
 
 const Cart = () => {
-	const Toast = Swal.mixin({
-		toast: true,
-		position: "top-end",
-		showConfirmButton: false,
-		timer: 2000,
-		timerProgressBar: true,
-		didOpen: (toast) => {
-			toast.onmouseenter = Swal.stopTimer;
-			toast.onmouseleave = Swal.resumeTimer;
-		},
-		customClass: {
-			popup: "my-toast",
-		},
-	});
-	const [preferenceId, setPreferenceId] = useState(null);
-	const [showCheckout, setShowCheckout] = useState(true);
-	const userLogued = useSelector((state) => state.users.user);
-	const cart = userLogued.usuario_id
-		? useSelector((state) => state.carrito.cartDB)
-		: useSelector((state) => state.carrito.cartLS);
+  const dispatch = useDispatch()
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+    customClass: {
+      popup: "my-toast",
+    },
+  });
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [showCheckout, setShowCheckout] = useState(true);
+  const userLogued = useSelector((state) => state.users.user);
+  const cart = userLogued.usuario_id
+    ? useSelector((state) => state.carrito.cartDB)
+    : useSelector((state) => state.carrito.cartLS);
 
 	initMercadoPago("TEST-a5443a90-a45a-4830-a2c4-a2709cbae6ee", {
 		locale: "es-AR",
@@ -62,37 +64,66 @@ const Cart = () => {
 			return encodedPedido;
 		}
 
-		const pedidojson = await generarPedidoJson(response.data.productos_compra);
-		const aux = JSON.stringify(pedidojson);
-		let removed = aux;
-		let array = removed.split("{");
-		removed = array.join("");
-		array = removed.split("}");
-		removed = array.join("");
-		array = removed.split('"');
-		removed = array.join(" ");
-		array = removed.split("=");
-		removed = array.join(",");
-		let encodedProductos = await encodePedido(removed);
-		const phoneNumber = "5492216700210";
-		const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
+    const pedidojson = await generarPedidoJson(response.data.productos_compra);
+    let total = 0;
+     response.data.productos_compra.map((p)=>{
+      total += p.producto_precio
+      return p
+     })
+     console.log(total)
+    const aux = JSON.stringify(pedidojson);
+    let removed = aux;
+    let array = removed.split("{");
+    removed = array.join("");
+    array = removed.split("}");
+    removed = array.join("");
+    array = removed.split('"');
+    removed = array.join(" ");
+    array = removed.split("=");
+    removed = array.join(",");
+    let encodedProductos = await encodePedido(removed);
+    const phoneNumber = "5492216700210";
+    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
 
-		window.location.href = whatsappLink;
-	};
-	const handleMp = async () => {
-		if (userLogued.usuario_id !== undefined) {
-			const id = await createPreference();
-			if (id) {
-				setPreferenceId(id);
-			}
-		} else {
-			Toast.fire({
-				icon: "error",
-				title: "Debes estar logueado para comprar",
-			});
-		}
-		setShowCheckout(false);
-	};
+   const pp = response.data.productos_compra.map((p)=>{
+      const aux = p.compra_talla+"-"+p.compra_color.toLowerCase()
+                 const prod = {
+                    category_id : null,
+                    description : aux ,
+                    id: p.producto_id,
+                    picture_url : p.producto_imagen,
+                    quantity : p.compra_cantidad,
+                    title : p.producto_nombre,
+                    unit_price : p.producto_precio
+                  }
+                  return prod
+  })
+    const datos = {
+      productos_compra : pp,
+      metodo_pago : "efectivo",
+      estado_pago : "pendiente",
+      estado_pedido : "empaquetado",
+      coste_total : parseFloat(total),
+      usuario_id : userLogued.usuario_id,
+    }
+    await dispatch(postOrden(datos))
+    window.open(whatsappLink, "_blank");
+    window.location.reload()
+  };
+  const handleMp = async () => {
+    if (userLogued.usuario_id !== undefined) {
+      const id = await createPreference();
+      if (id) {
+        setPreferenceId(id);
+      }
+    } else {
+      Toast.fire({
+        icon: "error",
+        title: "Debes estar logueado para comprar",
+      });
+    }
+    setShowCheckout(false);
+  };
 
 	const [anchoPantalla, setAnchoPantalla] = useState(window.innerWidth);
 
