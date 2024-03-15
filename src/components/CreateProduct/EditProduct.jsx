@@ -440,7 +440,6 @@ const EditProduct = () => {
                 <option value="bebe">Bebe</option>
                 <option value="infantil">Infantíl</option>
                 <option value="junior">Junior</option>
-                <option value="otros">Otros</option>
               </select>
             </div>
             {errors?.edad && (
@@ -722,6 +721,7 @@ const EditProduct = () => {
 						.{" "}
 					</span>
 				</div> */}
+
 
         <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
           <button

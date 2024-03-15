@@ -22,7 +22,8 @@ const Panel = () => {
         const response = await axios.get(URL_ORDENES);
         if (response && response.data) {
           setTotalOrdenes(
-            response.data.elementosPaginados.length * response.data.totalPaginas
+            response.data.elementosPaginados.length *
+              (response.data.totalPaginas - 1)
           );
           setLoading(false);
         }
@@ -82,14 +83,14 @@ const Panel = () => {
     {
       id: 2,
       name: "Clientes registrados",
-      value: `+ ${users.elementosPaginados?.length * users?.totalPaginas}`,
+      value: `+ ${users.elementosPaginados?.length * (users?.totalPaginas - 1)}`,
       menu: "Usuarios",
       link: "/admin/users",
     },
     {
       id: 3,
       name: "Productos disponibles",
-      value: `+ ${productos.elementosPaginados?.length * productos?.totalPaginas}`,
+      value: `+ ${productos.elementosPaginados?.length * (productos?.totalPaginas - 1)}`,
       menu: "Productos",
       link: "/admin/products",
     },

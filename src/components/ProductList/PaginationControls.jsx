@@ -98,7 +98,7 @@ export default function PaginationControls({ rol }) {
 
       <div className="hidden sm:flex sm:items-center sm:justify-evenly">
         <div>
-          <p className="text-center md:pr-4">
+          <p className="text-center text-nowrap lg:pr-[900px]">
             Pagina {paginaActual} de {totalPaginas}
           </p>
         </div>

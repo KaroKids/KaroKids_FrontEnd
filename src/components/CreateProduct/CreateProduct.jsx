@@ -348,7 +348,6 @@ const CreateProduct = () => {
                 <option value="bebe">Bebe</option>
                 <option value="infantil">Infantíl</option>
                 <option value="junior">Junior</option>
-                <option value="otros">Otros</option>
               </select>
             </div>
             {errors?.edad && (
@@ -618,6 +617,7 @@ const CreateProduct = () => {
         </div>
 
         {/* Mostrar el total */}
+
         {/* <div className="mt-3 border pr-2 pl-2">
 					<span className="font-semibold">Total items:</span>{" "}
 					<span className="font-bold">{numberMaskUnit(newStock.total)} </span>
