@@ -11,7 +11,6 @@ const UserPedidos = (data) => {
   const ordersDB = useSelector((state) => state.users.ordenes);
 
   const handleDetailOrder = (order_id) => {
-    console.log(order_id);
     dispatch(getOrderById(order_id));
   };
 
@@ -96,7 +95,7 @@ const UserPedidos = (data) => {
           return (
             <article
               key={i}
-              className="h-40 w-fit px-2 border-2 border-gray-400 rounded-sm flex items-center gap-x-4"
+              className="xl:h-40 xl:w-fit px-2 border-2 py-2 border-gray-400 rounded-sm flex flex-col w-full lg:flex-row items-center gap-x-4"
             >
               <figure className="w-1/4 h-full flex justify-center py-2">
                 <img
@@ -105,7 +104,7 @@ const UserPedidos = (data) => {
                   alt={order.productos_compra[0].title}
                 />
               </figure>
-              <div className="flex">
+              <div className="flex flex-col lg:flex-row">
                 <p>
                   <strong>Metodo de pago:</strong> {fixedMetodoPago}
                 </p>
@@ -116,21 +115,25 @@ const UserPedidos = (data) => {
                   <strong>Monton total:</strong> ${order.coste_total}
                 </p>
               </div>
-              <p>
+              <p className="mb-2">
                 <strong>Estado del pedido:</strong> {fixedEstadoPedido}
               </p>
-              <div className="flex flex-col gap-y-2">
-                <Link to={`/usuario/pedidos/${order.orden_id}`}>
-                  <Button
-                    onClick={() => handleDetailOrder(order.orden_id)}
-                    className="w-full"
-                    variant="detail"
-                  >
-                    Ver detalle
-                  </Button>
-                </Link>
+              <div className="flex lg:flex-col gap-y-2">
                 <Button
-                  className="bg-red-500 w-full"
+                  onClick={() => handleDetailOrder(order.orden_id)}
+                  className="md:w-full ml-2 md:ml-0 w-auto"
+                  variant="detail"
+                  disabled={
+                    fixedEstadoPago === "Pendiente" ||
+                    fixedEstadoPago === "Cancelado"
+                  }
+                >
+                  <Link to={`/usuario/pedidos/${order.orden_id}`}>
+                    Ver detalle
+                  </Link>
+                </Button>
+                <Button
+                  className="bg-red-500 mx-2 lg:mx-0 w-32 md:w-full"
                   onClick={() => handleDownloadClick(order)}
                 >
                   Descargar PDF

@@ -3,6 +3,7 @@ import TopFiveFavorites from './TopFiveFavorites'
 import TopFiveClientes from './TopFiveClientes';
 import Panel from './Panel';
 
+
   export default function Stats() {
 
   return (
