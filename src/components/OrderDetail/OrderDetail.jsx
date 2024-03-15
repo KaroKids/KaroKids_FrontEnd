@@ -22,20 +22,20 @@ const OrderDetail = () => {
   const opciones = { year: "numeric", month: "long", day: "numeric" };
   const fechaFixed = fecha.toLocaleDateString("es-ES", opciones);
   return (
-    <section className="h-screen px-2 pt-28 flex gap-x-10 justify-center items-start">
+    <section className="h-screen  px-2 pt-28 flex gap-x-10 justify-center items-start">
       <div className="flex flex-col gap-y-4">
         {ordenDetail ? (
           ordenDetail &&
           ordenDetail.productos_compra &&
           ordenDetail?.productos_compra?.map((product) => {
             return (
-              <article className="bg-slate-100 flex flex-col md:flex-row items-center gap-4 px-4 py-2 rounded-md shadow-md shadow-slate-400">
+              <article className="bg-slate-100  flex flex-col  md:flex-row items-center gap-4 px-4 py-2 rounded-md shadow-md shadow-slate-400">
                 <img
                   className="w-32 rounded-lg"
                   src={product.picture_url}
                   alt={product.title}
                 />
-                <div className="flex flex-col gap-y-2">
+                <div className="flex  w-full flex-col gap-y-2">
                   <h3 className="font-bold">{product.title}</h3>
 
                   <p>
