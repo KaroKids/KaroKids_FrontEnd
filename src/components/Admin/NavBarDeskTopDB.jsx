@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import navigation from "@/utils/navigationMenu";
 
 const NavBarDesktopDB = () => {
- 
   const auth = useAuth();
   const { displayName, photoURL } = auth.user;
   const userName = displayName?.split(" ")[0];
@@ -63,7 +62,6 @@ const NavBarDesktopDB = () => {
             <NavLink
               to={item.link}
               key={item.name}
-              // className={({isActive})=>console.log('isActive',isActive, item.link)}
               className={({ isActive }) =>
                 isActive
                   ? "bg-sky-700 text-white hover:cursor-pointer rounded-md px-3 py-2 text-sm font-medium"
@@ -82,8 +80,8 @@ const NavBarDesktopDB = () => {
           ))}
         </li>
       </ul>
-      <div className="flex w-full h-full">
-        <figure className=" w-full flex items-center ml-[124px] justify-center   ">
+      <div className="flex w-full h-full -z-[1]">
+        <figure className="w-full flex items-center ml-[143.5px] justify-center">
           <Link to="/">
             <img
               src="/assets/images/logo-karokids.png"
@@ -123,9 +121,6 @@ const NavBarDesktopDB = () => {
             />
           </li>
         )}
-
-      
-      
       </ul>
 
       <Login

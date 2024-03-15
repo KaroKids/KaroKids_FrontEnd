@@ -9,16 +9,17 @@ import {
   getAllOrdenes,
   getOrdenesByFilters,
   getOrdenesByName,
+  setFilteringActiveOrdenes,
 } from "@/redux/ordenesActions";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FiltersOrder from "./FiltersOrder";
+import { Link } from "react-router-dom";
 
 export default function Orders() {
   const dispatch = useDispatch();
   const ordenes = useSelector((state) => state.ordenes.ordenes);
   const [query, setQuery] = useState("");
-  const [aux, setAux] = useState(0);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -53,14 +54,13 @@ export default function Orders() {
   useEffect(() => {
     const identifier = setTimeout(() => {
       if (query.length > 0) {
-        dispatch(getOrdenesByName(query));
+        dispatch(getOrdenesByFilters({ nombre: query }));
       } else {
         dispatch(getAllOrdenes());
       }
     }, 300);
 
     return () => {
-      // console.log('CLEANUP');
       clearTimeout(identifier);
     };
   }, [query]);
@@ -136,10 +136,6 @@ export default function Orders() {
   ];
 
   useEffect(() => {
-    dispatch(getOrdenesByFilters(filtrosAplicados));
-  }, [aux]);
-
-  useEffect(() => {
     if (ordernarPor !== 0) {
       dispatch(getOrdenesByFilters(filtrosAplicados));
     }
@@ -158,6 +154,7 @@ export default function Orders() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
+      nombre: query,
     }));
   };
 
@@ -166,6 +163,12 @@ export default function Orders() {
     setQuery(updatedQuery);
     if (updatedQuery === "") {
       dispatch(getAllOrdenes());
+    }
+
+    if (query.length > 0) {
+      dispatch(setFilteringActiveOrdenes(true));
+    } else {
+      dispatch(setFilteringActiveOrdenes(false));
     }
   };
 
@@ -209,28 +212,34 @@ export default function Orders() {
             </div>
           </caption>
 
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Orden ID
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Cliente
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Total
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Condicion
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Fecha
-              </th>
-              <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Ver</span>
-              </th>
-            </tr>
-          </thead>
+          {ordenes && ordenes.length ? (
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Orden ID
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Cliente
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Condicion
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Fecha
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  <span className="sr-only">Ver</span>
+                </th>
+              </tr>
+            </thead>
+          ) : (
+            <div className="py-20 text-center text-xl fold-semibold">
+              <h2>No se encontraron resultados</h2>
+            </div>
+          )}
 
           <tbody>
             {ordenes &&
@@ -285,13 +294,16 @@ export default function Orders() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button
-                      href="#"
+                      disabled={
+                        item.estado_pago === "pendiente" ||
+                        item.estado_pago === "cancelado"
+                      }
                       onClick={() => {
                         item.orden_id;
                       }}
                       className="font-medium ring-1 h-6 py-x-1 rounded w-[85px]  text-blue-600 dark:text-blue-500 hover:bg-sky-900 hover:text-white"
                     >
-                      Ver
+                      <Link to={`/admin/orders/${item.orden_id}`}>Ver</Link>
                     </button>
                   </td>
                 </tr>
@@ -301,6 +313,9 @@ export default function Orders() {
         <OrderPagination />
       </div>
       <FiltersOrder
+        query={query}
+        setQuery={setQuery}
+        setOrder={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

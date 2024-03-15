@@ -5,16 +5,36 @@ export const userSlice = createSlice({
   initialState: {
     users: [],
     user: {},
+    paginaActual: 1,
+    totalPaginas: 0,
+    filtros: {},
     ordenes: [],
     ordenDetail: {},
     existeReview: {},
+    isFilteringActive: false,
   },
   reducers: {
-    allUsers: (state, { payload }) => {
-      state.users = [...state.users, payload];
+    allUsers: (state, action) => {
+      state.users = action.payload.users;
+      state.paginaActual = action.payload.paginaActual;
+      state.totalPaginas = action.payload.totalPaginas;
     },
     UserByEmail: (state, action) => {
       state.user = action.payload;
+    },
+    FilteringActiveUsers: (state, action) => {
+      state.isFilteringActive = action.payload;
+    },
+    usersByName: (state, action) => {
+      state.users = action.payload.users;
+      state.paginaActual = action.payload.paginaActual;
+      state.totalPaginas = action.payload.totalPaginas;
+    },
+    usersByFilters: (state, action) => {
+      state.users = action.payload.users;
+      state.paginaActual = action.payload.paginaActual;
+      state.totalPaginas = action.payload.totalPaginas;
+      state.filtros = action.payload.filtros;
     },
     UserPut: (state, action) => {
       state.user = action.payload;
@@ -40,10 +60,13 @@ export const userSlice = createSlice({
 export const {
   allUsers,
   UserByEmail,
+  usersByName,
+  usersByFilters,
   UserPut,
   resetState,
   allOrders,
   ordenDetail,
   existeReview,
+  FilteringActiveUsers
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -4,7 +4,7 @@ import ServicesHome from "../Services/ServicesHome";
 import BoyGirl from "./BoyGirl";
 import axios from "axios";
 import { useEffect } from "react";
-import { resetFiltering } from "@/redux/productosSlice";
+import { queryGlobal, resetFiltering } from "@/redux/productosSlice";
 import { useDispatch } from "react-redux";
 
 const peticion = async () => {
@@ -19,6 +19,7 @@ const Landing = () => {
   useEffect(() => {
     window.scroll(0, 0);
     dispatch(resetFiltering());
+    dispatch(queryGlobal(""));
   }, []);
 
   return (

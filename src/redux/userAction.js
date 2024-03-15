@@ -3,10 +3,13 @@ import axios from "axios";
 import {
   allUsers,
   UserByEmail,
+  usersByName,
+  usersByFilters,
   UserPut,
   allOrders,
   ordenDetail,
   existeReview,
+  FilteringActiveUsers
 } from "./userSlice.js";
 
 const URL_USERS = import.meta.env.VITE_URL_USERS;
@@ -17,14 +20,17 @@ export const getAllUsers = () => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_USERS}`);
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
 
       return dispatch(
         allUsers({
-          users: data,
+          users: elementosPaginados,
+          totalPaginas,
+          paginaActual,
         })
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 };
@@ -42,6 +48,17 @@ export const getUserByEmail = (email) => {
   };
 };
 
+export const setFilteringActiveUsers = (active) => {
+	return async (dispatch) => {
+		try {
+			return dispatch(FilteringActiveUsers(active));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
+
 export const getPutUser = (body) => {
   return async (dispatch) => {
     try {
@@ -53,25 +70,52 @@ export const getPutUser = (body) => {
   };
 };
 
-// export const getAllUsersName = (nombre_usuario, apellido_usuario) => {
-// 	return async (dispatch) => {
-// 		try {
-// 			if (nombre_usuario === undefined) nombre_usuario = "";
-// 			if (apellido_usuario === undefined) apellido_usuario = "";
+export const getUsersByName = (nombre) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`${URL_USERS}?nombre=${nombre}`);
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+      return dispatch(
+        usersByName({
+          users: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 
-// 			const { data } = await axios.get(
-// 				`${URL_USERS}?nombre_usuario=${nombre_usuario}&apellido_usuario=${apellido_usuario}`
-// 			);
-// 			return dispatch(
-// 				allUsers({
-// 					users: data,
-// 				})
-// 			);
-// 		} catch (error) {
-// 			console.log(error);
-// 		}
-// 	};
-// };
+export const getUsersByFilters = (filters) => {
+  return async (dispatch) => {
+    try {
+      console.log(filters);
+      let urlFilters = "";
+
+      if (filters.nombre === null) filters.nombre = "";
+
+      for (const [key, value] of Object.entries(filters)) {
+        urlFilters += `${key}=${value}&`;
+      }
+
+      const { data } = await axios.get(`${URL_USERS}?${urlFilters}`);
+      console.log(data);
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+      return dispatch(
+        usersByFilters({
+          users: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+          filtros: filters,
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 
 export const postUser = (body) => {
   return async () => {
@@ -100,8 +144,6 @@ export const getOrderById = (orden_id) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`${URL_ORDERS}/detail/${orden_id}`);
-
-      console.log(data);
 
       const productosFiltrados = data?.productos_compra.reduce(
         (accumulator, currentItem) => {
@@ -145,9 +187,6 @@ export const getOrderById = (orden_id) => {
         return item;
       });
 
-      console.log(productosFiltrados);
-      console.log(productosFixed);
-
       return dispatch(
         ordenDetail({ ...data, productos_compra: productosFixed })
       );
@@ -163,7 +202,6 @@ export const seHizoUnaReview = (usuario_id, producto_id) => {
       const { data } = await axios.get(
         `${URL_REVIEWS}?usuario_id=${usuario_id}&&producto_id=${producto_id}`
       );
-      console.log(data);
       return dispatch(existeReview(data));
     } catch (error) {
       console.error(error);
@@ -175,9 +213,80 @@ export const createReview = (body) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.post(`${URL_REVIEWS}`, body);
-      console.log(data);
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+/*ADMIN*/
+export const toggleUserStatus = (usuario_id, query) => {
+  return async (dispatch) => {
+    try {
+      const body = {
+        usuario_id: usuario_id.toString(),
+      };
+      await axios.put(`${URL_USERS}/delete`, body);
+
+      if(query.length) {
+        const { data } = await axios.get(`${URL_USERS}?nombre=${query}`);
+        const { elementosPaginados, totalPaginas, paginaActual } = data;
+        return dispatch(
+          usersByName({
+            users: elementosPaginados,
+            totalPaginas,
+            paginaActual,
+          })
+        );
+      }
+
+      const { data } = await axios.get(`${URL_USERS}`);
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+      return dispatch(
+        allUsers({
+          users: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
+    } catch (error) {
+      console.log("Error al activar/desactivar usuario:", error);
+    }
+  };
+};
+export const toggleUserRol = (usuario_id, roles, query) => {
+  return async (dispatch) => {
+    try {
+      const body = {
+        usuario_id: usuario_id.toString(),
+        roles: roles,
+      };
+
+      await axios.put(`${URL_USERS}/rol`, body);
+
+      if(query.length) {
+        const { data } = await axios.get(`${URL_USERS}?nombre=${query}`);
+        const { elementosPaginados, totalPaginas, paginaActual } = data;
+        return dispatch(
+          usersByName({
+            users: elementosPaginados,
+            totalPaginas,
+            paginaActual,
+          })
+        );
+      }
+
+      const { data } = await axios.get(`${URL_USERS}`);
+      const { elementosPaginados, totalPaginas, paginaActual } = data;
+      return dispatch(
+        allUsers({
+          users: elementosPaginados,
+          totalPaginas,
+          paginaActual,
+        })
+      );
+    } catch (error) {
+      console.log("Error al modificar el rol del usuario:", error);
     }
   };
 };

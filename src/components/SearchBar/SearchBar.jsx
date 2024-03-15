@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 
 import { useDispatch } from "react-redux";
-import { getProductsByFilters } from "@/redux/productosActions";
+import {
+  getProductsByFilters,
+  setFilteringActive,
+} from "@/redux/productosActions";
 
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { queryGlobal } from "@/redux/productosSlice";
 
 const SearchBar = () => {
   const { pathname } = useLocation();
@@ -20,6 +24,7 @@ const SearchBar = () => {
   const handleInput = (e) => {
     const updatedQuery = e;
     setQuery(updatedQuery);
+    dispatch(queryGlobal(query));
     const queryParam = { nombre: updatedQuery };
     const nuevaUbicacion = {
       ...location,
@@ -30,6 +35,11 @@ const SearchBar = () => {
       ? navigate(nuevaUbicacion)
       : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
 
+    if (query.length > 0) {
+      dispatch(setFilteringActive(true));
+    } else {
+      dispatch(setFilteringActive(false));
+    }
     dispatch(getProductsByFilters({ nombre: updatedQuery }));
   };
 
@@ -45,7 +55,13 @@ const SearchBar = () => {
       ? navigate(nuevaUbicacion)
       : navigate(`/productos?${new URLSearchParams(queryParam).toString()}`);
 
+    if (query.length > 0) {
+      dispatch(setFilteringActive(true));
+    } else {
+      dispatch(setFilteringActive(false));
+    }
     dispatch(getProductsByFilters({ nombre: query }));
+    setQuery("");
   };
 
   useEffect(() => {
@@ -61,7 +77,7 @@ const SearchBar = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 mx-2 lg:mx-0">
       <Input
         type="text"
         placeholder="Busca aquí..."

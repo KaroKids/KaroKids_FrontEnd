@@ -1,18 +1,18 @@
 import { Chart } from "react-google-charts";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import IsLoading from "./IsLoading";
-import axios from "axios";
 
-const URL_FAVORITES = import.meta.env.VITE_URL_FAVORITES;
+const URL_PRODUCTS = import.meta.env.VITE_URL_PRODUCT;
 
 const options = {
   chart: {
-    title: "Productos Favoritos de KaroKids",
-    subtitle: "Top 5 de Productos Favoritos",
+    title: "Productos mas vendidos en KaroKids",
+    subtitle: "Top 5 de Productos",
   },
 };
 
-export default function CompanyPerformance() {
+export default function TopProductos() {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -22,18 +22,18 @@ export default function CompanyPerformance() {
         const body = {
           top: 5,
         };
-        const response = await axios.get(`${URL_FAVORITES}/top`, body);
+        const response = await axios.get(`${URL_PRODUCTS}/top`, body);
 
         if (response.data) {
-          //setProductos(response.data);
           setLoading(false);
 
           // Modificar la estructura de los datos
           let countFive = 0;
-          const formattedData = [["Productos", "Favoritos"]];
+          const formattedData = [["Productos", "Top 5"]];
           response.data.forEach((item) => {
             countFive++;
-            const nombreProducto = item.producto.nombre;
+
+            const nombreProducto = item.producto.producto_nombre;
             const cantidad = Number(item.cantidad);
             const precio = Number(item.producto.precio);
 
@@ -44,8 +44,8 @@ export default function CompanyPerformance() {
           setData(formattedData);
         }
       } catch (error) {
-        console.log("No fue posible cargar los productos", error);
         setLoading(false);
+        console.log("No fue posible cargar los productos", error);
       }
     };
 

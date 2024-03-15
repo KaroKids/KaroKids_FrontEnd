@@ -1,22 +1,21 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getOrdenesByFilters } from "@/redux/ordenesActions";
+import { getUsersByFilters } from "@/redux/userAction";
 
-export default function OrderPagination() {
-  const paginaActual = useSelector((state) => state.ordenes.paginaActual);
-  const totalPaginas = useSelector((state) => state.ordenes.totalPaginas);
+export default function UserPagination() {
+  const paginaActual = useSelector((state) => state.users.paginaActual);
+  const totalPaginas = useSelector((state) => state.users.totalPaginas);
   const isFilteringActive = useSelector(
-    (state) => state.ordenes.isFilteringActive
+    (state) => state.users.isFilteringActive
   );
   const filtros = useSelector((state) => {
     if (isFilteringActive) {
-      return state.ordenes.filtros;
+      return state.users.filtros;
     } else {
       return {};
     }
   });
-
   const dispatch = useDispatch();
 
   const renderPaginationsButtons = () => {
@@ -39,12 +38,12 @@ export default function OrderPagination() {
   };
 
   const handlePagination = ({ target }) => {
-    dispatch(getOrdenesByFilters({ ...filtros, paginaActual: target.value }));
+    dispatch(getUsersByFilters({ ...filtros, paginaActual: target.value }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const handleAtras = () => {
     dispatch(
-      getOrdenesByFilters({
+      getUsersByFilters({
         ...filtros,
         paginaActual:
           Number(paginaActual) === 1
@@ -56,7 +55,7 @@ export default function OrderPagination() {
   };
   const handleAdelante = () => {
     dispatch(
-      getOrdenesByFilters({
+      getUsersByFilters({
         ...filtros,
         paginaActual:
           Number(paginaActual) < totalPaginas
@@ -68,7 +67,7 @@ export default function OrderPagination() {
   };
 
   return (
-    <div className="flex mt-2 items-center justify-between bg-white px-4 py-3 sm:px-6">
+    <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden items-center">
         <button
           onClick={handleAtras}
@@ -76,7 +75,7 @@ export default function OrderPagination() {
         >
           Anterior
         </button>
-        <p className="text-center md:pl-4">
+        <p>
           Pagina {paginaActual} de {totalPaginas}
         </p>
         <button
@@ -90,7 +89,7 @@ export default function OrderPagination() {
 
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p>
+          <p className="text-center md:pl-4">
             Pagina {paginaActual} de {totalPaginas}
           </p>
         </div>

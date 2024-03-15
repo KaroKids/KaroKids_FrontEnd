@@ -7,8 +7,11 @@ export default function PaginationControls({ rol }) {
   let admin = rol;
   const paginaActual = useSelector((state) => state.productos.paginaActual);
   const totalPaginas = useSelector((state) => state.productos.totalPaginas);
+  const isFilteringActive = useSelector(
+    (state) => state.productos.isFilteringActive
+  );
   const filtros = useSelector((state) => {
-    if (state.productos.isFilteringActive) {
+    if (isFilteringActive) {
       return state.productos.filtros;
     } else {
       return {};
@@ -55,7 +58,6 @@ export default function PaginationControls({ rol }) {
       )
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
-    console.log(filtros);
   };
   const handleAdelante = () => {
     dispatch(
@@ -71,7 +73,6 @@ export default function PaginationControls({ rol }) {
       )
     );
     window.scrollTo({ top: 0, behavior: "smooth" });
-    console.log(filtros);
   };
 
   return (
@@ -89,15 +90,15 @@ export default function PaginationControls({ rol }) {
         <button
           onClick={handleAdelante}
           href="#"
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Siguiente
         </button>
       </div>
 
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div className="hidden sm:flex sm:items-center sm:justify-evenly">
         <div>
-          <p>
+          <p className="text-center md:pr-4">
             Pagina {paginaActual} de {totalPaginas}
           </p>
         </div>

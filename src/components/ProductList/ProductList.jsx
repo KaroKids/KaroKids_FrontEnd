@@ -15,6 +15,7 @@ import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { resetStateProduct } from "@/redux/productosSlice";
+import { queryGlobal } from "@/redux/productosSlice";
 
 const relevancias = [
   {
@@ -50,6 +51,7 @@ export default function ProductList() {
   const usuario = useSelector((state) => state.users.user);
   const favorites = useSelector((state) => state.favorites.favoritesDB);
   const loading = useSelector((state) => state.productos.loading);
+  const queryGlobal2 = useSelector((state) => state.productos.queryGlobal);
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
   );
@@ -66,14 +68,18 @@ export default function ProductList() {
       setOrdernarPor(nuevoOrden);
     }
     let edadesIguales = productos.productos.every(
-      (producto) => producto.edad === productos.productos[1].edad
+      (producto) => producto?.edad === productos?.productos[1]?.edad
     );
-    if (!edadesIguales && isFilteringActive) {
+    if (!edadesIguales && isFilteringActive && queryGlobal2.length === 0) {
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
-        genero: productos.productos[0].genero,
+        genero: productos?.productos[0]?.genero,
       }));
-    } else if (edadesIguales && isFilteringActive) {
+    } else if (
+      edadesIguales &&
+      isFilteringActive &&
+      queryGlobal2.length === 0
+    ) {
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         edad: productos.productos[0].edad,
@@ -82,6 +88,7 @@ export default function ProductList() {
       setFiltrosAplicados((prevFiltrosAplicados) => ({
         ...prevFiltrosAplicados,
         orden: nuevoOrden,
+        nombre: queryGlobal2,
       }));
     }
   };
@@ -174,6 +181,7 @@ export default function ProductList() {
       )}
 
       <FilterOptions
+        ordenarPor={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}
