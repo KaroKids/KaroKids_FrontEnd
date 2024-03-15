@@ -212,28 +212,34 @@ export default function Orders() {
             </div>
           </caption>
 
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Orden ID
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Cliente
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Total
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Condicion
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Fecha
-              </th>
-              <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Ver</span>
-              </th>
-            </tr>
-          </thead>
+          {ordenes && ordenes.length ? (
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Orden ID
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Cliente
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Total
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Condicion
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Fecha
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  <span className="sr-only">Ver</span>
+                </th>
+              </tr>
+            </thead>
+          ) : (
+            <div className="py-20 text-center text-xl fold-semibold">
+              <h2>No se encontraron resultados</h2>
+            </div>
+          )}
 
           <tbody>
             {ordenes &&
