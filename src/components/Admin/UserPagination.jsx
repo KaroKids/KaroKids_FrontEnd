@@ -6,8 +6,16 @@ import { getUsersByFilters } from "@/redux/userAction";
 export default function UserPagination() {
   const paginaActual = useSelector((state) => state.users.paginaActual);
   const totalPaginas = useSelector((state) => state.users.totalPaginas);
-  const filtros = useSelector((state) => state.users.filtros);
-
+  const isFilteringActive = useSelector(
+    (state) => state.users.isFilteringActive
+  );
+  const filtros = useSelector((state) => {
+    if (isFilteringActive) {
+      return state.users.filtros;
+    } else {
+      return {};
+    }
+  });
   const dispatch = useDispatch();
 
   const renderPaginationsButtons = () => {
@@ -59,7 +67,7 @@ export default function UserPagination() {
   };
 
   return (
-    <div className="flex mt-2 items-center justify-between bg-white px-4 py-3 sm:px-6">
+    <div className="flex items-center justify-between bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden items-center">
         <button
           onClick={handleAtras}

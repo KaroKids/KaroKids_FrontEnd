@@ -6,7 +6,16 @@ import { getOrdenesByFilters } from "@/redux/ordenesActions";
 export default function OrderPagination() {
   const paginaActual = useSelector((state) => state.ordenes.paginaActual);
   const totalPaginas = useSelector((state) => state.ordenes.totalPaginas);
-  const filtros = useSelector((state) => state.ordenes.filtros);
+  const isFilteringActive = useSelector(
+    (state) => state.ordenes.isFilteringActive
+  );
+  const filtros = useSelector((state) => {
+    if (isFilteringActive) {
+      return state.ordenes.filtros;
+    } else {
+      return {};
+    }
+  });
 
   const dispatch = useDispatch();
 

@@ -5,12 +5,21 @@ import {
   getAllProducts,
   getProductsByFilters,
   getProductsByName,
+  setFilteringActive,
 } from "@/redux/productosActions";
 
 import coloresTailwind from "@/utils/coloresTailwind";
 // import { useLocation } from "react-router-dom";
 
-function FiltersProduct({ isOpen, onClose, onApplyFilters, className, query }) {
+function FiltersProduct({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  className,
+  query,
+  setQuery,
+  setOrder,
+}) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
@@ -41,16 +50,15 @@ function FiltersProduct({ isOpen, onClose, onApplyFilters, className, query }) {
   };
 
   const handleFilterSubmit = () => {
+    dispatch(setFilteringActive(true));
     dispatch(getProductsByFilters(filters));
     onClose();
   };
   const handleReset = () => {
-    setFilters({ estado: "", orden: "", nombre: "" });
-
-    if (query === null) query = "";
-    query !== ""
-      ? dispatch(getProductsByName(query))
-      : dispatch(getAllProducts());
+    dispatch(setFilteringActive(false));
+    dispatch(getAllProducts());
+    setQuery("");
+    setOrder(0);
     onClose();
   };
 

@@ -9,6 +9,7 @@ import {
   getAllOrdenes,
   getOrdenesByFilters,
   getOrdenesByName,
+  setFilteringActiveOrdenes,
 } from "@/redux/ordenesActions";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -19,7 +20,6 @@ export default function Orders() {
   const dispatch = useDispatch();
   const ordenes = useSelector((state) => state.ordenes.ordenes);
   const [query, setQuery] = useState("");
-  const [aux, setAux] = useState(0);
 
   const Toast = Swal.mixin({
     toast: true,
@@ -54,7 +54,7 @@ export default function Orders() {
   useEffect(() => {
     const identifier = setTimeout(() => {
       if (query.length > 0) {
-        dispatch(getOrdenesByName(query));
+        dispatch(getOrdenesByFilters({ nombre: query }));
       } else {
         dispatch(getAllOrdenes());
       }
@@ -136,10 +136,6 @@ export default function Orders() {
   ];
 
   useEffect(() => {
-    dispatch(getOrdenesByFilters(filtrosAplicados));
-  }, [aux]);
-
-  useEffect(() => {
     if (ordernarPor !== 0) {
       dispatch(getOrdenesByFilters(filtrosAplicados));
     }
@@ -158,6 +154,7 @@ export default function Orders() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
+      nombre: query,
     }));
   };
 
@@ -166,6 +163,12 @@ export default function Orders() {
     setQuery(updatedQuery);
     if (updatedQuery === "") {
       dispatch(getAllOrdenes());
+    }
+
+    if (query.length > 0) {
+      dispatch(setFilteringActiveOrdenes(true));
+    } else {
+      dispatch(setFilteringActiveOrdenes(false));
     }
   };
 
@@ -305,6 +308,8 @@ export default function Orders() {
       </div>
       <FiltersOrder
         query={query}
+        setQuery={setQuery}
+        setOrder={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

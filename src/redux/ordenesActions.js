@@ -5,6 +5,7 @@ import {
 	ordenesByName,
 	ordenesByFilters,
 	getOrdById,
+	FilteringActiveOrdenes
 } from "./ordenesSlice";
 
 const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
@@ -28,6 +29,17 @@ export const getAllOrdenes = () => {
 		}
 	};
 };
+
+export const setFilteringActiveOrdenes = (active) => {
+	return async (dispatch) => {
+		try {
+			return dispatch(FilteringActiveOrdenes(active));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
 
 export const postOrden = (body) =>{
   return async (dispatch) =>{

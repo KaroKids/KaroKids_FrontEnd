@@ -6,14 +6,20 @@ import {
   getProductsByFilters,
   setFilteringActive,
 } from "@/redux/productosActions";
-
+import { queryGlobal } from "@/redux/productosSlice";
 // import { useLocation } from "react-router-dom";
 
 import coloresTailwind from "@/utils/coloresTailwind";
 
-function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
+function FilterOptions({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  className,
+  ordenarPor,
+}) {
   const [filters, setFilters] = useState({});
-  const queryGlobal = useSelector((state) => state.productos.queryGlobal);
+  const queryGlobal2 = useSelector((state) => state.productos.queryGlobal);
   const dispatch = useDispatch();
 
   const handleApplyFilters = () => {
@@ -29,7 +35,7 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      nombre: queryGlobal,
+      nombre: queryGlobal2,
       [name]: value,
     }));
   };
@@ -43,11 +49,9 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     dispatch(setFilteringActive(false));
     setFilters({ genero: "", edad: "", talla: "", color: "" });
 
-    if (queryGlobal === null || queryGlobal === undefined) queryGlobal = "";
-    queryGlobal !== ""
-      ? dispatch(getProductsByFilters({ nombre: queryGlobal, ...filters }))
-      : dispatch(getAllProducts());
-
+    dispatch(getAllProducts());
+    dispatch(queryGlobal(""));
+    ordenarPor(0);
     onClose();
   };
 

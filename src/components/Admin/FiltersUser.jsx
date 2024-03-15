@@ -6,10 +6,19 @@ import {
   getUsersByFilters,
   getUsersByName,
 } from "@/redux/userAction";
+import { setFilteringActiveUsers } from "@/redux/userAction";
 
 // import { useLocation } from "react-router-dom";
 
-function FiltersUser({ isOpen, onClose, onApplyFilters, className, query }) {
+function FiltersUser({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  className,
+  query,
+  setQuery,
+  setOrder,
+}) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
@@ -32,14 +41,15 @@ function FiltersUser({ isOpen, onClose, onApplyFilters, className, query }) {
   };
 
   const handleFilterSubmit = () => {
+    dispatch(setFilteringActiveUsers(true));
     dispatch(getUsersByFilters(filters));
     onClose();
   };
   const handleReset = () => {
-    setFilters({ rol: "", estado: "", orden: "", nombre: "" });
-
-    if (nombre === null) nombre = "";
-    nombre !== "" ? dispatch(getUsersByName(nombre)) : dispatch(getAllUsers());
+    dispatch(setFilteringActiveUsers(false));
+    dispatch(getAllUsers());
+    setQuery("");
+    setOrder(0);
     onClose();
   };
 

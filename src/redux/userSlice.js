@@ -11,6 +11,7 @@ export const userSlice = createSlice({
     ordenes: [],
     ordenDetail: {},
     existeReview: {},
+    isFilteringActive: false,
   },
   reducers: {
     allUsers: (state, action) => {
@@ -20,6 +21,9 @@ export const userSlice = createSlice({
     },
     UserByEmail: (state, action) => {
       state.user = action.payload;
+    },
+    FilteringActiveUsers: (state, action) => {
+      state.isFilteringActive = action.payload;
     },
     usersByName: (state, action) => {
       state.users = action.payload.users;
@@ -63,5 +67,6 @@ export const {
   allOrders,
   ordenDetail,
   existeReview,
+  FilteringActiveUsers
 } = userSlice.actions;
 export default userSlice.reducer;
