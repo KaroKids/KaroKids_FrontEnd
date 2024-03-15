@@ -20,9 +20,9 @@ import filterIcon from "/assets/images/filterIcon.svg";
 import Swal from "sweetalert2";
 
 import PaginationControls from "../ProductList/PaginationControls";
-import FilterOptions from "../ProductList/FilterOptions";
 import { Link } from "react-router-dom";
 import LoadingView from "../ui/Loading";
+import FiltersProduct from "./FiltersProduct";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -83,6 +83,7 @@ export default function ProductList() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
+      nombre: query,
     }));
   };
 
@@ -506,7 +507,8 @@ export default function ProductList() {
         </div>
       )}
 
-      <FilterOptions
+      <FiltersProduct
+        query={query}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

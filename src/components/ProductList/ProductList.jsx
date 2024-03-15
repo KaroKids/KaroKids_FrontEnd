@@ -50,11 +50,13 @@ export default function ProductList() {
   const usuario = useSelector((state) => state.users.user);
   const favorites = useSelector((state) => state.favorites.favoritesDB);
   const loading = useSelector((state) => state.productos.loading);
+  const queryGlobal = useSelector((state) => state.productos.queryGlobal);
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
   );
 
   const handleApplyFilters = (filtrosSeleccionados) => {
+    console.log(filtrosAplicados);
     setFiltrosAplicados(filtrosSeleccionados);
   };
 
@@ -66,12 +68,12 @@ export default function ProductList() {
       setOrdernarPor(nuevoOrden);
     }
     let edadesIguales = productos.productos.every(
-      (producto) => producto.edad === productos.productos[1].edad
+      (producto) => producto?.edad === productos?.productos[1]?.edad
     );
     if (!edadesIguales && isFilteringActive) {
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
-        genero: productos.productos[0].genero,
+        genero: productos?.productos[0]?.genero,
       }));
     } else if (edadesIguales && isFilteringActive) {
       setFiltrosAplicados(() => ({
@@ -82,7 +84,9 @@ export default function ProductList() {
       setFiltrosAplicados((prevFiltrosAplicados) => ({
         ...prevFiltrosAplicados,
         orden: nuevoOrden,
+        nombre: queryGlobal,
       }));
+      console.log(filtrosAplicados);
     }
   };
 

@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getAllProducts,
   getProductsByFilters,
-  getProductsByName,
   setFilteringActive,
 } from "@/redux/productosActions";
 
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+
 import coloresTailwind from "@/utils/coloresTailwind";
 
 function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
   const [filters, setFilters] = useState({});
+  const queryGlobal = useSelector((state) => state.productos.queryGlobal);
   const dispatch = useDispatch();
 
   const handleApplyFilters = () => {
@@ -20,15 +21,15 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     onApplyFilters(filtrosSeleccionados);
   };
 
-  const location = useLocation();
-  const queryParam = new URLSearchParams(location.search);
-  let nombre = queryParam.get("nombre");
+  // const location = useLocation();
+  // const queryParam = new URLSearchParams(location.search);
+  // let nombre = queryParam.get("nombre");
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      nombre,
+      nombre: queryGlobal,
       [name]: value,
     }));
   };
@@ -42,10 +43,11 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     dispatch(setFilteringActive(false));
     setFilters({ genero: "", edad: "", talla: "", color: "" });
 
-    if (nombre === null) nombre = "";
-    nombre !== ""
-      ? dispatch(getProductsByName(nombre))
+    if (queryGlobal === null || queryGlobal === undefined) queryGlobal = "";
+    queryGlobal !== ""
+      ? dispatch(getProductsByFilters({ nombre: queryGlobal, ...filters }))
       : dispatch(getAllProducts());
+
     onClose();
   };
 
@@ -53,12 +55,13 @@ function FilterOptions({ isOpen, onClose, onApplyFilters, className }) {
     handleApplyFilters(filters);
   }, [filters]);
 
-  const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => (
-	 
-		<option key={key} value={key}>
-		  {value.front}
-		</option>
-	  ));
+  const opcionesColores = Object.entries(coloresTailwind).map(
+    ([key, value]) => (
+      <option key={key} value={key}>
+        {value.front}
+      </option>
+    )
+  );
 
   return (
     <div

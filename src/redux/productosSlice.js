@@ -13,6 +13,7 @@ export const productosSlice = createSlice({
     filtros: {},
     rating: [],
     comments: [],
+    queryGlobal: "",
   },
   reducers: {
     allProducts: (state, action) => {
@@ -62,6 +63,9 @@ export const productosSlice = createSlice({
     topCommentsByProduct: (state, action) => {
       state.comments = action.payload;
     },
+    queryGlobal: (state,action) => {
+      state.queryGlobal = action.payload;
+    }
   },
 });
 
@@ -77,5 +81,6 @@ export const {
   resetFiltering,
   ratingByProduct,
   topCommentsByProduct,
+  queryGlobal,
 } = productosSlice.actions;
 export default productosSlice.reducer;
