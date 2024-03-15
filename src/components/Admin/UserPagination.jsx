@@ -81,7 +81,7 @@ export default function UserPagination() {
         <button
           onClick={handleAdelante}
           href="#"
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Siguiente
         </button>
@@ -89,7 +89,7 @@ export default function UserPagination() {
 
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
-          <p>
+          <p className="text-center md:pl-4">
             Pagina {paginaActual} de {totalPaginas}
           </p>
         </div>
