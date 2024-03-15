@@ -7,6 +7,7 @@ import {
   getAllUsers,
   getUsersByFilters,
   getUsersByName,
+  setFilteringActiveUsers,
   toggleUserRol,
   toggleUserStatus,
 } from "@/redux/userAction";
@@ -51,6 +52,7 @@ function UsersView() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
+      nombre: query,
     }));
   };
 
@@ -59,6 +61,11 @@ function UsersView() {
     setQuery(updatedQuery);
     if (updatedQuery === "") {
       dispatch(getAllUsers());
+    }
+    if (query.length > 0) {
+      dispatch(setFilteringActiveUsers(true));
+    } else {
+      dispatch(setFilteringActiveUsers(false));
     }
   };
 
@@ -146,10 +153,6 @@ function UsersView() {
   }, [query]);
 
   useEffect(() => {
-    dispatch(getUsersByFilters(filtrosAplicados));
-  }, [dispatch]);
-
-  useEffect(() => {
     if (ordernarPor !== 0) {
       dispatch(getUsersByFilters(filtrosAplicados));
     }
@@ -217,13 +220,8 @@ function UsersView() {
   return (
     <div className="bg-white mt-20 sm:mt-0">
       {!pageLoading && (
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
+        <div className="mx-auto  max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:pb-8 lg:mb-6 lg:max-w-7xl lg:px-8">
           <h2 className="text-xl font-semibold mb-4">Lista de Usuarios</h2>
-          {users && users.length === 0 && (
-            <div className="py-20 text-center text-xl fold-semibold">
-              <h2>No se encontraron resultados</h2>
-            </div>
-          )}
           <div className="flex flex-col sm: gap-y-4 sm:flex-row gap-x-3 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
             <Input
               type="text"
@@ -253,26 +251,32 @@ function UsersView() {
               <span className="p-2">FILTROS</span>
             </Button>{" "}
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto lg:overflow-x-hidden">
             <div className="table w-full border-collapse">
               <div className="table-header-group bg-gray-50">
-                <div className="table-row">
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Nombre
+                {users && users.length !== 0 ? (
+                  <div className="table-row">
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                      Nombre
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                      Email
+                    </div>
+                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                      Rol
+                    </div>
+                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                      Estado
+                    </div>
+                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
+                      Acciones
+                    </div>
                   </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Email
+                ) : (
+                  <div className="py-20 h-60 bg-white w-[1200px] flex justify-around items-end  text-center text-xl fold-semibold">
+                    <h2>No se encontraron resultados</h2>
                   </div>
-                  <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Rol
-                  </div>
-                  <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Estado
-                  </div>
-                  <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Acciones
-                  </div>
-                </div>
+                )}
               </div>
               <div className="table-row-group">
                 {users?.map((usuario) => (
@@ -349,6 +353,8 @@ function UsersView() {
       <UserPagination />
       <FiltersUser
         query={query}
+        setQuery={setQuery}
+        setOrder={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

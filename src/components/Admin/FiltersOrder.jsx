@@ -6,10 +6,19 @@ import {
   getOrdenesByFilters,
   getOrdenesByName,
 } from "@/redux/ordenesActions";
+import { setFilteringActiveOrdenes } from "@/redux/ordenesActions";
 
 // import { useLocation } from "react-router-dom";
 
-function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
+function FiltersOrder({
+  isOpen,
+  onClose,
+  onApplyFilters,
+  className,
+  query,
+  setQuery,
+  setOrder,
+}) {
   const [filters, setFilters] = useState({});
   const dispatch = useDispatch();
 
@@ -32,16 +41,15 @@ function FiltersOrder({ isOpen, onClose, onApplyFilters, className, query }) {
   };
 
   const handleFilterSubmit = () => {
+    dispatch(setFilteringActiveOrdenes(true));
     dispatch(getOrdenesByFilters(filters));
     onClose();
   };
   const handleReset = () => {
-    setFilters({ estado: "", orden: "", nombre: "" });
-
-    if (nombre === null) nombre = "";
-    nombre !== ""
-      ? dispatch(getOrdenesByName(nombre))
-      : dispatch(getAllOrdenes());
+    dispatch(setFilteringActiveOrdenes(false));
+    dispatch(getAllOrdenes());
+    setQuery("");
+    setOrder(0);
     onClose();
   };
 

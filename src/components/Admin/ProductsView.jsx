@@ -14,8 +14,9 @@ import {
   productStatusChange,
   productStandOutChange,
   getProductsByName,
+  setFilteringActive,
 } from "@/redux/productosActions";
-
+import { queryGlobal } from "@/redux/productosSlice";
 import filterIcon from "/assets/images/filterIcon.svg";
 import Swal from "sweetalert2";
 
@@ -45,19 +46,19 @@ const relevancias = [
   },
   {
     id: 1,
-    name: "Precio +",
+    name: "Menor Precio",
   },
   {
     id: 2,
-    name: "Precio -",
+    name: "Mayor Precio",
   },
   {
     id: 3,
-    name: "Nombre +",
+    name: "A-Z",
   },
   {
     id: 4,
-    name: "Nombre -",
+    name: "Z-A",
   },
 ];
 
@@ -67,6 +68,7 @@ export default function ProductList() {
   const [isLoading, setIsLoading] = useState(false);
   const [filtrosAplicados, setFiltrosAplicados] = useState([]);
   const [query, setQuery] = useState("");
+  const queryGlobal2 = useSelector((state) => state.productos.queryGlobal);
   const [pageLoading, setPageLoading] = useState(true);
   const [toastShown, setToastShown] = useState(false);
 
@@ -83,7 +85,7 @@ export default function ProductList() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
-      nombre: query,
+      nombre: queryGlobal2,
     }));
   };
 
@@ -268,10 +270,7 @@ export default function ProductList() {
           producto_id: producto_id.toString(),
         };
         const response = await dispatch(productStandOutChange(body));
-        if (query.length > 0) {
-          console.log(query);
-          dispatch(getProductsByName(query, admin));
-        }
+
         if (response.payload) {
           setIsLoading(false);
 
@@ -306,6 +305,13 @@ export default function ProductList() {
 
   const handleInput = (value) => {
     setQuery(value);
+    dispatch(queryGlobal(query));
+
+    if (query.length > 0) {
+      dispatch(setFilteringActive(true));
+    } else {
+      dispatch(setFilteringActive(false));
+    }
   };
 
   //Optimiza la busqueda espera unos segundos antes de hacer el fetch
@@ -317,6 +323,7 @@ export default function ProductList() {
       } else {
         dispatch(getAllProducts(admin));
       }
+      dispatch(getProductsByFilters({ nombre: query }));
     }, 500);
 
     return () => {
@@ -509,6 +516,8 @@ export default function ProductList() {
 
       <FiltersProduct
         query={query}
+        setQuery={setQuery}
+        setOrder={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

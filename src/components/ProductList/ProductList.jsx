@@ -15,6 +15,7 @@ import ProductCard from "./ProductCard";
 import PaginationControls from "./PaginationControls";
 import FilterOptions from "./FilterOptions";
 import { resetStateProduct } from "@/redux/productosSlice";
+import { queryGlobal } from "@/redux/productosSlice";
 
 const relevancias = [
   {
@@ -50,13 +51,12 @@ export default function ProductList() {
   const usuario = useSelector((state) => state.users.user);
   const favorites = useSelector((state) => state.favorites.favoritesDB);
   const loading = useSelector((state) => state.productos.loading);
-  const queryGlobal = useSelector((state) => state.productos.queryGlobal);
+  const queryGlobal2 = useSelector((state) => state.productos.queryGlobal);
   const isFilteringActive = useSelector(
     (state) => state.productos.isFilteringActive
   );
 
   const handleApplyFilters = (filtrosSeleccionados) => {
-    console.log(filtrosAplicados);
     setFiltrosAplicados(filtrosSeleccionados);
   };
 
@@ -70,12 +70,19 @@ export default function ProductList() {
     let edadesIguales = productos.productos.every(
       (producto) => producto?.edad === productos?.productos[1]?.edad
     );
-    if (!edadesIguales && isFilteringActive) {
+    console.log(queryGlobal2);
+    if (!edadesIguales && isFilteringActive && queryGlobal2.length === 0) {
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         genero: productos?.productos[0]?.genero,
       }));
-    } else if (edadesIguales && isFilteringActive) {
+    } else if (
+      edadesIguales &&
+      isFilteringActive &&
+      queryGlobal2.length === 0
+    ) {
+      console.log("entro");
+
       setFiltrosAplicados(() => ({
         orden: nuevoOrden,
         edad: productos.productos[0].edad,
@@ -84,9 +91,9 @@ export default function ProductList() {
       setFiltrosAplicados((prevFiltrosAplicados) => ({
         ...prevFiltrosAplicados,
         orden: nuevoOrden,
-        nombre: queryGlobal,
+        nombre: queryGlobal2,
       }));
-      console.log(filtrosAplicados);
+      console.log("no entro");
     }
   };
 
@@ -178,6 +185,7 @@ export default function ProductList() {
       )}
 
       <FilterOptions
+        ordenarPor={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

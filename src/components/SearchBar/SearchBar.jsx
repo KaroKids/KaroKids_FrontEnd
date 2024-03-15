@@ -61,6 +61,7 @@ const SearchBar = () => {
       dispatch(setFilteringActive(false));
     }
     dispatch(getProductsByFilters({ nombre: query }));
+    setQuery("");
   };
 
   useEffect(() => {

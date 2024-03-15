@@ -9,6 +9,7 @@ import {
   allOrders,
   ordenDetail,
   existeReview,
+  FilteringActiveUsers
 } from "./userSlice.js";
 
 const URL_USERS = import.meta.env.VITE_URL_USERS;
@@ -46,6 +47,17 @@ export const getUserByEmail = (email) => {
     }
   };
 };
+
+export const setFilteringActiveUsers = (active) => {
+	return async (dispatch) => {
+		try {
+			return dispatch(FilteringActiveUsers(active));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+};
+
 
 export const getPutUser = (body) => {
   return async (dispatch) => {
