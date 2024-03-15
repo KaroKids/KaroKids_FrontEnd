@@ -28,19 +28,21 @@ export default function CompanyPerformance() {
             top:5
           }
             const response = await axios.get(`${URL_FAVORITES}/top`,body);
-           // console.log(response.data)
-  
+             
             if (response.data) {
                 //setProductos(response.data);
                 setLoading(false)
 
              // Modificar la estructura de los datos
+              let countFive=0;
               const formattedData = [["Productos", "Favoritos"]];
               response.data.forEach(item => {
+                countFive++;
                 const nombreProducto = item.producto.nombre;
                 const cantidad = Number(item.cantidad);
                 const precio = Number(item.producto.precio);
                 
+                if(countFive<=5)
                 formattedData.push([nombreProducto, cantidad]);
               });
 
