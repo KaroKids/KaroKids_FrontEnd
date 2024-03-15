@@ -47,6 +47,7 @@ function FiltersOrder({
   };
   const handleReset = () => {
     dispatch(setFilteringActiveOrdenes(false));
+    setFilters({ estado: "" });
     dispatch(getAllOrdenes());
     setQuery("");
     setOrder(0);

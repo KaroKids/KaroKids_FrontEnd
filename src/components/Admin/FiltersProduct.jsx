@@ -56,6 +56,7 @@ function FiltersProduct({
   };
   const handleReset = () => {
     dispatch(setFilteringActive(false));
+    setFilters({ genero: "", edad: "", talla: "", color: "" });
     dispatch(getAllProducts());
     setQuery("");
     setOrder(0);
