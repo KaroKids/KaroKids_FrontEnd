@@ -58,6 +58,7 @@ function FiltersProduct({
     dispatch(setFilteringActive(false));
     setFilters({ genero: "", edad: "", talla: "", color: "" });
     dispatch(getAllProducts());
+    dispatch(queryGlobal(""));
     setQuery("");
     setOrder(0);
     onClose();
