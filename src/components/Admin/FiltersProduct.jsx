@@ -9,6 +9,7 @@ import {
 } from "@/redux/productosActions";
 
 import coloresTailwind from "@/utils/coloresTailwind";
+import { queryGlobal } from "@/redux/productosSlice";
 // import { useLocation } from "react-router-dom";
 
 function FiltersProduct({
