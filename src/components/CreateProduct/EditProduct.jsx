@@ -709,18 +709,19 @@ const EditProduct = () => {
         </div>
 
         {/* Mostrar el total */}
-        <div className="mt-3 border pr-2 pl-2">
-          <span className="font-semibold">Total items:</span>{" "}
-          <span className="font-bold">{numberMaskUnit(newStock.total)} </span>
-          <span className="font-thin font-italic">
-            {" "}
-            -{" "}
-            {newStock.total > 0
-              ? numeroEnPalabras(newStock.total) + " unidad(es)"
-              : ""}
-            .{" "}
-          </span>
-        </div>
+        {/* <div className="mt-3 border pr-2 pl-2">
+					<span className="font-semibold">Total items:</span>{" "}
+					<span className="font-bold">{numberMaskUnit(newStock.total)} </span>
+					<span className="font-thin font-italic">
+						{" "}
+						-{" "}
+						{newStock.total > 0
+							? numeroEnPalabras(newStock.total) + " unidad(es)"
+							: ""}
+						.{" "}
+					</span>
+				</div> */}
+
 
         <div className="flex flex-row  justify-center gap-10  items-center mt-6 ">
           <button
