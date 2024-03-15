@@ -389,7 +389,7 @@ export default function ProductList() {
               <span className="p-2">FILTROS</span>
             </Button>
           </div>
-          <div className="overflow-x-hidden">
+          <div className="overflow-x-auto lg:w-[1250px]">
             <div className="table w-full border-collapse sm:flex-col">
               <div className="table-header-group bg-gray-50">
                 {productos && productos.productos.length === 0 ? (
