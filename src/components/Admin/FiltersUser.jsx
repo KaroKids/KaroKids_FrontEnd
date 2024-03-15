@@ -47,6 +47,7 @@ function FiltersUser({
   };
   const handleReset = () => {
     dispatch(setFilteringActiveUsers(false));
+    setFilters({ estado: "", rol: "" });
     dispatch(getAllUsers());
     setQuery("");
     setOrder(0);
