@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
-  getAllOrdenes,
-  getOrdenesByFilters,
-  getOrdenesByName,
-} from "@/redux/ordenesActions";
-import { setFilteringActiveOrdenes } from "@/redux/ordenesActions";
+  getAllUsers,
+  getUsersByFilters,
+  getUsersByName,
+} from "@/redux/userAction";
+import { setFilteringActiveUsers } from "@/redux/userAction";
 
 // import { useLocation } from "react-router-dom";
 
-function FiltersOrder({
+function FiltersUser({
   isOpen,
   onClose,
   onApplyFilters,
@@ -41,14 +41,14 @@ function FiltersOrder({
   };
 
   const handleFilterSubmit = () => {
-    dispatch(setFilteringActiveOrdenes(true));
-    dispatch(getOrdenesByFilters(filters));
+    dispatch(setFilteringActiveUsers(true));
+    dispatch(getUsersByFilters(filters));
     onClose();
   };
   const handleReset = () => {
-    dispatch(setFilteringActiveOrdenes(false));
-    setFilters({ estado: "" });
-    dispatch(getAllOrdenes());
+    dispatch(setFilteringActiveUsers(false));
+    setFilters({ estado: "", rol: "" });
+    dispatch(getAllUsers());
     setQuery("");
     setOrder(0);
     onClose();
@@ -87,17 +87,28 @@ function FiltersOrder({
         </div>
         <div>
           <select
+            name="rol"
+            onChange={handleFilterChange}
+            className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
+            value={filters.rol}
+          >
+            <option value="" defaultValue>
+              ROL
+            </option>
+            <option value="admin">ADMIN</option>
+            <option value="client">CLIENTE</option>
+          </select>
+          <select
             name="estado"
             onChange={handleFilterChange}
             className="border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-500 w-full"
             value={filters.estado}
           >
             <option value="" defaultValue>
-              Condicion
+              ESTADO
             </option>
-            <option value="aprobado">APROBADO</option>
-            <option value="pendiente">PENDIENTE</option>
-            <option value="cancelado">CANCELADO</option>
+            <option value="false">ACTIVO</option>
+            <option value="true">INACTIVO</option>
           </select>
           <div className="flex justify-center space-x-4 pt-4">
             <button
@@ -119,4 +130,4 @@ function FiltersOrder({
   );
 }
 
-export default FiltersOrder;
+export default FiltersUser;

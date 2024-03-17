@@ -14,15 +14,16 @@ import {
   productStatusChange,
   productStandOutChange,
   getProductsByName,
+  setFilteringActive,
 } from "@/redux/productosActions";
-
+import { queryGlobal } from "@/redux/productosSlice";
 import filterIcon from "/assets/images/filterIcon.svg";
 import Swal from "sweetalert2";
 
 import PaginationControls from "../ProductList/PaginationControls";
-import FilterOptions from "../ProductList/FilterOptions";
 import { Link } from "react-router-dom";
 import LoadingView from "../ui/Loading";
+import FiltersProduct from "./FiltersProduct";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -45,19 +46,19 @@ const relevancias = [
   },
   {
     id: 1,
-    name: "Precio +",
+    name: "Menor Precio",
   },
   {
     id: 2,
-    name: "Precio -",
+    name: "Mayor Precio",
   },
   {
     id: 3,
-    name: "Nombre +",
+    name: "A-Z",
   },
   {
     id: 4,
-    name: "Nombre -",
+    name: "Z-A",
   },
 ];
 
@@ -67,6 +68,7 @@ export default function ProductList() {
   const [isLoading, setIsLoading] = useState(false);
   const [filtrosAplicados, setFiltrosAplicados] = useState([]);
   const [query, setQuery] = useState("");
+  const queryGlobal2 = useSelector((state) => state.productos.queryGlobal);
   const [pageLoading, setPageLoading] = useState(true);
   const [toastShown, setToastShown] = useState(false);
 
@@ -83,6 +85,7 @@ export default function ProductList() {
     setFiltrosAplicados((prevFiltrosAplicados) => ({
       ...prevFiltrosAplicados,
       orden: nuevoOrden,
+      nombre: queryGlobal2,
     }));
   };
 
@@ -267,10 +270,7 @@ export default function ProductList() {
           producto_id: producto_id.toString(),
         };
         const response = await dispatch(productStandOutChange(body));
-        if (query.length > 0) {
-          console.log(query);
-          dispatch(getProductsByName(query, admin));
-        }
+
         if (response.payload) {
           setIsLoading(false);
 
@@ -305,6 +305,13 @@ export default function ProductList() {
 
   const handleInput = (value) => {
     setQuery(value);
+    dispatch(queryGlobal(query));
+
+    if (query.length > 0) {
+      dispatch(setFilteringActive(true));
+    } else {
+      dispatch(setFilteringActive(false));
+    }
   };
 
   //Optimiza la busqueda espera unos segundos antes de hacer el fetch
@@ -316,6 +323,7 @@ export default function ProductList() {
       } else {
         dispatch(getAllProducts(admin));
       }
+      dispatch(getProductsByFilters({ nombre: query }));
     }, 500);
 
     return () => {
@@ -348,7 +356,7 @@ export default function ProductList() {
       {pageLoading && <LoadingView />}
 
       {!pageLoading && productos && (
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl lg:px-8">
+        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-36 lg:py-28 lg:max-w-7xl">
           <h2 className=" text-xl  font-semibold mb-4">Lista de Productos</h2>
 
           <div className="flex flex-col sm: gap-y-4 sm:flex-row gap-x-3 justify-evenly sm:justify-end items-center  sm:space-x-4 pb-4 ">
@@ -381,34 +389,35 @@ export default function ProductList() {
               <span className="p-2">FILTROS</span>
             </Button>
           </div>
-          {productos && productos.productos.length === 0 && (
-            <div className="py-20 text-center text-xl fold-semibold">
-              <h2>No se encontraron resultados</h2>
-            </div>
-          )}
-          <div className="overflow-x-auto">
-            <div className=" table w-full border-collapse sm:flex-col">
+          <div className="overflow-x-auto lg:w-[1250px]">
+            <div className="table w-full border-collapse sm:flex-col">
               <div className="table-header-group bg-gray-50">
-                <div className="table-row">
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Imagen
+                {productos && productos.productos.length === 0 ? (
+                  <div className="py-20 text-center text-xl fold-semibold">
+                    <h2>No se encontraron resultados</h2>
                   </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Nombre
+                ) : (
+                  <div className="table-row">
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Imagen
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Nombre
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Género
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Stock
+                    </div>
+                    <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Precio
+                    </div>
+                    <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
+                      Acciones
+                    </div>
                   </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Género
-                  </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Stock
-                  </div>
-                  <div className="table-cell text-left px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Precio
-                  </div>
-                  <div className="table-cell text-center px-6 py-3 text-xs font-medium text-gray-800 uppercase tracking-wider">
-                    Acciones
-                  </div>
-                </div>
+                )}
               </div>
               <div className="table-row-group  rounded border">
                 {productos &&
@@ -506,7 +515,10 @@ export default function ProductList() {
         </div>
       )}
 
-      <FilterOptions
+      <FiltersProduct
+        query={query}
+        setQuery={setQuery}
+        setOrder={setOrdernarPor}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         onApplyFilters={handleApplyFilters}

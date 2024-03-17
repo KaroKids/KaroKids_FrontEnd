@@ -106,7 +106,7 @@ export const getProductsByFilters = (filters, admin) => {
 
 			let urlFilters = "";
 
-			if (filters.nombre === null) filters.nombre = "";
+			if (filters.nombre === null || filters.nombre === undefined) filters.nombre = "";
 
 			for (const [key, value] of Object.entries(filters)) {
 				urlFilters += `${key}=${value}&`;

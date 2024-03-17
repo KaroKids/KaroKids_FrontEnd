@@ -2,6 +2,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import spinner from "/assets/images/spinner.svg";
 import { NavLink } from "react-router-dom";
+import { queryGlobal } from "@/redux/productosSlice";
+import { useDispatch } from "react-redux";
 
 const URL_ORDENES = import.meta.env.VITE_URL_ORDENES;
 const URL_USERS = import.meta.env.VITE_URL_USERS;
@@ -12,6 +14,7 @@ const Panel = () => {
   const [users, setUsers] = useState([]);
   const [productos, setProductos] = useState({});
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +22,8 @@ const Panel = () => {
         const response = await axios.get(URL_ORDENES);
         if (response && response.data) {
           setTotalOrdenes(
-            response.data.elementosPaginados.length * response.data.totalPaginas
+            response.data.elementosPaginados.length *
+              (response.data.totalPaginas - 1)
           );
           setLoading(false);
         }
@@ -64,7 +68,7 @@ const Panel = () => {
         console.log("No fue posible cargar los productos", error);
       }
     };
-
+    dispatch(queryGlobal(""));
     fetchProductos();
   }, []);
 
@@ -79,14 +83,14 @@ const Panel = () => {
     {
       id: 2,
       name: "Clientes registrados",
-      value: `+ ${users.elementosPaginados?.length * users?.totalPaginas}`,
+      value: `+ ${users.elementosPaginados?.length * (users?.totalPaginas - 1)}`,
       menu: "Usuarios",
       link: "/admin/users",
     },
     {
       id: 3,
       name: "Productos disponibles",
-      value: `+ ${productos.elementosPaginados?.length * productos?.totalPaginas}`,
+      value: `+ ${productos.elementosPaginados?.length * (productos?.totalPaginas - 1)}`,
       menu: "Productos",
       link: "/admin/products",
     },
