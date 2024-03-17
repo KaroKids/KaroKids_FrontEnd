@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../ui/button";
 import OrderModal from "./OrderModal";
 import { seHizoUnaReview } from "@/redux/userAction";
+import coloresDiccionario from "@/utils/traductor";
 
 const OrderDetail = () => {
+  console.log(coloresDiccionario)
   const ordenDetail = useSelector((state) => state.users.ordenDetail);
   const dispatch = useDispatch();
   const [isRatingModalOpen, setRatingModalOpen] = useState(false);
@@ -49,7 +51,7 @@ const OrderDetail = () => {
                           {Object.entries(colores).map(([color, cantidad]) => (
                             <div className="flex gap-x-2">
                               <p>
-                                <strong>Color:</strong> {color}
+                                <strong>Color:</strong> {coloresDiccionario[color]}
                               </p>
                               <p>
                                 <strong>Cantidad:</strong> {cantidad}
