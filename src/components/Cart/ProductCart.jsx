@@ -20,8 +20,10 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { getProductsById } from "@/redux/productosActions";
 import Swal from "sweetalert2";
+import coloresDiccionario from "@/utils/traductor";
 
 const ProductCart = () => {
+	 
 	const Toast = Swal.mixin({
 		toast: true,
 		position: "top-end",
@@ -195,7 +197,7 @@ const ProductCart = () => {
 											</strong>
 											<small className="flex flex-col text-sm">
 												<span>
-													<strong>Color:</strong> {product.compra_color}
+													<strong>Color:</strong> {coloresDiccionario[product.compra_color.toLowerCase()]}
 												</span>
 												<span>
 													<strong>Talla:</strong> {product.compra_talla}

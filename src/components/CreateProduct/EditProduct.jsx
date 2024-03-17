@@ -312,11 +312,13 @@ const EditProduct = () => {
     
 
 
-const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => (
+const opcionesColores = Object.entries(coloresTailwind).map(([key, value]) => {
+	return(
 	<option key={key} value={key}>
 		{value.front}
 	</option>
-));
+)
+	});
     
 	return (
 		<div className="mx-auto max-w-4xl   px-10 py-24  sm:py-32 lg:px-8 mt-6 ">

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { authContext } from "@/context/AuthContext";
 
+
 import { Button } from "../ui/button";
 import {
   Carousel,
@@ -316,16 +317,18 @@ const ProductDetail = () => {
                     <div className="flex flex-row ">
                       {color.map((color) => (
                         <div
-                          key={color.value}
-                          className={`w-8 h-6  rounded-full  mx-1 my-2 cursor-pointer border ${
-                            selectedColor && selectedColor === color.value
-                              ? "border-gray-700 border-4"
-                              : "border-slate-300"
-                          }`}
-                          style={{ backgroundColor: color.value }}
-                          onClick={() => setSelectedColor(color.value)}
+                        key={color.value}
+                        className={`w-8 h-6  rounded-full  mx-1 my-2 cursor-pointer border ${
+                          selectedColor && selectedColor === color.value
+                          ? "border-gray-700 border-4"
+                          : "border-slate-300"
+                        }`}
+                        style={{
+                          backgroundColor: color.value == "sky" ? "#87CEEB" : color.value
+                        }}
+                        onClick={() => setSelectedColor(color.value)}
                         ></div>
-                      ))}
+                        ))}
                     </div>
                   </>
                 )}

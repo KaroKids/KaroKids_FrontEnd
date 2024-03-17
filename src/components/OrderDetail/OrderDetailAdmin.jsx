@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getOrderById } from "@/redux/ordenesActions";
+import coloresDiccionario from "@/utils/traductor";
 
 const OrderDetail = () => {
 	const ordenDetail = useSelector((state) => state.ordenes.detail);
@@ -43,7 +44,7 @@ const OrderDetail = () => {
 													{Object.entries(colores).map(([color, cantidad]) => (
 														<div className="flex gap-x-2">
 															<p>
-																<strong>Color:</strong> {color}
+																<strong>Color:</strong> {coloresDiccionario[color]}
 															</p>
 															<p>
 																<strong>Cantidad:</strong> {cantidad}
