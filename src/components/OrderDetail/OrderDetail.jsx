@@ -6,7 +6,7 @@ import { seHizoUnaReview } from "@/redux/userAction";
 import coloresDiccionario from "@/utils/traductor";
 
 const OrderDetail = () => {
-  console.log(coloresDiccionario)
+  console.log(coloresDiccionario);
   const ordenDetail = useSelector((state) => state.users.ordenDetail);
   const dispatch = useDispatch();
   const [isRatingModalOpen, setRatingModalOpen] = useState(false);
@@ -24,7 +24,7 @@ const OrderDetail = () => {
   const opciones = { year: "numeric", month: "long", day: "numeric" };
   const fechaFixed = fecha.toLocaleDateString("es-ES", opciones);
   return (
-    <section className="h-screen  px-2 pt-28 flex gap-x-10 justify-center items-start">
+    <section className="min-h-screen pb-10  px-2 pt-28 flex gap-x-10 justify-center items-start">
       <div className="flex flex-col gap-y-4">
         {ordenDetail ? (
           ordenDetail &&
@@ -51,7 +51,8 @@ const OrderDetail = () => {
                           {Object.entries(colores).map(([color, cantidad]) => (
                             <div className="flex gap-x-2">
                               <p>
-                                <strong>Color:</strong> {coloresDiccionario[color]}
+                                <strong>Color:</strong>{" "}
+                                {coloresDiccionario[color]}
                               </p>
                               <p>
                                 <strong>Cantidad:</strong> {cantidad}
