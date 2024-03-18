@@ -41,6 +41,13 @@ const FooterBody = () => {
 									Avisos Legales
 								</a>
 							</li>
+							<li className="mr-4 mb-2">
+								<a
+									href="/developers"
+									className="text-gray-700 hover:text-gray-900">
+									Equipo de Desarrollo
+								</a>
+							</li>
 						</ul>
 					</nav>
 				</section>
@@ -101,6 +108,13 @@ const FooterBody = () => {
 									href="/legales"
 									className="text-gray-700 hover:text-gray-900">
 									Avisos Legales
+								</a>
+							</li>
+							<li className="mr-4 mb-2">
+								<a
+									href="/developers"
+									className="text-gray-700 hover:text-gray-900">
+									Equipo de Desarrollo
 								</a>
 							</li>
 						</ul>

@@ -26,6 +26,7 @@ import EditProduct from "./components/CreateProduct/EditProduct";
 import NotFound from "./components/Home/NotFound";
 import OrderDetail from "./components/OrderDetail/OrderDetail";
 import OrderDetailAdmin from "./components/OrderDetail/OrderDetailAdmin";
+import DevelopTeam from "./components/Legal/DevelopTeam";
 
 function App() {
 	const { pathname } = useLocation();
@@ -109,6 +110,7 @@ function App() {
 
 					<Route path="/nosotros" element={<SobreNosotros />} />
 					<Route path="/legales" element={<Legales />} />
+					<Route path="/developers" element={<DevelopTeam />} />
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 
