@@ -147,6 +147,7 @@ function UsersView() {
 			}
 		}, 300);
 
+		window.scroll(0, 0);
 		return () => {
 			clearTimeout(identifier);
 		};
@@ -156,6 +157,8 @@ function UsersView() {
 		if (ordernarPor !== 0) {
 			dispatch(getUsersByFilters(filtrosAplicados));
 		}
+
+		window.scrollTo(0, 0);
 	}, [ordernarPor, dispatch]);
 
 	const Toast = Swal.mixin({
