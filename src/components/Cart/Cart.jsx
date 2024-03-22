@@ -82,7 +82,7 @@ const Cart = () => {
     array = removed.split("=");
     removed = array.join(",");
     let encodedProductos = await encodePedido(removed);
-    const phoneNumber = "5492216700210";
+    const phoneNumber = "573052618857";
     const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedProductos}`;
 
    const pp = response.data.productos_compra.map((p)=>{
